@@ -101,23 +101,20 @@
 <script type="math/tex">e_i, e_{i+1}, \ldots e_{j-1}, e_j</script>
 If we pick a pivot outside of this chunk of the sorted array, we just throw another dart. If throw a pivot inside this chunk and it hits \(e_i\) or \(e_j\), the two get compared. But if we pick somewhere in the middle, \(e_i\) and \(e_j\) will get moved to seperate sublists and never be compared. So the probability that \(X_{i,j}\) is 1 is
 <script type="math/tex">\frac{2}{j-i+1}</script>
-So then we have that
-\[
-\mathbb{E}[X] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \mathbb{E}[X_{i, j}]
-              = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \frac{2}{j - i + 1} <br />
-\]
-Substituting in, we see this is equal to
-\[
-2\sum_{i=1}^{n-1}\sum_{k=2}^{n-i+1} \frac{1}{k}
-\leq 2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k}
-\]
-Then, we have that the inside sum is less than \(lnn\). This can be seen by examining the integral of \(lnn\) and the viewing the sum as a Riemann sum underneath the curve. So then we have
-\[
-2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k}
-\leq 2\sum_{i=1}^{n} ln(n)
-\leq 2nln(n)
-\]
-So then we have that our randomized quicksort algorithm runs in $O(nlgn)$ as desired. :)</p>
+So then we have that</p>
+
+<script type="math/tex; mode=display">\mathbb{E}[X] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \mathbb{E}[X_{i, j}] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \frac{2}{j - i + 1}</script>
+
+<p>Substituting in, we see this is equal to</p>
+
+<script type="math/tex; mode=display">2\sum_{i=1}^{n-1}\sum_{k=2}^{n-i+1} \frac{1}{k}
+\leq 2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k}</script>
+
+<p>Then, we have that the inside sum is less than \(lnn\). This can be seen by examining the integral of \(lnn\) and the viewing the sum as a Riemann sum underneath the curve. So then we have</p>
+
+<script type="math/tex; mode=display">2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k} \leq 2\sum_{i=1}^{n} ln(n) \leq 2nln(n)</script>
+
+<p>So then we have that our randomized quicksort algorithm runs in $O(nlgn)$ as desired. :)</p>
 
 </article>
 
@@ -150,7 +147,7 @@ So then we have that our randomized quicksort algorithm runs in $O(nlgn)$ as des
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-03-31T11:43:30-05:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-03-31T11:57:24-05:00">2015</time>. All rights reserved.
         </small>
       </footer>
     </div>

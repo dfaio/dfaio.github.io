@@ -54,19 +54,16 @@ $$e_i, e_{i+1}, \ldots e_{j-1}, e_j$$
 If we pick a pivot outside of this chunk of the sorted array, we just throw another dart. If throw a pivot inside this chunk and it hits \\(e_i\\) or \\(e_j\\), the two get compared. But if we pick somewhere in the middle, \\(e_i\\) and \\(e_j\\) will get moved to seperate sublists and never be compared. So the probability that \\(X_{i,j}\\) is 1 is
 $$\frac{2}{j-i+1}$$
 So then we have that
-\\[
-\mathbb{E}[X] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \mathbb{E}[X_{i, j}]
-              = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \frac{2}{j - i + 1} \\
-\\]
+
+$$ \mathbb{E}[X] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \mathbb{E}[X_{i, j}] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \frac{2}{j - i + 1} $$
+
 Substituting in, we see this is equal to
-\\[
-2\sum_{i=1}^{n-1}\sum_{k=2}^{n-i+1} \frac{1}{k}
-\leq 2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k}
-\\]
+
+$$2\sum_{i=1}^{n-1}\sum_{k=2}^{n-i+1} \frac{1}{k}
+\leq 2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k} $$
+
 Then, we have that the inside sum is less than \\(lnn\\). This can be seen by examining the integral of \\(lnn\\) and the viewing the sum as a Riemann sum underneath the curve. So then we have
-\\[
-2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k}
-\leq 2\sum_{i=1}^{n} ln(n)
-\leq 2nln(n)
-\\]
+
+$$ 2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k} \leq 2\sum_{i=1}^{n} ln(n) \leq 2nln(n) $$
+
 So then we have that our randomized quicksort algorithm runs in $O(nlgn)$ as desired. :)
