@@ -10,7 +10,7 @@ This algorithm will be an example of Las Vegas algorithm - a randomized algorith
 
 Las Vegas algorithms are in contrast the other main type of randomized algorithm, Monte Carlo algorithms. Monte Carlo algorithms' probability of correctness is variable, not their runtime.
 
-First, a lightning fast review of deterministic quicksort. In deterministic quicksort, we have some list that we want to sort. We pick a pivot point and then break our list up into two parts: those elements of the list smaller than the pivot and those greater. We then recurse on these smaller lists.
+But first, a lightning fast review of deterministic quicksort. In deterministic quicksort, we have some list that we want to sort. We pick a pivot point and then break our list up into two parts: those elements of the list smaller than the pivot and those greater. We then recurse on these smaller lists.
 
 A quick python implementation is as follows:
 

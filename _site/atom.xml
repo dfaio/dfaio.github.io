@@ -4,7 +4,7 @@
  <title>dfa.io</title>
  <link href="http://dfa.io/atom.xml" rel="self"/>
  <link href="http://dfa.io/"/>
- <updated>2015-03-31T11:57:24-05:00</updated>
+ <updated>2015-04-02T01:06:33-05:00</updated>
  <id>http://dfa.io</id>
  <author>
    <name>Evan Bergeron</name>
@@ -23,7 +23,7 @@
 
 &lt;p&gt;Las Vegas algorithms are in contrast the other main type of randomized algorithm, Monte Carlo algorithms. Monte Carlo algorithms’ probability of correctness is variable, not their runtime.&lt;/p&gt;
 
-&lt;p&gt;First, a lightning fast review of deterministic quicksort. In deterministic quicksort, we have some list that we want to sort. We pick a pivot point and then break our list up into two parts: those elements of the list smaller than the pivot and those greater. We then recurse on these smaller lists.&lt;/p&gt;
+&lt;p&gt;But first, a lightning fast review of deterministic quicksort. In deterministic quicksort, we have some list that we want to sort. We pick a pivot point and then break our list up into two parts: those elements of the list smaller than the pivot and those greater. We then recurse on these smaller lists.&lt;/p&gt;
 
 &lt;p&gt;A quick python implementation is as follows:&lt;/p&gt;
 
@@ -86,7 +86,7 @@ So then we have that&lt;/p&gt;
    <id>http://dfa.io/2015/03/13/a-turing-machine-quine</id>
    <content type="html">&lt;p&gt;Today, we’ll talk about something quite exciting. We define a Turing machine that prints its own source code. This construction offers us insight into how one may construct quines in any programming language.&lt;/p&gt;
 
-&lt;p&gt;First, some quick definitions. A quine is a program that prints itself. At first this may seem impossible! A first attempt in python may look something like&lt;/p&gt;
+&lt;p&gt;First, some quick definitions. A &lt;em&gt;quine&lt;/em&gt; is a program that prints itself. At first this may seem impossible! A first attempt in python may look something like&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;print&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -96,13 +96,15 @@ So then we have that&lt;/p&gt;
 
 &lt;p&gt;and we have the problem we started with. Let’s revisit this is a moment.&lt;/p&gt;
 
-&lt;p&gt;A Turing machine is an abstraction of a computer. It has some finite number of states, transitions between those states, and infinite memory. Excitingly, this turns out to be a quite reasonable definition of computation. There’s a very important result in computer science called the Church-Turing Thesis, which basically says that anything your-programming-language-here can do, so can a Turing machine.&lt;/p&gt;
+&lt;p&gt;A &lt;em&gt;Turing machine&lt;/em&gt; is an abstraction of a computer. It has some finite number of states, transitions between those states, and infinite memory. Excitingly, this turns out to be a quite reasonable definition of computation. There’s a very important result in computer science called the Church-Turing Thesis, which basically says that anything your-programming-language-here can do, so can a Turing machine.&lt;/p&gt;
 
 &lt;p&gt;Consequently, offering a Turing machine quine is a way of offering a quine for every programming language! We’ll find that it’s actually quite instructive to talk about quines in the abstract first, before moving into specific programming languages.&lt;/p&gt;
 
 &lt;p&gt;Right. So let’s get started. We present the following lemma:&lt;/p&gt;
 
-&lt;p&gt;There is a computable function q, where if w is some string, q(w) is a description of a Turing machine that prints out w and halts.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;There is a computable function \(q\), where if \(w\) is some string, \(q(w)\) is a description of a Turing machine that prints out \(w\) and halts.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;We offer the following TM as a construction of this function:&lt;/p&gt;
 
@@ -114,20 +116,22 @@ So then we have that&lt;/p&gt;
             &lt;span class=&quot;mf&quot;&gt;3.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Halt&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;
     &lt;span class=&quot;mf&quot;&gt;2.&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P_w&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;So our TM Q takes a string w and outputs a TM that prints w. Perfect! Exactly what we wanted. We’ll see why this is useful in a moment. Remember, this TM acts as a definition of a computable function, which we called q.&lt;/p&gt;
+&lt;p&gt;The distinction between \(q\) the function and Q the Turing machine can be a bit subtle. \(q\) is function that maps strings to Turing machines. Q (the Turing machine) is the result of applying \(q\) (the function) to \(w\). That is, Q = \(q(w)\).&lt;/p&gt;
 
-&lt;p&gt;With this lemma in hand, we proceed to the main task: building a TM that prints itself. We’ll split the machine up into two parts - A and B. Let’s start with a description for A.&lt;/p&gt;
+&lt;p&gt;So our TM Q takes a string w and outputs a TM that prints w. Perfect! Exactly what we wanted. Let’s come back to this - we’ll see why this is useful in a moment.&lt;/p&gt;
 
-&lt;p&gt;A’s description depends on B, so let’s assume we’ve written B. Remember the function q that we wrote earlier? We define A to be q(B). Which is to say, A is just a TM that, on any input, just prints a description of part B. This depends on our definition of B, so let’s talk about that now.&lt;/p&gt;
+&lt;p&gt;With this lemma in hand, we proceed to the main task: building a TM that prints itself. We’ll split the machine up into two parts - A and B. First A will run, then B. Let’s start with a description for A.&lt;/p&gt;
+
+&lt;p&gt;A’s description depends on B, so let’s assume we’ve written B. Remember the function \(q\) we just defined? We define A to be \(q(B)\). Which is to say, A is just a TM that, on any input, just prints a description of part B. This depends on our definition of B, so let’s talk about that now.&lt;/p&gt;
 
 &lt;p&gt;B’s the second and last part of the program, so at the end, we should have printed a full description of AB. By the time we get to B, A just ran, leaving a copy of B’s source code sitting on the tape. Which means at this point, B has a description of itself. So then how do we get a description of A?&lt;/p&gt;
 
-&lt;p&gt;Here’s the trick: we apply q to our description of B. By our definition, q(B) is a TM that, on any input, prints a copy of B. This was exactly our definition of part A!  So B takes its own source code and applies q to it, obtaining a description of A. Then B outputs AB, completing the proof.&lt;/p&gt;
+&lt;p&gt;Here’s the trick: we apply \(q\) to our description of B. By our definition, \(q(B)\) is a TM that, on any input, prints a copy of B. This was exactly our definition of part A!  So B takes its own source code and applies \(q\) to it, obtaining a description of A. Then B outputs AB, completing the proof.&lt;/p&gt;
 
 &lt;p&gt;To summarize:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;QUINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;On input string w:&lt;/span&gt;
-    &lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# A Turing machine that always prints B&lt;/span&gt;
     &lt;span class=&quot;mf&quot;&gt;2.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;On input M, where M is a part of a TM:&lt;/span&gt;
         &lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
