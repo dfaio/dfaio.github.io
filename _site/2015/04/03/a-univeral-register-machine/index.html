@@ -10,7 +10,7 @@
 
   <title>
     
-      dfa.io &middot; a regular tech blog
+      A Universal Register Machine &middot; dfa.io
     
   </title>
 
@@ -53,18 +53,10 @@
       </header>
 
       <main>
-        <div class="posts">
-  
-  <article class="post">
-    <h1 class="post-title">
-      <a href="/2015/04/03/a-univeral-register-machine/">
-        A Universal Register Machine
-      </a>
-    </h1>
-
-    <time datetime="2015-04-03T00:00:00-05:00" class="post-date">03 Apr 2015</time>
-
-    <p>Register machines are yet another abstract model of computation. They’re actually quite interesting for a number of reasons and oftentimes they prove to be a prettier model than Turing Machines.</p>
+        <article class="post">
+  <h1 class="post-title">A Universal Register Machine</h1>
+  <time datetime="2015-04-03T00:00:00-05:00" class="page-date">03 Apr 2015</time>
+  <p>Register machines are yet another abstract model of computation. They’re actually quite interesting for a number of reasons and oftentimes they prove to be a prettier model than Turing Machines.</p>
 
 <p>So what is a register machine, you ask? A register machine is a finite collection of registers and a control unit. Each register holds a natural number and the control unit executes commands that modify the contents of the registers. We write \(R_i\) for the \(i\)th register. Our instruction set is super simple:</p>
 
@@ -159,18 +151,41 @@
 
 <p>For pop, given our specific encoding, it happens to be useful to define a div macro that has conditional branches, depending on the value of the bit we just removed.</p>
 
-  </article>
-  
-</div>
+</article>
 
-<div class="pagination">
-  
-    <a class="pagination-item older" href="/page2">Older</a>
-  
-  
-    <span class="pagination-item newer">Newer</span>
-  
-</div>
+<aside class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="//2015/03/25/randomized-quicksort/">
+            Randomized Quicksort
+            <small><time datetime="2015-03-25T00:00:00-05:00">25 Mar 2015</time></small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//2015/03/13/a-turing-machine-quine/">
+            A Turing Machine Quine
+            <small><time datetime="2015-03-13T00:00:00-05:00">13 Mar 2015</time></small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//2015/03/09/defining-variables-inside-expressions/">
+            Defining Variables Inside Expressions in Python
+            <small><time datetime="2015-03-09T00:00:00-05:00">09 Mar 2015</time></small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</aside>
 
       </main>
 

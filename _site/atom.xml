@@ -4,13 +4,115 @@
  <title>dfa.io</title>
  <link href="http://dfa.io/atom.xml" rel="self"/>
  <link href="http://dfa.io/"/>
- <updated>2015-04-02T01:06:33-05:00</updated>
+ <updated>2015-04-05T14:53:01-05:00</updated>
  <id>http://dfa.io</id>
  <author>
    <name>Evan Bergeron</name>
    <email>ebergeron@cmu.edu</email>
  </author>
 
+ 
+ <entry>
+   <title>A Universal Register Machine</title>
+   <link href="http://dfa.io//2015/04/03/a-univeral-register-machine/"/>
+   <updated>2015-04-03T00:00:00-05:00</updated>
+   <id>http://dfa.io/2015/04/03/a-univeral-register-machine</id>
+   <content type="html">&lt;p&gt;Register machines are yet another abstract model of computation. They’re actually quite interesting for a number of reasons and oftentimes they prove to be a prettier model than Turing Machines.&lt;/p&gt;
+
+&lt;p&gt;So what is a register machine, you ask? A register machine is a finite collection of registers and a control unit. Each register holds a natural number and the control unit executes commands that modify the contents of the registers. We write \(R_i\) for the \(i\)th register. Our instruction set is super simple:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;\(\texttt{inc}\) increments register \(r\) and then goes to line \(k\) in the program. \(\texttt{dec}\) checks to see if register \(r\) is zero. If it’s not, \(\texttt{dec}\) decrements the register by 1 and then goes to line \(k\). Otherwise, it doesn’t decrement and instead just moves to line \(l\) in the program. \(\texttt{halt}\) is pretty self-explanatory.&lt;/p&gt;
+
+&lt;p&gt;To make things nicer, we’ll often label our registers. (X, Y, and so on).&lt;/p&gt;
+
+&lt;p&gt;As a first example, here we define an addition function that takes two registers X and Y and places X + Y in Z.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# addition: X + Y -&amp;gt; Z&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# while X != 0: X--, Z++&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# while Y != 0: Y--, Z++&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Similarly, we could define a multiplication algorithm as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# multiplication: X * Y -&amp;gt; Z&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If we recall from a couple posts back, we showed that, without loss, a Turing machine can have access to its own source code. There’s a similar trick we can play with register machines, though it’s far less involved. It involves something called Godel numberings, which we’ll discuss in a moment. It’s one of the features of register machines I like.&lt;/p&gt;
+
+&lt;p&gt;Spoiler alert: register machines are numbers. Let’s examine this idea.&lt;/p&gt;
+
+&lt;p&gt;Essentially, we’re going to building a toolbox of functions to help us swap between register machines and numbers. We’ll need a coding function, which will turn a sequence of numbers into a single number, a length function, which will give us the length of our sequence number, and decoding function that extracts out elements from our sequence.&lt;/p&gt;
+
+&lt;p&gt;Essentially, we’re encoding a list of numbers as a single (quite large) number.&lt;/p&gt;
+
+&lt;p&gt;We define a class of functions called &lt;em&gt;coding functions&lt;/em&gt;. Coding functions turn a sequence of numbers into a single number. More formally, it’s a “polyadic map” of the form&lt;/p&gt;
+
+&lt;p&gt;\[f : \mathbb{N}^* \rightarrow \mathbb{N}\]&lt;/p&gt;
+
+&lt;p&gt;Polyadic just means that it takes multiple arguments. To build such a function, we first define a pairing function of the form&lt;/p&gt;
+
+&lt;p&gt;\[\pi : \mathbb{N}^2 \rightarrow \mathbb{N}\]&lt;/p&gt;
+
+&lt;p&gt;There’s a number of different ways we could go about defining such a pairing function. Here’s one idea: take two numbers \(x\) and \(y\). Turn them into unary (that is, two strings of length \(x\) and \(y\), respectively), then concatenate these strings together with some sort of delimiter. For example,&lt;/p&gt;
+
+&lt;p&gt;\[\pi(3, 5) = 10000010001_2 = 1041\]&lt;/p&gt;
+
+&lt;p&gt;There’s a number of other various ways to go about this, but let’s stick with this as a proof of concept. Then we can define our polyadic coding function as such:&lt;/p&gt;
+
+&lt;p&gt;\[ f \text{ (nil)} = 0, f (a_1, \ldots a_n) = f(a_1, f(a_2, \ldots a_n))\]&lt;/p&gt;
+
+&lt;p&gt;Where nil is the empty list. If you’re familiar with functional programming, this is essentially just&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;nf&quot;&gt;foldl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;an&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can define similar length and decoding functions. A length function could perhaps be the binary digit sum of the sequence number (minus 1).&lt;/p&gt;
+
+&lt;p&gt;Then, note that we can encode register machine instructions as numbers as well: \(\texttt{halt}\) can be \(0\), \(\texttt{inc r k}\) can be \(f(r, k)\), and \(\texttt{dec r k l}\) can be \(f(r, k, l)\). From here, we can encode entire programs as a sequence of such instructions.&lt;/p&gt;
+
+&lt;p&gt;So register machines are numbers. With that in mind, let’s get working on our original task - to define a univeral register machine.&lt;/p&gt;
+
+&lt;p&gt;A &lt;em&gt;univeral register machine&lt;/em&gt; is a register machine that takes another register machine as input and simulates that register machine. This is an important concept. The notion of self-reference has been show to be extraordinarily powerful. It provides a natural definition of recursion, for instance.&lt;/p&gt;
+
+&lt;p&gt;To implement such a register machine, we’ll want a couple of macros:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# Copy r to s, goto k&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# If r is 0, goto k, else goto l&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# s = r[0]; r = r[1:], goto k&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;# s = r[i]; goto k, halt if out of bounds&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# r[i] = s; goto k, halt if out of bounds&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Or here, we define a copy macro:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# copy r s k&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# set s = 0&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# move r to u and s&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# move u back to r&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The zero macro is straightforward:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# zero r k l&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For pop, given our specific encoding, it happens to be useful to define a div macro that has conditional branches, depending on the value of the bit we just removed.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Randomized Quicksort</title>
