@@ -42,13 +42,15 @@ inc Y 6
 halt
 {% endhighlight %}
 
-If we recall from a couple posts back, we showed that, without loss, a Turing machine can have access to its own source code. There's a similar trick we can play with register machines, though it's far less involved. It involves something called Godel numberings, which we'll discuss in a moment. It's one of the features of register machines I like.
+If we recall from a couple posts back, we showed that, without loss, a Turing machine can have access to its own source code. There's a similar trick we can play with register machines, though it's far less involved. It involves something called *Godel numberings*. It's one of the features of register machines I quite like.
 
-Spoiler alert: register machines are numbers. Let's examine this idea.
+In essence, Godel numbering is a hack that turns anything into a number. Then, we can encode a register machine program as a number and feed that as input to another register machine. Self-reference!
 
-Essentially, we're going to building a toolbox of functions to help us swap between register machines and numbers. We'll need a coding function, which will turn a sequence of numbers into a single number, a length function, which will give us the length of our sequence number, and decoding function that extracts out elements from our sequence.
+We're going to building a toolbox of functions to help us swap between register machines and numbers. We'll need a couple of things: a coding function, a length function, and decoding function. The coding function will turn a sequence of numbers into a single number. The length function will give us the length of our sequence number. Our decoding function decodes (or extracts) out elements from our sequence.
 
 Essentially, we're encoding a list of numbers as a single (quite large) number.
+
+### Coding Functions
 
 We define a class of functions called *coding functions*. Coding functions turn a sequence of numbers into a single number. More formally, it's a "polyadic map" of the form
 
@@ -78,6 +80,8 @@ Then, note that we can encode register machine instructions as numbers as well: 
 
 So register machines are numbers. With that in mind, let's get working on our original task - to define a univeral register machine.
 
+### Univeral Register Machine
+
 A *univeral register machine* is a register machine that takes another register machine as input and simulates that register machine. This is an important concept. The notion of self-reference has been show to be extraordinarily powerful. It provides a natural definition of recursion, for instance.
 
 To implement such a register machine, we'll want a couple of macros:
@@ -86,11 +90,13 @@ To implement such a register machine, we'll want a couple of macros:
 copy r s k      # Copy r to s, goto k
 zero r k l      # If r is 0, goto k, else goto l
 pop r s k       # s = r[0]; r = r[1:], goto k
-read r i s k    # s = r[i]; goto k, halt if out of bounds
-write r i s k   # r[i] = s; goto k, halt if out of bounds
+read r t s k    # s = r[t]; goto k, halt if out of bounds
+write r t s k   # r[t] = s; goto k, halt if out of bounds
 {% endhighlight %}
 
-Or here, we define a copy macro:
+### Some Macros
+
+What follows are implementations for each of the above macros. Copy is fairly straightforward:
 
 {% highlight asm linenos %}
 # copy r s k
@@ -103,7 +109,7 @@ inc s 6
 dec u 8 k
 {% endhighlight %}
 
-The zero macro is straightforward:
+The zero macro is straightforward as well:
 
 {% highlight asm linenos %}
 # zero r k l
@@ -112,3 +118,71 @@ inc r l
 {% endhighlight %}
 
 For pop, given our specific encoding, it happens to be useful to define a div macro that has conditional branches, depending on the value of the bit we just removed.
+
+{% highlight asm linenos %}
+# div2 r k l
+dec u 2 3 # zero-out register u
+dec r 4 5 # u = r; r = 0
+inc u 3
+dec u 6 k # if u is zero, r was even
+dec u 7 l # if u is zero, r was odd
+inc r 5
+{% endhighlight %}
+
+This is a bit more subtle. We first zero out some dummy register u, and then move r's contents into u. Then, we decrement u twice and increment r once. If, in the first dec instruction, we find that we've hit zero, then u was originally even, as an even number of dec instructions preceded it. Similarly, if we hit zero before the second dec instruction, there was an odd number of decrements prior to us, so r must have been odd.
+
+With this macro, pop becomes fairly straightforward:
+
+{% highlight asm linenos %}
+# pop r s k
+div2 r 3 - # get rid of leading 1
+div2 r 4 5 # eat up all zeroes, add to s
+inc s 3
+add r r 6  # We also ate the next 1, so fix that
+dec u 6 7
+inc u 8
+add r u k
+{% endhighlight %}
+
+Where \\(\texttt{add}\\) is some destructive add macro. Note that there is no third argument to the first \\(\texttt{div2}\\) instruction, as our precondition is that r holds a valid sequence number, whose least significant bit is guaranteed to be 1. So we leave this behavior undefined.
+
+{% highlight asm linenos %}
+# read r t s k
+copy r u 2   # u = r (non-destructive copy)
+dec t 4 5
+pop u s 3
+pop u s k
+{% endhighlight %}
+{% highlight asm linenos %}
+# write r t s k   # r[t] = s; goto k, halt if out of bounds
+{% endhighlight %}
+
+### A URMP
+
+With these macros in hand, we can write the man himself: a universal register machine program! Here are the registers we use for our program:
+
+{% highlight c %}
+P - our simulated program
+C - the code number of P
+x - input to P
+R - simulates registers of P
+I - instructions of P
+p - program counter
+{% endhighlight %}
+
+{% highlight asm linenos %}
+copy  c r 2
+write r p x 3
+read  c p i 4
+pop   i r 5
+zero  i 14 6
+pop   i p 7
+read  r r x 8
+zero  i 9 10
+inc   x 13
+zero  x 11 12
+pop   i p 3
+dec   x 13 13
+write r r x 3
+halt
+{% endhighlight %}
