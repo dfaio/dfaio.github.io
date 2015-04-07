@@ -193,11 +193,11 @@ dec  u 18 15
 With these macros in hand, we can write the man himself: a universal register machine program! Here are the registers we use for our program:
 
 {% highlight c %}
-P - our simulated program
-C - the code number of P
+p - our simulated program
+c - the code number of P
 x - input to P
-R - simulates registers of P
-I - instructions of P
+r - simulates registers of P
+i - instructions of P
 p - program counter
 {% endhighlight %}
 

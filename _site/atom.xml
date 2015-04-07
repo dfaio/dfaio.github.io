@@ -4,7 +4,7 @@
  <title>dfa.io</title>
  <link href="http://dfa.io/atom.xml" rel="self"/>
  <link href="http://dfa.io/"/>
- <updated>2015-04-05T14:53:01-05:00</updated>
+ <updated>2015-04-07T02:14:52-05:00</updated>
  <id>http://dfa.io</id>
  <author>
    <name>Evan Bergeron</name>
@@ -13,10 +13,23 @@
 
  
  <entry>
+   <title>Phone-a-Friend and SUPERHALTS</title>
+   <link href="http://dfa.io//2015/04/07/Phone-A-Friend-and-SUPERHALTS/"/>
+   <updated>2015-04-07T00:00:00-05:00</updated>
+   <id>http://dfa.io/2015/04/07/Phone-A-Friend-and-SUPERHALTS</id>
+   <content type="html">&lt;p&gt;Deciding things is hard. There are countably many Turing machines, but an uncountable number of decision problems! Sometimes, maybe asking our TM M for a decision is unreasonable - maybe sometimes we should let him phone-a-friend. A reason question to ask is: if our friend always gives us the right answer, is this enough?&lt;/p&gt;
+
+&lt;p&gt;We define the phone-a-friend mechanism as follows: our TM M is given access to an &lt;em&gt;oracle&lt;/em&gt;. The TM may ask the oracle a membership question: is this string \(w\) in some set \(S\)? The oracle is all-knowing and will return a yes or no answer immediately. The oracle will always answer correctly. We call a Turing machine with access to an oracle an &lt;em&gt;oracle Turing machine&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;So certainly, all of a sudden, life gets a lot easier! For example, solving HALTS is trivial! Just ask the oracle. But a worthy question is: does there exist a decision problem that an oracle Turing machine can’t solve?&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>A Universal Register Machine</title>
-   <link href="http://dfa.io//2015/04/03/a-univeral-register-machine/"/>
-   <updated>2015-04-03T00:00:00-05:00</updated>
-   <id>http://dfa.io/2015/04/03/a-univeral-register-machine</id>
+   <link href="http://dfa.io//2015/04/06/a-univeral-register-machine/"/>
+   <updated>2015-04-06T00:00:00-05:00</updated>
+   <id>http://dfa.io/2015/04/06/a-univeral-register-machine</id>
    <content type="html">&lt;p&gt;Register machines are yet another abstract model of computation. They’re actually quite interesting for a number of reasons and oftentimes they prove to be a prettier model than Turing Machines.&lt;/p&gt;
 
 &lt;p&gt;So what is a register machine, you ask? A register machine is a finite collection of registers and a control unit. Each register holds a natural number and the control unit executes commands that modify the contents of the registers. We write \(R_i\) for the \(i\)th register. Our instruction set is super simple:&lt;/p&gt;
@@ -49,13 +62,15 @@
 &lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;If we recall from a couple posts back, we showed that, without loss, a Turing machine can have access to its own source code. There’s a similar trick we can play with register machines, though it’s far less involved. It involves something called Godel numberings, which we’ll discuss in a moment. It’s one of the features of register machines I like.&lt;/p&gt;
+&lt;p&gt;If we recall from a couple posts back, we showed that, without loss, a Turing machine can have access to its own source code. There’s a similar trick we can play with register machines, though it’s far less involved. It involves something called &lt;em&gt;Godel numberings&lt;/em&gt;. It’s one of the features of register machines I quite like.&lt;/p&gt;
 
-&lt;p&gt;Spoiler alert: register machines are numbers. Let’s examine this idea.&lt;/p&gt;
+&lt;p&gt;In essence, Godel numbering is a hack that turns anything into a number. Then, we can encode a register machine program as a number and feed that as input to another register machine. Self-reference!&lt;/p&gt;
 
-&lt;p&gt;Essentially, we’re going to building a toolbox of functions to help us swap between register machines and numbers. We’ll need a coding function, which will turn a sequence of numbers into a single number, a length function, which will give us the length of our sequence number, and decoding function that extracts out elements from our sequence.&lt;/p&gt;
+&lt;p&gt;We’re going to building a toolbox of functions to help us swap between register machines and numbers. We’ll need a couple of things: a coding function, a length function, and decoding function. The coding function will turn a sequence of numbers into a single number. The length function will give us the length of our sequence number. Our decoding function decodes (or extracts) out elements from our sequence.&lt;/p&gt;
 
 &lt;p&gt;Essentially, we’re encoding a list of numbers as a single (quite large) number.&lt;/p&gt;
+
+&lt;h3 id=&quot;coding-functions&quot;&gt;Coding Functions&lt;/h3&gt;
 
 &lt;p&gt;We define a class of functions called &lt;em&gt;coding functions&lt;/em&gt;. Coding functions turn a sequence of numbers into a single number. More formally, it’s a “polyadic map” of the form&lt;/p&gt;
 
@@ -83,6 +98,8 @@
 
 &lt;p&gt;So register machines are numbers. With that in mind, let’s get working on our original task - to define a univeral register machine.&lt;/p&gt;
 
+&lt;h3 id=&quot;univeral-register-machine&quot;&gt;Univeral Register Machine&lt;/h3&gt;
+
 &lt;p&gt;A &lt;em&gt;univeral register machine&lt;/em&gt; is a register machine that takes another register machine as input and simulates that register machine. This is an important concept. The notion of self-reference has been show to be extraordinarily powerful. It provides a natural definition of recursion, for instance.&lt;/p&gt;
 
 &lt;p&gt;To implement such a register machine, we’ll want a couple of macros:&lt;/p&gt;
@@ -90,10 +107,12 @@
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# Copy r to s, goto k&lt;/span&gt;
 &lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# If r is 0, goto k, else goto l&lt;/span&gt;
 &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# s = r[0]; r = r[1:], goto k&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;# s = r[i]; goto k, halt if out of bounds&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# r[i] = s; goto k, halt if out of bounds&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;# s = r[t]; goto k, halt if out of bounds&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# r[t] = s; goto k, halt if out of bounds&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Or here, we define a copy macro:&lt;/p&gt;
+&lt;h3 id=&quot;some-macros&quot;&gt;Some Macros&lt;/h3&gt;
+
+&lt;p&gt;What follows are implementations for each of the above macros. Copy is fairly straightforward:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# copy r s k&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# set s = 0&lt;/span&gt;
@@ -104,13 +123,99 @@
 &lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;The zero macro is straightforward:&lt;/p&gt;
+&lt;p&gt;The zero macro is straightforward as well:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# zero r k l&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;For pop, given our specific encoding, it happens to be useful to define a div macro that has conditional branches, depending on the value of the bit we just removed.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# div2 r k l&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# zero-out register u&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# u = r; r = 0&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# if u is zero, r was even&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# if u is zero, r was odd&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is a bit more subtle. We first zero out some dummy register u, and then move r’s contents into u. Then, we decrement u twice and increment r once. If, in the first dec instruction, we find that we’ve hit zero, then u was originally even, as an even number of dec instructions preceded it. Similarly, if we hit zero before the second dec instruction, there was an odd number of decrements prior to us, so r must have been odd.&lt;/p&gt;
+
+&lt;p&gt;With this macro, pop becomes fairly straightforward:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# pop r s k&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;div2&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# get rid of leading 1&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;div2&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# eat up all zeroes, add to s&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# We also ate the next 1, so fix that&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Where \(\texttt{add}\) is some destructive add macro. Note that there is no third argument to the first \(\texttt{div2}\) instruction, as our precondition is that r holds a valid sequence number, whose least significant bit is guaranteed to be 1. So we leave this behavior undefined.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# read r t s k&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# u = r (non-destructive copy)&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To define write, we’ll want a push macro:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# push r s k - push s onto r, goto k&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# push all the zeros onto r&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# push the one onto r&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this in hand, we can implement write as if r was a stack: popping off t elements, pushing them onto another stack, push our new value onto r, throwing away the top value from our helper stack, and then replacing the values.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# write r t s k # r[t] = s; goto k, halt if out of bounds&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# initialize - u is our dummy int&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# v is our dummy stack&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# while t &amp;gt; 0&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# pop from r onto u&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# clean up u, go again&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 9&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# once more, when t == 0&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# push s onto r&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# throw away top value on v&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;# (this is what we&amp;#39;re overwriting)&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# while t != 0:&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;16&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# pop from v, push onto u&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;17&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;a-urmp&quot;&gt;A URMP&lt;/h3&gt;
+
+&lt;p&gt;With these macros in hand, we can write the man himself: a universal register machine program! Here are the registers we use for our program:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;our&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simulated&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simulates&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;registers&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;instructions&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 9&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 </content>
  </entry>
  

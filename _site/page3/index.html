@@ -57,81 +57,72 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/2015/03/13/a-turing-machine-quine/">
-        A Turing Machine Quine
+      <a href="/2015/03/25/randomized-quicksort/">
+        Randomized Quicksort
       </a>
     </h1>
 
-    <time datetime="2015-03-13T00:00:00-05:00" class="post-date">13 Mar 2015</time>
+    <time datetime="2015-03-25T00:00:00-05:00" class="post-date">25 Mar 2015</time>
 
-    <p>Today, we’ll talk about something quite exciting. We define a Turing machine that prints its own source code. This construction offers us insight into how one may construct quines in any programming language.</p>
+    <p>As a nice first randomized algorithm, we’ll present a randomized version of quicksort and do some analysis on its runtime. This post assumes familiarity with basic probability concepts (mainly expectation).</p>
 
-<p>First, some quick definitions. A <em>quine</em> is a program that prints itself. At first this may seem impossible! A first attempt in python may look something like</p>
+<p>This algorithm will be an example of Las Vegas algorithm - a randomized algorithm whose runtime is variable, not its probability of correctness. Interestingly, Las Vegas algorithms were first coined in 1979 by a professor at University of Chicago named Laszlo Babai. In fact, Babai’s doctoral advisor was Turan! (Of Turan’s theorem in graph theory).</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">print</span> <span class="s">&quot;print&quot;</span></code></pre></div>
+<p>Las Vegas algorithms are in contrast the other main type of randomized algorithm, Monte Carlo algorithms. Monte Carlo algorithms’ probability of correctness is variable, not their runtime.</p>
 
-<p>But wait. We missed the first print. So perhaps we’ll add another print? But then we have</p>
+<p>But first, a lightning fast review of deterministic quicksort. In deterministic quicksort, we have some list that we want to sort. We pick a pivot point and then break our list up into two parts: those elements of the list smaller than the pivot and those greater. We then recurse on these smaller lists.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">print</span> <span class="s">&quot;print &#39;print&#39;&quot;</span></code></pre></div>
+<p>A quick python implementation is as follows:</p>
 
-<p>and we have the problem we started with. Let’s revisit this is a moment.</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">quicksort</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">L</span>
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">smaller</span> <span class="o">=</span> <span class="p">[</span><span class="n">elt</span> <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">L</span> <span class="k">if</span> <span class="n">elt</span> <span class="o">&lt;</span> <span class="n">pivot</span><span class="p">]</span>
+    <span class="n">larger</span> <span class="o">=</span> <span class="p">[</span><span class="n">elt</span> <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">L</span> <span class="k">if</span> <span class="n">elt</span> <span class="o">&gt;=</span> <span class="n">pivot</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">quicksort</span><span class="p">(</span><span class="n">smaller</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">pivot</span><span class="p">]</span> <span class="o">+</span> <span class="n">quicksort</span><span class="p">(</span><span class="n">larger</span><span class="p">)</span></code></pre></div>
 
-<p>A <em>Turing machine</em> is an abstraction of a computer. It has some finite number of states, transitions between those states, and infinite memory. Excitingly, this turns out to be a quite reasonable definition of computation. There’s a very important result in computer science called the Church-Turing Thesis, which basically says that anything your-programming-language-here can do, so can a Turing machine.</p>
+<p>On average, this will run in \(O(nlgn)\), but our worst-case runtime is \(O(n^2)\). That is, if our choice of pivot happens to be the smallest or biggest of the list, we’re kinda screwed.</p>
 
-<p>Consequently, offering a Turing machine quine is a way of offering a quine for every programming language! We’ll find that it’s actually quite instructive to talk about quines in the abstract first, before moving into specific programming languages.</p>
+<p>So account for this issue, we can instead just choose a pivot at random. This can make it difficult for an adversary to feed us a worst case input. In python, this would amount to:</p>
 
-<p>Right. So let’s get started. We present the following lemma:</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">random</span>
+<span class="k">def</span> <span class="nf">randomized_quicksort</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">L</span>
+    <span class="c"># randint upper bound is inclusive</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">smaller</span> <span class="o">=</span> <span class="p">[</span><span class="n">elt</span> <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">L</span> <span class="k">if</span> <span class="n">elt</span> <span class="o">&lt;</span> <span class="n">pivot</span><span class="p">]</span>
+    <span class="n">larger</span> <span class="o">=</span> <span class="p">[</span><span class="n">elt</span> <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">L</span> <span class="k">if</span> <span class="n">elt</span> <span class="o">&gt;=</span> <span class="n">pivot</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">quicksort</span><span class="p">(</span><span class="n">smaller</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">pivot</span><span class="p">]</span> <span class="o">+</span> <span class="n">quicksort</span><span class="p">(</span><span class="n">larger</span><span class="p">)</span></code></pre></div>
 
-<blockquote>
-  <p>There is a computable function \(q\), where if \(w\) is some string, \(q(w)\) is a description of a Turing machine that prints out \(w\) and halts.</p>
-</blockquote>
+<p>Quick and easy! Let’s do some analysis on the expected runtime. When we say expected runtime, we’re taking the expectation over all choices of random pivots for some fixed input.</p>
 
-<p>We offer the following TM as a construction of this function:</p>
+<p>We let \(a_1, a_1, \ldots a_n\) be some input to \(\texttt{randomized_quicksort}\) and let \(s_1, s_2, \ldots, s_n\) be the sorted version of this input. We define indicator random variables \(X_{i,j}\) which are 1 if \(a_i\), \(a_j\) are ever compared during our given run of quicksort and 0 otherwise. By linearity:</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">Q</span> <span class="o">=</span> <span class="s">&quot;On input string w:</span>
-    <span class="mf">1.</span> <span class="n">Construct</span> <span class="n">the</span> <span class="n">following</span> <span class="n">TM</span> <span class="n">P_w</span><span class="p">:</span>
-        <span class="n">P_w</span> <span class="o">=</span> <span class="s">&#39;On any input:</span>
-            <span class="mf">1.</span> <span class="n">Erase</span> <span class="n">the</span> <span class="nb">input</span>
-            <span class="mf">2.</span> <span class="n">Write</span> <span class="n">w</span> <span class="n">to</span> <span class="n">the</span> <span class="n">tape</span>
-            <span class="mf">3.</span> <span class="n">Halt</span><span class="s">&#39;</span>
-    <span class="mf">2.</span> <span class="k">return</span> <span class="n">P_w</span><span class="s">&quot;</span></code></pre></div>
+<script type="math/tex; mode=display">\mathbb{E}[X] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \mathbb{E}[X_{i, j}]</script>
 
-<p>The distinction between \(q\) the function and Q the Turing machine can be a bit subtle. \(q\) is function that maps strings to Turing machines. Q (the Turing machine) is the result of applying \(q\) (the function) to \(w\). That is, Q = \(q(w)\).</p>
+<p>Since \(X_{i,j}\) is an indicator random variable, its expectation is just the probability that \(a_i\) and \(a_j\) are compared. So what is this probability? Let’s call the \(i\)th element of the (sorted) array \(e_i\) and the \(j\)th element of the array \(e_j\). Certainly, if we pick either one of those elements as a pivot, we’ll compare one to the other.</p>
 
-<p>So our TM Q takes a string w and outputs a TM that prints w. Perfect! Exactly what we wanted. Let’s come back to this - we’ll see why this is useful in a moment.</p>
+<p>We’re picking pivots at random, so we might as well think of picking pivots in the following way: take the final sorted array and throw darts randomly at it. If the dart lands on the \(k\)th spot, use \(e_k\) as the pivot point. Somewhere in the sorted array, we have the sequence
+<script type="math/tex">e_i, e_{i+1}, \ldots e_{j-1}, e_j</script>
+If we pick a pivot outside of this chunk of the sorted array, we just throw another dart. If throw a pivot inside this chunk and it hits \(e_i\) or \(e_j\), the two get compared. But if we pick somewhere in the middle, \(e_i\) and \(e_j\) will get moved to seperate sublists and never be compared. So the probability that \(X_{i,j}\) is 1 is
+<script type="math/tex">\frac{2}{j-i+1}</script>
+So then we have that</p>
 
-<p>With this lemma in hand, we proceed to the main task: building a TM that prints itself. We’ll split the machine up into two parts - A and B. First A will run, then B. Let’s start with a description for A.</p>
+<script type="math/tex; mode=display">\mathbb{E}[X] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \mathbb{E}[X_{i, j}] = \sum_{i=1}^{n-1}\sum_{j = i+1}^n \frac{2}{j - i + 1}</script>
 
-<p>A’s description depends on B, so let’s assume we’ve written B. Remember the function \(q\) we just defined? We define A to be \(q(B)\). Which is to say, A is just a TM that, on any input, just prints a description of part B. This depends on our definition of B, so let’s talk about that now.</p>
+<p>Substituting in, we see this is equal to</p>
 
-<p>B’s the second and last part of the program, so at the end, we should have printed a full description of AB. By the time we get to B, A just ran, leaving a copy of B’s source code sitting on the tape. Which means at this point, B has a description of itself. So then how do we get a description of A?</p>
+<script type="math/tex; mode=display">2\sum_{i=1}^{n-1}\sum_{k=2}^{n-i+1} \frac{1}{k}
+\leq 2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k}</script>
 
-<p>Here’s the trick: we apply \(q\) to our description of B. By our definition, \(q(B)\) is a TM that, on any input, prints a copy of B. This was exactly our definition of part A!  So B takes its own source code and applies \(q\) to it, obtaining a description of A. Then B outputs AB, completing the proof.</p>
+<p>Then, we have that the inside sum is less than \(lnn\). This can be seen by examining the integral of \(lnn\) and the viewing the sum as a Riemann sum underneath the curve. So then we have</p>
 
-<p>To summarize:</p>
+<script type="math/tex; mode=display">2\sum_{i=1}^{n}\sum_{k=2}^{n} \frac{1}{k} \leq 2\sum_{i=1}^{n} ln(n) \leq 2nln(n)</script>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">QUINE</span> <span class="o">=</span> <span class="s">&quot;On input string w:</span>
-    <span class="mf">1.</span> <span class="n">A</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="c"># A Turing machine that always prints B</span>
-    <span class="mf">2.</span> <span class="n">B</span> <span class="o">=</span> <span class="s">&#39;On input M, where M is a part of a TM:</span>
-        <span class="mf">1.</span> <span class="k">return</span> <span class="n">q</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">+</span> <span class="n">M</span><span class="s">&#39;&quot;</span></code></pre></div>
-
-<p>Using this proof as a template, let’s consider how we would write a quine in python. As before, let’s consider part A first. Part A needs to give B a copy of B’s source code. In the TM model, this was achieved by leaving a copy of B’s description on the tape.</p>
-
-<p>In python, we can just assign into a variable to achieve the same effect. So our part A should look something like</p>
-
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">b</span> <span class="o">=</span> <span class="s">&quot;b&#39;s source code here&quot;</span></code></pre></div>
-
-<p>Part B should print part A and then print part B. Something like:</p>
-
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">print</span> <span class="s">&quot;b = </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">b</span>  <span class="c"># Print part A</span>
-<span class="k">print</span> <span class="n">b</span>             <span class="c"># Then print part B</span></code></pre></div>
-
-<p>Combining these two together (along with some careful tiptoe-ing around python formatting) yields:</p>
-
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">b</span> <span class="o">=</span> <span class="s">&#39;print &quot;b = </span><span class="si">%r</span><span class="s">&quot; % b; print b&#39;</span>
-<span class="k">print</span> <span class="s">&quot;b = </span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">b</span><span class="p">;</span> <span class="k">print</span> <span class="n">b</span></code></pre></div>
-
-<p>And there you have it! A general guideline to make quines followed by an example. You are now equipped to go out and impress all your friends with your quine-making abilities. :P</p>
+<p>So then we have that our randomized quicksort algorithm runs in $O(nlgn)$ as desired. :)</p>
 
   </article>
   
@@ -152,7 +143,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-04-05T14:53:01-05:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-04-07T02:14:52-05:00">2015</time>. All rights reserved.
         </small>
       </footer>
     </div>
