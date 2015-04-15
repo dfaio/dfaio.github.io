@@ -4,7 +4,7 @@
  <title>dfa.io</title>
  <link href="http://dfa.io/atom.xml" rel="self"/>
  <link href="http://dfa.io/"/>
- <updated>2015-04-15T15:25:53-05:00</updated>
+ <updated>2015-04-15T15:27:00-05:00</updated>
  <id>http://dfa.io</id>
  <author>
    <name>Evan Bergeron</name>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Edge Connectivity, Quickly</title>
-   <link href="http://dfa.io//2015/04/13/edge-connectivity-quickly/"/>
-   <updated>2015-04-13T00:00:00-05:00</updated>
-   <id>http://dfa.io/2015/04/13/edge-connectivity-quickly</id>
+   <link href="http://dfa.io//2015/04/15/edge-connectivity-quickly/"/>
+   <updated>2015-04-15T00:00:00-05:00</updated>
+   <id>http://dfa.io/2015/04/15/edge-connectivity-quickly</id>
    <content type="html">&lt;p&gt;Today we’ll talk about another randomized algorithm: this time to find the edge connectivity of a graph. We’ll present a naive solution first and then discuss a dramatic improvement. This should serve as a nice introduction to Monte Carlo randomized algorithms :)&lt;/p&gt;
 
 &lt;p&gt;If you’ve seen the naive solution before, feel free to skip down the “An Improvement” section, where we discuss the Karger-Stein algorithm.&lt;/p&gt;

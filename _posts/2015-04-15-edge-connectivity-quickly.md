@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Edge Connectivity, Quickly
-date: 2015-04-13
+date: 2015-04-15
 ---
 
 Today we'll talk about another randomized algorithm: this time to find the edge connectivity of a graph. We'll present a naive solution first and then discuss a dramatic improvement. This should serve as a nice introduction to Monte Carlo randomized algorithms :)
