@@ -14,7 +14,7 @@ The *edge-connectivity* of a graph is the largest number $k$ such that upon remo
 
 We also define the *min-cut problem*: given a graph $G = (V, E)$, find a nonempty subset $S \subset V$ such that the number of edges from $S$ to $V-S$ is minimized.
 
-So then we have the min-cut problem solves the edge-connectivity question. Presenting a smallest cut means that, for any set of edges smaller than our cut, removal of that subset from $G$ preserves $G$ connectednss. Which is precisely edge-connectivity!
+So then we have that the min-cut problem solves the edge-connectivity question. Presenting a smallest cut of size $k$ means that removing any set of $l < k$ edges preserves $G$ connectednss. Which is precisely edge-connectivity!
 
 ### Our Algorithm
 Some quick python-esque pseudocode:
@@ -25,6 +25,7 @@ def mincut(G):
         G = contract(G, e) # delete self loops
     return edges_remaining(G)
 {% endhighlight %}
+
 Let's do some analysis on this algorithm's probability of correctness.
 
 Suppose we have some graph $G = (V, E)$ be a graph with $n$ vertices. Let $F$ be some min cut of $G$. Then we claim that the probability that $\texttt{mincut}$ outputs $F$ is at least $\frac{2}{n(n-1)}$.
@@ -138,7 +139,7 @@ So what has this gained us? Quite a bit, actually. Let's call $P(n)$ the probabi
 
 $$P_{X1} = P_{X2} \leq \frac{1}{2} \cdot P\left(\frac{n}{\sqrt{2}}\right)$$
 
-Our overall algorithm will return the proper mincut if it doesn't select any edge in the recursive calls. So then
+Our overall algorithm will return the proper mincut iff it doesn't select any edge in the recursive calls. So then
 
 $$P(n) = 1 - (1 - P_{X1})(1 - P_{X2})$$
 
@@ -146,7 +147,7 @@ Which together yield
 
 $$P(n) \geq P\left(\frac{n}{\sqrt{2}}\right) + \frac{1}{4}P\left(\frac{n}{\sqrt{2}}\right)^2$$
 
-This has solution $O(\frac{1}{lg(n)})$ (proof by induction).
+This has solution $O(\frac{1}{lg(n)})$ (proof by gross induction).
 
 ### Analysis - Runtime
 
