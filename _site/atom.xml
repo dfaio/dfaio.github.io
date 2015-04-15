@@ -4,7 +4,7 @@
  <title>dfa.io</title>
  <link href="http://dfa.io/atom.xml" rel="self"/>
  <link href="http://dfa.io/"/>
- <updated>2015-04-07T02:14:52-05:00</updated>
+ <updated>2015-04-15T15:25:53-05:00</updated>
  <id>http://dfa.io</id>
  <author>
    <name>Evan Bergeron</name>
@@ -13,209 +13,207 @@
 
  
  <entry>
-   <title>Phone-a-Friend and SUPERHALTS</title>
-   <link href="http://dfa.io//2015/04/07/Phone-A-Friend-and-SUPERHALTS/"/>
-   <updated>2015-04-07T00:00:00-05:00</updated>
-   <id>http://dfa.io/2015/04/07/Phone-A-Friend-and-SUPERHALTS</id>
-   <content type="html">&lt;p&gt;Deciding things is hard. There are countably many Turing machines, but an uncountable number of decision problems! Sometimes, maybe asking our TM M for a decision is unreasonable - maybe sometimes we should let him phone-a-friend. A reason question to ask is: if our friend always gives us the right answer, is this enough?&lt;/p&gt;
+   <title>Edge Connectivity, Quickly</title>
+   <link href="http://dfa.io//2015/04/13/edge-connectivity-quickly/"/>
+   <updated>2015-04-13T00:00:00-05:00</updated>
+   <id>http://dfa.io/2015/04/13/edge-connectivity-quickly</id>
+   <content type="html">&lt;p&gt;Today we’ll talk about another randomized algorithm: this time to find the edge connectivity of a graph. We’ll present a naive solution first and then discuss a dramatic improvement. This should serve as a nice introduction to Monte Carlo randomized algorithms :)&lt;/p&gt;
 
-&lt;p&gt;We define the phone-a-friend mechanism as follows: our TM M is given access to an &lt;em&gt;oracle&lt;/em&gt;. The TM may ask the oracle a membership question: is this string \(w\) in some set \(S\)? The oracle is all-knowing and will return a yes or no answer immediately. The oracle will always answer correctly. We call a Turing machine with access to an oracle an &lt;em&gt;oracle Turing machine&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;If you’ve seen the naive solution before, feel free to skip down the “An Improvement” section, where we discuss the Karger-Stein algorithm.&lt;/p&gt;
 
-&lt;p&gt;So certainly, all of a sudden, life gets a lot easier! For example, solving HALTS is trivial! Just ask the oracle. But a worthy question is: does there exist a decision problem that an oracle Turing machine can’t solve?&lt;/p&gt;
+&lt;h3 id=&quot;some-definitions&quot;&gt;Some Definitions&lt;/h3&gt;
+
+&lt;p&gt;The &lt;em&gt;edge-connectivity&lt;/em&gt; of a graph is the largest number $k$ such that upon removal of any subset of edges of $E$ of size less than $k$, $G$ remains connected. So a tree has edge-connectivity 1. A graph that is a cycle has edge-connectivity 2.&lt;/p&gt;
+
+&lt;p&gt;We also define the &lt;em&gt;min-cut problem&lt;/em&gt;: given a graph $G = (V, E)$, find a nonempty subset $S \subset V$ such that the number of edges from $S$ to $V-S$ is minimized.&lt;/p&gt;
+
+&lt;p&gt;So then we have the min-cut problem solves the edge-connectivity question. Presenting a smallest cut means that, for any set of edges smaller than our cut, removal of that subset from $G$ preserves $G$ connectednss. Which is precisely edge-connectivity!&lt;/p&gt;
+
+&lt;h3 id=&quot;our-algorithm&quot;&gt;Our Algorithm&lt;/h3&gt;
+&lt;p&gt;Some quick python-esque pseudocode:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mincut&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vertex_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random_edge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# delete self loops&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges_remaining&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s do some analysis on this algorithm’s probability of correctness.&lt;/p&gt;
+
+&lt;p&gt;Suppose we have some graph $G = (V, E)$ be a graph with $n$ vertices. Let $F$ be some min cut of $G$. Then we claim that the probability that $\texttt{mincut}$ outputs $F$ is at least $\frac{2}{n(n-1)}$.&lt;/p&gt;
+
+&lt;p&gt;To show this, we’ll lower bound the probability that $\texttt{mincut}$ is wrong.&lt;/p&gt;
+
+&lt;p&gt;Let’s define some variables: let $\mid F\mid = k$, $\mid V\mid = n$ and $\mid E \mid = m$.&lt;/p&gt;
+
+&lt;p&gt;We make the following observation: if our contraction algorithm ever contracts something in $F$, then we won’t choose $F$ as a cut. Conversely, if our algorithm never picks something in $F$, then certainly, the cut we’re left with will be $F$.&lt;/p&gt;
+
+&lt;p&gt;So Pr(We pick $F$ as our min cut) = Pr(We never contract an edge in $F$).&lt;/p&gt;
+
+&lt;p&gt;Let’s define $E_i$ to the event that our algo contracts an edge in $F$ in iteration $i$. So we’re considering&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Pr(\bar{E_1} \cap \ldots \cap \bar{E_{n-2}})&lt;/script&gt;
+
+&lt;p&gt;(Note the $n-2$. We only go until we have two vertices left).
+Using the definition of conditional probability, we can see that the above is the same as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Pr(\bar{E_1}) \cdot \Pr(\bar{E_2}|\bar{E_1}) \cdots \Pr(\bar{E_{n-2}}|\bar{E_1} \cap \bar{E_2} \cdots \cap \bar{E_{n-3}})&lt;/script&gt;
+
+&lt;p&gt;Though this looks gross, we’ll be able to establish lower bounds on each of the terms individually. Let’s start with the first term.&lt;/p&gt;
+
+&lt;p&gt;We started with the assumption that we had a min cut $F$ and it was of size $k$. So then every vertex in $G$ must have degree at least $k$, as otherwise, we could pick the edges to which it’s incident and have a smaller cut. So this means that $2m = \sum_{v \in V} deg(v) \geq kn$. Or in other words, $\frac{k}{m} \leq \frac{2}{n}$.&lt;/p&gt;
+
+&lt;p&gt;But we have that $\Pr(E_1)$ (the prob that we pick a guy in $F$ in our first run) is $\frac{k}{n} \leq \frac{2}{n}$. So then $\Pr(\bar{E_1}) \geq (1 - \frac{2}{n})$.&lt;/p&gt;
+
+&lt;p&gt;So that’s not so bad. We then have a bound on the first term in that ugly product we had. Let’s keep going.&lt;/p&gt;
+
+&lt;p&gt;Let’s consider the $i$th iteration. Let’s suppose that up until now, we’ve been kosher. Which is to say, we haven’t picked anything in $F$ yet. Things are going great. What’s the probability we keep it going?&lt;/p&gt;
+
+&lt;p&gt;Well, we have $k$ edges in our min cut and some number of remaining edges $m’$. So then the probability we don’t mess up is $1 - \frac{k}{m’}$. But we want some bound of this in terms of $n$…&lt;/p&gt;
+
+&lt;p&gt;Well, let’s think. Here’s an observation: at &lt;em&gt;every&lt;/em&gt; point in the algorithm, every vertex must have degree at least $k$. To see this, remember that each vertex now represents some clump of vertices. If some vertex had degree less than $k$, then there would be some clump of vertices that could be seperated by removing less than $k$ vertices. But that would contradict our assumption that $F$ is a min cut!&lt;/p&gt;
+
+&lt;p&gt;So after $i$ contractions, by the handshaking lemma, we have that $m’ \geq \frac{k(n-i)}{2}$, where $m’$ is the number of remaining edges.&lt;/p&gt;
+
+&lt;p&gt;So then the probability that we screw up in the $i$th iteration, given that we’d been fine so far is at least&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;1 - \frac{k}{m&#39;} \geq 1 - \frac{k}{k(n-i)/2} = 1 - \frac{2}{n-i}&lt;/script&gt;
+
+&lt;p&gt;So then, the big probability mess we had above is at least
+  &lt;script type=&quot;math/tex&quot;&gt;\left(1 - \frac{2}{n}\right)
+  \left(1 - \frac{2}{n-2}\right)\cdots \left(1 - \frac{2}{n-(n-3)}\right)
+  =
+  \left(\frac{n-2}{n}\right)
+  \left(\frac{n-3}{n-1}\right)\cdots
+  \left(\frac{2}{4}\right)
+  \left(\frac{1}{3}\right)&lt;/script&gt;
+But cancelling terms, we get that this is&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{2}{n(n-1)}&lt;/script&gt;
+
+&lt;p&gt;As claimed. But wait a second. That probability is the probability of correctness. Which is $\Omega(n^{-2})$.&lt;/p&gt;
+
+&lt;p&gt;I’m not sure we should be impressed.&lt;/p&gt;
+
+&lt;p&gt;Sure, this algorithm is polytime, but it’s probability of correctness is abyssmal! Luckily, we’re about to see a really useful tool in randomized algorithms. It’s called &lt;em&gt;amplification&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;amplification&quot;&gt;Amplification&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;Amplification&lt;/em&gt; - running an randomized algorithm a lot of times to decrease its probability of error.&lt;/p&gt;
+
+&lt;p&gt;So instead, let’s try running the new randomized algorithm lots of times (say, $t$ times) and choose the smallest of the cuts we get. So then&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Pr(\text{Missing our min cut}) = \Pr(\text{original algo missing min cut})^t&lt;/script&gt;
+
+&lt;p&gt;Then
+&lt;script type=&quot;math/tex&quot;&gt;\left(1 - \frac{2}{n(n-1)}\right)^t \leq \left(1 - \frac{1}{n^2}\right)^t.&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Note than when $t = n^2$, this goes to $\frac{1}{e}$. When $t = n^3$, this goes to $\frac{1}{e^n}$, which is tiny! Note that this is running the original algorithm $n^3$ times. We contracted order $n^2$ edges, so to get this probability bound, our overall big oh cost is $O(n^5)$. So if we’re willing to wait around for a while, then we can be &lt;em&gt;almost guaranteed&lt;/em&gt; that our algorithm is correct! And all in polytime :)&lt;/p&gt;
+
+&lt;h3 id=&quot;an-improvement&quot;&gt;An Improvement&lt;/h3&gt;
+
+&lt;p&gt;The probability we had originally was a product of things. And at the very end, those things got pretty small. Three quarters? A third? These terms our killing our probability of correctness!&lt;/p&gt;
+
+&lt;p&gt;Which sparks a new idea. Maybe we should use the original contracting idea for a while, but once $G$ starts to get pretty small, switch to something a bit slower. It’ll be a small sacrifice in time, but perhaps we’ll save on the number of times we need to repeat the algorithm.&lt;/p&gt;
+
+&lt;p&gt;So let’s try it! We’ll to establish a cutoff point - any probability higher than this will be considered “bad.” For our purposes, a half should be fine. So when do we need to stop contracting? It turns out that if we contract the graph until it has $\frac{n}{\sqrt{2}}$ remaining vertices (starting with $n$), then any contraction after that has more than a 50/50 chance of ruining our min cut.&lt;/p&gt;
+
+&lt;p&gt;Check it out:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\prod_{i=n/\sqrt{2}}^n \frac{i-2}{i} = \frac{n/\sqrt{2}(n/\sqrt{2} - 1)}{n(n-1)} \approx \frac{(n/\sqrt{2})^2}{n^2} \approx \frac{1}{2}&lt;/script&gt;
+
+&lt;p&gt;(If that looks like a giant mess, don’t worry about it. The terms in the product cancel out as they did before).&lt;/p&gt;
+
+&lt;p&gt;So we first contract down to $n/\sqrt{2}$ vertices. Now what? Well now we need to tread carefully, because we have at least a half chance to mess up our min cut. So we make a couple of tries. We’ll pick two different edges and continue onward from there, taking the minimum of the two min cuts provided to us. Not only that, we’ll use this strategy multiple times, recursively. When we get to some small number of vertices, we can use a slower algorithm to give us the best min-cut on some small graph.&lt;/p&gt;
+
+&lt;p&gt;So we have&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;contract_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vertex_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random_edge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;faster_mincut&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vertex_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;careful_mincut&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vertex_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;G1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contract_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;G2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contract_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;faster_mincut&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;faster_mincut&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;analysis---correctness&quot;&gt;Analysis - Correctness&lt;/h3&gt;
+
+&lt;p&gt;So what has this gained us? Quite a bit, actually. Let’s call $P(n)$ the probability of picking a fixed mincut on $n$ vertices. Let’s consider the probability that one of the recursive calls picks a particular mincut. Call this probability $P_{X1}$.So then&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P_{X1} = P_{X2} \leq \frac{1}{2} \cdot P\left(\frac{n}{\sqrt{2}}\right)&lt;/script&gt;
+
+&lt;p&gt;Our overall algorithm will return the proper mincut if it doesn’t select any edge in the recursive calls. So then&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(n) = 1 - (1 - P_{X1})(1 - P_{X2})&lt;/script&gt;
+
+&lt;p&gt;Which together yield&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(n) \geq P\left(\frac{n}{\sqrt{2}}\right) + \frac{1}{4}P\left(\frac{n}{\sqrt{2}}\right)^2&lt;/script&gt;
+
+&lt;p&gt;This has solution $O(\frac{1}{lg(n)})$ (proof by induction).&lt;/p&gt;
+
+&lt;h3 id=&quot;analysis---runtime&quot;&gt;Analysis - Runtime&lt;/h3&gt;
+
+&lt;p&gt;Each call of $\texttt{faster_mincut}$ makes two recursive calls and contracts some edges. The number of edge contractions is a constant multiple of the number of edges, so is $O(n^2)$. So our recurrence for work is&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;T(n) = 2T\left(\frac{n}{\sqrt{2}}\right) + O(n^2)&lt;/script&gt;
+
+&lt;p&gt;By the master theorem, this is $O(n^2lg(n))$.&lt;/p&gt;
+
+&lt;h3 id=&quot;more-amplification&quot;&gt;More Amplification&lt;/h3&gt;
+
+&lt;p&gt;So what does it take to get our same $1 - \frac{1}{e^n}$ bound of correctness? It turns out to be $nlg(n)$. Our probability of success works out to be&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;1 - \left(1 - \frac{1}{lg(n)}\right)^{nlg(n)} = 1 - \frac{1}{e^n}&lt;/script&gt;
+
+&lt;p&gt;So overall, we run a $O(n^2lg(n))$ algorithm $nlg(n)$ times, yielding an overall big oh of $O(n^3(lg(n))^2)$. Contrast this with the $O(n^5)$ algorithm we had originally!&lt;/p&gt;
+
+&lt;h3 id=&quot;reflections&quot;&gt;Reflections&lt;/h3&gt;
+
+&lt;p&gt;Hopefully this was enlightening. It’s a bit nice to see a nontrivial randomized algorithm, isn’t it?&lt;/p&gt;
 </content>
  </entry>
  
  <entry>
-   <title>A Universal Register Machine</title>
-   <link href="http://dfa.io//2015/04/06/a-univeral-register-machine/"/>
-   <updated>2015-04-06T00:00:00-05:00</updated>
-   <id>http://dfa.io/2015/04/06/a-univeral-register-machine</id>
-   <content type="html">&lt;p&gt;Register machines are yet another abstract model of computation. They’re actually quite interesting for a number of reasons and oftentimes they prove to be a prettier model than Turing Machines.&lt;/p&gt;
+   <title>Phone-a-Friend and SUPERHALTS</title>
+   <link href="http://dfa.io//2015/04/09/Phone-A-Friend-and-SUPERHALTS/"/>
+   <updated>2015-04-09T00:00:00-05:00</updated>
+   <id>http://dfa.io/2015/04/09/Phone-A-Friend-and-SUPERHALTS</id>
+   <content type="html">&lt;p&gt;Deciding things is hard. There are countably many Turing machines, but an uncountable number of decision problems! Sometimes, maybe asking our TM M for a decision is unreasonable - maybe sometimes we should let him phone-a-friend. A reasonable question to ask is: if our friend always gives us the right answer, is this enough?&lt;/p&gt;
 
-&lt;p&gt;So what is a register machine, you ask? A register machine is a finite collection of registers and a control unit. Each register holds a natural number and the control unit executes commands that modify the contents of the registers. We write \(R_i\) for the \(i\)th register. Our instruction set is super simple:&lt;/p&gt;
+&lt;p&gt;We define the phone-a-friend mechanism as follows: our TM M is given access to an &lt;em&gt;oracle&lt;/em&gt;. The TM may ask the oracle a membership question: is this string \(w\) in some set \(S\)? The oracle is all-knowing and will return a yes or no answer immediately. The oracle will always answer correctly. We call a Turing machine with access to an oracle an &lt;em&gt;oracle Turing machine&lt;/em&gt;.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So certainly, all of a sudden, life gets a lot easier! For example, solving HALTS is trivial! Just ask the oracle. But here’s an interesting question: is there a decision problem that a Turing machine can’t solve, even when given an oracle to HALTS? Which is to say, is there a problem that our TM M’s friend &lt;em&gt;can’t&lt;/em&gt; know?&lt;/p&gt;
 
-&lt;p&gt;\(\texttt{inc}\) increments register \(r\) and then goes to line \(k\) in the program. \(\texttt{dec}\) checks to see if register \(r\) is zero. If it’s not, \(\texttt{dec}\) decrements the register by 1 and then goes to line \(k\). Otherwise, it doesn’t decrement and instead just moves to line \(l\) in the program. \(\texttt{halt}\) is pretty self-explanatory.&lt;/p&gt;
+&lt;p&gt;Unfortunately, (and maybe unsurprisingly), yes. Consider this following problem, which we call \(SUPERHALTS\):&lt;/p&gt;
 
-&lt;p&gt;To make things nicer, we’ll often label our registers. (X, Y, and so on).&lt;/p&gt;
+&lt;p&gt;\[ \{(M, x) | M\text{, with an oracle for the halting problem, halts on x}\} \]&lt;/p&gt;
 
-&lt;p&gt;As a first example, here we define an addition function that takes two registers X and Y and places X + Y in Z.&lt;/p&gt;
+&lt;p&gt;We can use the classic diagonalization argument to show that this is undecidable. Suppose we have some oracle Turing machine \(H\) that decides SUPERHALTS. Then we can define a new TM D to be:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# addition: X + Y -&amp;gt; Z&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# while X != 0: X--, Z++&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# while Y != 0: Y--, Z++&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;If&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accepts&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;an&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oracle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LOOP&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ACCEPT&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Similarly, we could define a multiplication algorithm as follows:&lt;/p&gt;
+&lt;p&gt;But then D(D) halts if and only if H(D, D) accepts. But H(D, D) accepts iff D(D) loops! So we have that D(D) halts if and only if it loops, a contradiction. Even if you’ve seen this argument before, take a minute and reason through that last sentence. It’s good for you.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# multiplication: X * Y -&amp;gt; Z&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So this is interesting. We’ve found a problem that’s &lt;em&gt;harder than the halting problem&lt;/em&gt;. Significantly so. Which brings us to something called &lt;em&gt;Turing degrees&lt;/em&gt;. Computable functions have Turing degree 1. Anything reducible to the halting problem has Turing degree 2. The SUPERHALTS is our first problem with Turing greater than two.&lt;/p&gt;
 
-&lt;p&gt;If we recall from a couple posts back, we showed that, without loss, a Turing machine can have access to its own source code. There’s a similar trick we can play with register machines, though it’s far less involved. It involves something called &lt;em&gt;Godel numberings&lt;/em&gt;. It’s one of the features of register machines I quite like.&lt;/p&gt;
+&lt;p&gt;It’s interesting how coarse a measurement Turing degree really is. Obviously, it doesn’t touch notions of complexity, with no regard for the distinction between, say \(P\) and \(ELEMENTARY\). But further, it doesn’t even distinguish between Turing-decidable and Turing-recognizable! (Or if you prefer, recursively enumerable). (A Turing-recognizable set is similar to a decidable one, we just relax the restriction that the TM must halt on all inputs).&lt;/p&gt;
 
-&lt;p&gt;In essence, Godel numbering is a hack that turns anything into a number. Then, we can encode a register machine program as a number and feed that as input to another register machine. Self-reference!&lt;/p&gt;
+&lt;p&gt;So here’s another question: is there any problem of intermediate degree? Some problem that falls between HALTS and SUPERHALTS? This is known as the &lt;em&gt;Post problem&lt;/em&gt; (different from the Post Correspondence Problem). And the answer, apparently, is yes.&lt;/p&gt;
 
-&lt;p&gt;We’re going to building a toolbox of functions to help us swap between register machines and numbers. We’ll need a couple of things: a coding function, a length function, and decoding function. The coding function will turn a sequence of numbers into a single number. The length function will give us the length of our sequence number. Our decoding function decodes (or extracts) out elements from our sequence.&lt;/p&gt;
+&lt;p&gt;The result involves something called a &lt;em&gt;priority ordering&lt;/em&gt;. In a priority ordering, we define some set \(X\). Then we make a (potentially infinite) list of requirements. Each of these requirements specifies whether or not some set of elements is in \(X\). So we start with, say, the universe. Then requirement 1 specifies that elements in \(X\) must have some feature. And requirement 2 does similarly. Maybe requirement \(k\) designates that some element get thrown back into \(X\). And so on.&lt;/p&gt;
 
-&lt;p&gt;Essentially, we’re encoding a list of numbers as a single (quite large) number.&lt;/p&gt;
+&lt;p&gt;Anyway, this technique can be used to generate two problems A and B, both of which can be solved with an oracle to the halting problem, but neither can be solved with an oracle to the other! I guess you use the priority ordering technique to forbid any Turing machine that would reduce A to B or vice versa.&lt;/p&gt;
 
-&lt;h3 id=&quot;coding-functions&quot;&gt;Coding Functions&lt;/h3&gt;
-
-&lt;p&gt;We define a class of functions called &lt;em&gt;coding functions&lt;/em&gt;. Coding functions turn a sequence of numbers into a single number. More formally, it’s a “polyadic map” of the form&lt;/p&gt;
-
-&lt;p&gt;\[f : \mathbb{N}^* \rightarrow \mathbb{N}\]&lt;/p&gt;
-
-&lt;p&gt;Polyadic just means that it takes multiple arguments. To build such a function, we first define a pairing function of the form&lt;/p&gt;
-
-&lt;p&gt;\[\pi : \mathbb{N}^2 \rightarrow \mathbb{N}\]&lt;/p&gt;
-
-&lt;p&gt;There’s a number of different ways we could go about defining such a pairing function. Here’s one idea: take two numbers \(x\) and \(y\). Turn them into unary (that is, two strings of length \(x\) and \(y\), respectively), then concatenate these strings together with some sort of delimiter. For example,&lt;/p&gt;
-
-&lt;p&gt;\[\pi(3, 5) = 10000010001_2 = 1041\]&lt;/p&gt;
-
-&lt;p&gt;There’s a number of other various ways to go about this, but let’s stick with this as a proof of concept. Then we can define our polyadic coding function as such:&lt;/p&gt;
-
-&lt;p&gt;\[ f \text{ (nil)} = 0, f (a_1, \ldots a_n) = f(a_1, f(a_2, \ldots a_n))\]&lt;/p&gt;
-
-&lt;p&gt;Where nil is the empty list. If you’re familiar with functional programming, this is essentially just&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;nf&quot;&gt;foldl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;an&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;We can define similar length and decoding functions. A length function could perhaps be the binary digit sum of the sequence number (minus 1).&lt;/p&gt;
-
-&lt;p&gt;Then, note that we can encode register machine instructions as numbers as well: \(\texttt{halt}\) can be \(0\), \(\texttt{inc r k}\) can be \(f(r, k)\), and \(\texttt{dec r k l}\) can be \(f(r, k, l)\). From here, we can encode entire programs as a sequence of such instructions.&lt;/p&gt;
-
-&lt;p&gt;So register machines are numbers. With that in mind, let’s get working on our original task - to define a univeral register machine.&lt;/p&gt;
-
-&lt;h3 id=&quot;univeral-register-machine&quot;&gt;Univeral Register Machine&lt;/h3&gt;
-
-&lt;p&gt;A &lt;em&gt;univeral register machine&lt;/em&gt; is a register machine that takes another register machine as input and simulates that register machine. This is an important concept. The notion of self-reference has been show to be extraordinarily powerful. It provides a natural definition of recursion, for instance.&lt;/p&gt;
-
-&lt;p&gt;To implement such a register machine, we’ll want a couple of macros:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# Copy r to s, goto k&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# If r is 0, goto k, else goto l&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# s = r[0]; r = r[1:], goto k&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;# s = r[t]; goto k, halt if out of bounds&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# r[t] = s; goto k, halt if out of bounds&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;some-macros&quot;&gt;Some Macros&lt;/h3&gt;
-
-&lt;p&gt;What follows are implementations for each of the above macros. Copy is fairly straightforward:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# copy r s k&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# set s = 0&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# move r to u and s&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# move u back to r&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The zero macro is straightforward as well:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# zero r k l&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;For pop, given our specific encoding, it happens to be useful to define a div macro that has conditional branches, depending on the value of the bit we just removed.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# div2 r k l&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# zero-out register u&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# u = r; r = 0&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# if u is zero, r was even&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# if u is zero, r was odd&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This is a bit more subtle. We first zero out some dummy register u, and then move r’s contents into u. Then, we decrement u twice and increment r once. If, in the first dec instruction, we find that we’ve hit zero, then u was originally even, as an even number of dec instructions preceded it. Similarly, if we hit zero before the second dec instruction, there was an odd number of decrements prior to us, so r must have been odd.&lt;/p&gt;
-
-&lt;p&gt;With this macro, pop becomes fairly straightforward:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# pop r s k&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;div2&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# get rid of leading 1&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;div2&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# eat up all zeroes, add to s&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# We also ate the next 1, so fix that&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Where \(\texttt{add}\) is some destructive add macro. Note that there is no third argument to the first \(\texttt{div2}\) instruction, as our precondition is that r holds a valid sequence number, whose least significant bit is guaranteed to be 1. So we leave this behavior undefined.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# read r t s k&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# u = r (non-destructive copy)&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;To define write, we’ll want a push macro:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# push r s k - push s onto r, goto k&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# push all the zeros onto r&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# push the one onto r&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;With this in hand, we can implement write as if r was a stack: popping off t elements, pushing them onto another stack, push our new value onto r, throwing away the top value from our helper stack, and then replacing the values.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# write r t s k # r[t] = s; goto k, halt if out of bounds&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# initialize - u is our dummy int&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# v is our dummy stack&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# while t &amp;gt; 0&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# pop from r onto u&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# clean up u, go again&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 9&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# once more, when t == 0&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# push s onto r&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# throw away top value on v&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;# (this is what we&amp;#39;re overwriting)&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;k&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# while t != 0:&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;16&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# pop from v, push onto u&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;17&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;a-urmp&quot;&gt;A URMP&lt;/h3&gt;
-
-&lt;p&gt;With these macros in hand, we can write the man himself: a universal register machine program! Here are the registers we use for our program:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;our&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simulated&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simulates&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;registers&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;instructions&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;copy&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 4&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 5&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 6&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 7&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 8&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 9&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inc&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;zero&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dec&lt;/span&gt;   &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;halt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
+&lt;p&gt;And into the world of non-computability we go! And you thought complexity was bad…&lt;/p&gt;
 </content>
  </entry>
  
