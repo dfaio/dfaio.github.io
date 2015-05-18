@@ -57,8 +57,8 @@ The Fermat primality test relies on this simple fact - we simply grab a bunch of
 In python,
 {% highlight python %}
 import random
-def fermatIsPrime(n, trails):
-    for trail in xrange(trails):
+def fermatIsPrime(n, trials):
+    for trail in xrange(trials):
         a = random.randint(1, n-1)
         if pow(a, n-1, n) != 1:
             return False
@@ -70,9 +70,9 @@ $$len(a^{n-1}) = lg(a^{n-1}) = (n-1)lg(a)$$
 
 This is exponential in terms of the input length. So even recording the value in memory would take exponential time!
 
-So then as long as $\texttt{trails}$ is polynomial in terms of the length of $n$, $\texttt{fermatIsPrime}$ runs in poly time, which is great news!
+So then as long as $\texttt{trials}$ is polynomial in terms of the length of $n$, $\texttt{fermatIsPrime}$ runs in poly time, which is great news!
 
-Sure, there's some probability of error. Maybe we didn't check enough $a$'s and we just happened to miss some witness to that fact that $n$ is composite. But if $\texttt{trails}$ is really big (and polynomials can get quite big), we can be *almost assured* that "probably prime" means "is prime."
+Sure, there's some probability of error. Maybe we didn't check enough $a$'s and we just happened to miss some witness to that fact that $n$ is composite. But if $\texttt{trials}$ is really big (and polynomials can get quite big), we can be *almost assured* that "probably prime" means "is prime."
 
 With one large, unfortunate exception.
 
