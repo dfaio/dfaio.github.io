@@ -18,7 +18,7 @@ And here's the brain-teaser of the day. What if we ask the following question: "
 
 If 'heterological' *is* itself heterological, then it certainly describes itself. But that would make 'heterological' autological. But we just said it was heterological!
 
-If 'heterological' is *not* heterological, then it is autological (they're antoynms afterall). So then 'heterological' describes itself. So then 'heterological' is heterological. Contradiction!
+If 'heterological' is *not* heterological, then it is autological (they're antonyms afterall). So then 'heterological' describes itself. So then 'heterological' is heterological. Contradiction!
 
 So we wind up with the following: 'heterological' is heterological if and only if 'heterological' is not heterological.
 
