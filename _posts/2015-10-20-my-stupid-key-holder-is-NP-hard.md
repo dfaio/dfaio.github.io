@@ -17,7 +17,7 @@ Anyway.
 
 And indeed it is.
 
-We reduce to [PARTITION](https://en.wikipedia.org/wiki/Partition_problem). (Really, they're nearly the same problem). Take a second and gaze at the key holder on the linked amazon page to get a sense for the problem. We want to arrange the keys so that all keys fit on the keyring and there's no "tangling" of keys in the middle.
+We reduce from [PARTITION](https://en.wikipedia.org/wiki/Partition_problem). (Really, they're nearly the same problem). Take a second and gaze at the key holder on the linked amazon page to get a sense for the problem. We want to arrange the keys so that all keys fit on the keyring and there's no "tangling" of keys in the middle.
 
 Call the length of the key holder $l$.
 
