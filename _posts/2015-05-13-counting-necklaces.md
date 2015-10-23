@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Counting Necklaces
+permalink: necklaces
 date: 2015-05-13
 ---
 

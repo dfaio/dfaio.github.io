@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Phone-a-Friend and SUPERHALTS
+permalink: superhalts
 date: 2015-04-09
 ---
 

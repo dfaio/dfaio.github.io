@@ -1,6 +1,7 @@
 ---
 layout: post
 title: MPD Recently Added Playlists
+permalink: playlists
 date: 2015-05-26
 ---
 

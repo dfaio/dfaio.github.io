@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Defining Variables Inside Expressions in Python
+permalink: vars
 date: 2015-03-09
 ---
 

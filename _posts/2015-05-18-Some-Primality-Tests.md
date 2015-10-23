@@ -1,7 +1,9 @@
 ---
 layout: post
 title: Some Primality Tests
+permalink: isprime
 date: 2015-05-18
+comments: True
 ---
 
 Today we'll discuss a variety of primality tests - each an improvement of the last, working up to the well-known and very important **Miller-Rabin test**.

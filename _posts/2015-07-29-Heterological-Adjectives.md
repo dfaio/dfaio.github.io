@@ -1,10 +1,11 @@
 ---
 layout: post
 title: Heterological Adjectives
+permalink: adjs
 date: 2015-07-29
 ---
 
-I stumbled across the following tidbit while reading Godel, Escher, Bach last night: heterological adjectives! It's a formulation of Russell's Paradox, but in the English language. 
+I stumbled across the following tidbit while reading Godel, Escher, Bach last night: heterological adjectives! It's a formulation of Russell's Paradox, but in the English language.
 
 Suppose I present you with the following two adjectives:
 

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Edge Connectivity, Quickly
+permalink: mincut
 date: 2015-04-15
 ---
 
@@ -106,7 +107,7 @@ The probability we had originally was a product of things. And at the very end, 
 
 Which sparks a new idea. Maybe we should use the original contracting idea for a while, but once $G$ starts to get pretty small, switch to something a bit slower. It'll be a small sacrifice in time, but perhaps we'll save on the number of times we need to repeat the algorithm.
 
-So let's try it! We'll to establish a cutoff point - any probability higher than this will be considered "bad." For our purposes, a half should be fine. So when do we need to stop contracting? It turns out that if we contract the graph until it has $\frac{n}{\sqrt{2}}$ remaining vertices (starting with $n$), then any contraction after that has more than a 50/50 chance of ruining our min cut.
+So let's try it! We'll have to establish a cutoff point - any probability higher than this will be considered "bad." For our purposes, a half should be fine. So when do we need to stop contracting? It turns out that if we contract the graph until it has $\frac{n}{\sqrt{2}}$ remaining vertices (starting with $n$), then any contraction after that has more than a 50/50 chance of ruining our min cut.
 
 Check it out:
 

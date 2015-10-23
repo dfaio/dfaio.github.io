@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Arranging keys on my key holder is NP-hard
+permalink: keys
 date: 2015-10-20
 ---
 

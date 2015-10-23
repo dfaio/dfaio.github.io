@@ -1,0 +1,27 @@
+<p>This past summer, I bought this key-holding gadget. I’m a little paranoia about losing my keys, so I figured it’d be a good way to make sure I don’t lose any of them.</p>
+
+<p>But god forbid you ever have to change what keys you carry with you.</p>
+
+<p>I just bought a USB drive to put on it (I recently had a snafu with arch and had to chroot in. But I had to go a couple hours without my laptop because I didn’t have a boot USB on me. Never again).</p>
+
+<p>Anyway.</p>
+
+<p>30 minutes into the process of rearranging my keys so that the USB drive would fit on it, I thought to myself: “this has to be NP-hard.”</p>
+
+<p>And indeed it is.</p>
+
+<p>We reduce to PARTITION. (Really, they’re nearly the same problem). Take a second and gaze at the thing on the linked amazon page to get a sense for the problem.</p>
+
+<p>Call the length of the key holder $l$.</p>
+
+<p>Suppose I give you a bunch of keys to put on the key holder. Each key is very short - maybe $\frac{l}{3}$. So the length of the keys won’t be an issue - it’s mostly an issue of getting the heights to match. The keys are of varying heights.</p>
+
+<p>Certainly, the key holder needs to have equal height on each end. Additionally, every key must be present (like, why would you even buy one of these things if you’re still going to have keys jangling around)?</p>
+
+<p>So then, if the sum of the heights of the keys is $S$, each side of the key holder must have height $\frac{S}{2}$.</p>
+
+<p>But this is just exactly PARTITION, which we know to be NP-complete.</p>
+
+<p>Sigh. Wikipedia says that there’s a pseudo-poly time dynamic programming solution for PARTITION, which has led PARTITION to be called “The Easiest Hard Problem”.</p>
+
+<p>Though to be frank, I don’t consider that to be much condolence.</p>

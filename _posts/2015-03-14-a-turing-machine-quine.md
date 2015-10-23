@@ -1,6 +1,7 @@
 ---
 layout: post
 title: A Turing Machine Quine
+permalink: quine
 date: 2015-03-13
 ---
 

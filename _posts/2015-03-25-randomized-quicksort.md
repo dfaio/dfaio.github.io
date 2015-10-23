@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Randomized Quicksort
+permalink: quicksort
 date: 2015-03-25
 ---
 
