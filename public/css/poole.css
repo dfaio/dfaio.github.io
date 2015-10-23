@@ -94,7 +94,7 @@ blockquote {
   margin-left: 0;
   margin-right: 0;
   padding: .5rem 1rem;
-  border-left: .25rem solid #ccc;
+  /* background-color: #eee8d5; */
   color: #657b83;
 }
 
