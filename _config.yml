@@ -10,7 +10,7 @@ paginate:         1
 baseurl:          /
 author:
   name:           Evan Bergeron
-  url:            https://evanbergeron.com
+  url:            https://dfa.io
   email:          ebergeron@cmu.edu
 
 pages_list:
@@ -20,4 +20,4 @@ pages_list:
 # Custom vars
 version:          1.0.0
 github:
-  repo:           https://github.com/poole/poole
+  repo:           https://github.com/dfaio/dfaio.github.io
