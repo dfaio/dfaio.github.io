@@ -1,6 +1,5 @@
 # Permalinks
 permalink:        pretty
-relative_permalinks: true
 
 # Setup
 title:            dfa.io
@@ -8,6 +7,7 @@ tagline:          a regular tech blog
 url:              http://dfa.io
 paginate:         1
 baseurl:          /
+gems: [jekyll-paginate]
 author:
   name:           Evan Bergeron
   url:            https://dfa.io
