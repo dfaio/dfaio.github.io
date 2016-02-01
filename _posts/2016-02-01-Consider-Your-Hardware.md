@@ -10,7 +10,7 @@ One of the labs in compilers last semester dealt with optimizations. In this pos
 Our compiler generated x86_64 assembly. The optimization in question is register coalescing. Register coalescing removes register-register moves. That is, if you have an instruction of the form
 
 {% highlight asm %}
-mov %rax, $rbx
+mov %rax, %rbx
 {% endhighlight %}
 
 the compiler will modify the generated code, renaming occurrences of rbx after this instruction to rax. We had a good bit of trouble implementing the optimization (mostly because of a poorly-thought-out interference graph implementation).
