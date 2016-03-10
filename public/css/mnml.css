@@ -3,11 +3,6 @@ body {
     font: 16px/1.5 Inconsolata, monospace;
     max-width:35rem;
 }
-@media (min-width: 30rem) {
-  body {
-    font-size: 20px;
-  }
-}
 html {
     background: #f9fffb;
     color: #354552;
