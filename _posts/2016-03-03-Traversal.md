@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Traversing the Infinite Complete $\omega$-nary Tree
-permalink: hardware
+permalink: traversal
 date: 2016-03-03
 ---
 
