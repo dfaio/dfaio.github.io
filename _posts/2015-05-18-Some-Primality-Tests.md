@@ -60,7 +60,7 @@ In python,
 {% highlight python %}
 import random
 def fermatIsPrime(n, trials):
-    for trail in xrange(trials):
+    for trial in xrange(trials):
         a = random.randint(1, n-1)
         if pow(a, n-1, n) != 1:
             return False
