@@ -1,0 +1,123 @@
+* Basically a compiler-writing diary entry
+** July 22/3
+Just had a stunningly productive weekend. Little frustrating though -
+I really wanted to finish the Simply Typed Lambda Calculus section. 
+
+My fingers actually hurt typing this; I wrote more than 600 lines of
+code. Even with trying to be smart with vim editing patterns, my
+fingers still feel sore. I should set up a Space-Leader based 'cargo
+run' command.
+
+It might be smart for me to invest in some ergonomic keyboard, but I
+worry about being able to use laptops happily, and I really enjoy
+biking to places to code.
+
+*** Code 
+I rewrote the whole back half of the compiler this weekend. 
+
+Just before the weekend started, I finished simply typed closure
+conversion (though it's still buggy; type-theory explanation why
+later).
+
+It felt pretty satisfying to determinedly work on the code for many
+hours, though. There were definitely a couple multiple-hour-long
+stretches where I just forced myself to write the easy parts of the
+code. Funny how the hard code still doesn't quite work.
+
+** Typechecking intermediate representations
+
+Typechecking ILClos actually saved me a nasty bug today. I'm not sure
+I'm totally sold on whether type-directed translations are quite worth
+the type-related overhead, but this sways me a bit. It's also pretty
+nice having that extra assertion in the middle of the pipeline. The
+LLVM style guidelines recommend asserting often; this seems like an
+instance of that to me. It feels similar to unit-testing your
+code. It's like automatically calling unit tests during integration
+tests.
+
+** Getting rid of symbol tables
+This is a tip from GHC, though I owe it to [TODO this blog post]. The
+term 'symbol table' refers to (basically) a hash table mapping
+identifiers (type names, variables, etc.) to
+good-old-fashioned-metadata-stuff.
+
+I made variables track their own type information.
+
+** Still need to use existential types in simply-typed closure conversion.
+
+Simply-typed closure conversion still needs to switch to existential
+types for representing closures, though; I'm currently doing a naive
+pair-and-projection representation. I'm just not sure how to feed the
+'pack' and 'unpack' expressions down into C...
+
+I actually didn't realize this until writing the post; nice.
+
+*** Mini explanation why this is an issue.
+(I basically owe this explanation to the 'Typed Closure Conversion'
+paper, but I'm writing it up here for (mostly my benefit but also)
+your benefit.
+
+Wasn't that parenthetical so hard to read? Too much cleverness for
+good writing. I'm leaving it in, though.
+
+Friendly reminder: closures are (usually) functions that reference (by
+value) variables defined in external (lexical) scopes.
+
+I'm trying to turn them into structs and function pointers in C. The
+struct holds the values of those externally-defined variables. 
+
+**** Do the function pointers take structs or do the structs have function pointers?
+I'll write my answer here when I figure it out. I suspect the answer
+doesn't matter; it just needs to match up with your definition of
+function calls.
+
+This is tricky question that's kinda specific to my code base. The
+intermediate language prior to conversion-to-c does not currently
+differentiate between application and function application.
+
+***** Function pointers take struct
+At function calls, need to know the application is a closure.
+
+***** Struct contains function pointers.
+At function calls,
+
+** Code design question
+One general functional-code-style design question: I never know when
+to go with vectors or nested-linked-list style AST representations.
+
+I'm two blog posts in and I still don't have a working compiler :P
+
+*** Rust format
+It's nice to something just say 'fuck it' with formatting source code,
+but it makes it harder to read later. It'd be nice if there was
+block-style indentation for enum variants. If I was really picky, I
+could look into adding this to rustfmt, I suppose...? How do I open
+source.
+
+*** Rust references are hard to use.
+I'd like to all identifiers made by the compiler be allocated only
+once, being passed by reference through the whole compiler (starting
+from the parser - eat the memory for the file and all the identifiers,
+plus a bunch of pointers). Currently I'm reallocating every time,
+because passing rust 'String''s around is way easier than passing
+'%str.' Isn't that dumb? I'd like to fix that.
+
+But I still don't understand lifetimes well enough to do this. I
+understand the idea in abstract, but writing reference-y code that
+actually compilers is tough. I'd either need to see examples or write
+tiny tree-traversal programs to actually do this.
+
+It's tough to find advice on these sorts of problems, also. There's
+not many resources for Rust beyond the basics (nothing on the order of
+'Effective C++,' which is basically what I'm looking for in Rust).
+
+*** Using Rust to write this is 'walking the talk'
+At the very least, it's using code written by others in the compiler
+community. Sometimes I think it'd be fun to write the compiler in one
+of those small-but-ambitious languages implemented in C/C++.
+
+If I'm making another useless programming language (wih maybe some
+cool hip features later, depending on my long-term motivation), it
+makes sense to use one such 
+
+This post was inspired by Rui Ueyama's post about writing 8cc. 
