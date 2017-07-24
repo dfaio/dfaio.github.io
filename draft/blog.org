@@ -1,19 +1,7 @@
-* Basically a compiler-writing diary entry
-** July 22/3
-Just had a stunningly productive weekend. Little frustrating though -
-I really wanted to finish the Simply Typed Lambda Calculus section. 
+* Basically a compiler-writing diary entry - July 23, 217
+I rewrote the whole back half of the compiler this weekend.
 
-My fingers actually hurt typing this; I wrote more than 600 lines of
-code. Even with trying to be smart with vim editing patterns, my
-fingers still feel sore. I should set up a Space-Leader based 'cargo
-run' command.
-
-It might be smart for me to invest in some ergonomic keyboard, but I
-worry about being able to use laptops happily, and I really enjoy
-biking to places to code.
-
-*** Code 
-I rewrote the whole back half of the compiler this weekend. 
+** Code 
 
 Just before the weekend started, I finished simply typed closure
 conversion (though it's still buggy; type-theory explanation why
@@ -25,7 +13,7 @@ stretches where I just forced myself to write the easy parts of the
 code. Funny how the hard code still doesn't quite work.
 
 ** Typechecking intermediate representations
-
+   
 Typechecking ILClos actually saved me a nasty bug today. I'm not sure
 I'm totally sold on whether type-directed translations are quite worth
 the type-related overhead, but this sways me a bit. It's also pretty
@@ -43,8 +31,98 @@ good-old-fashioned-metadata-stuff.
 
 I made variables track their own type information.
 
-** Still need to use existential types in simply-typed closure conversion.
+** Each closure is two structs and a function pointer.
+Closures are structs. The struct has a env pointer and a code
+pointer. The env and code pointers can be constructed at closure
+creation time; we have all the relevant values in scope. 
 
+A closure may be applied to an enviornment, but not called. This value
+could be returned. Consider
+
+  \ x: nat. \ y: nat. Succ (x) 
+            |-- is a value --|
+	    
+Then at closure call time, we've passed the (either heap allocated or
+passed-by-value) struct around. Call closure->func(closure->env,
+arg) in invoke the closure.
+
+*** Some of my incorrect approaches
+
+I was running into a chicken and egg problem because I was conflating
+the enviornment struct with the overall closure struct. I had
+something to the effect of
+
+  // WRONG - typedefs are not recursive!
+  typedef struct Closure {
+    int env_variable_1;
+    int env_variable_1;
+          ...
+    int env_variable_n;
+    int (*code)(Clos, int);
+  } Clos;
+
+  
+*** A correct approach
+
+  typedef struct ClosureEnv {
+    int env_variable_1;
+    int env_variable_1;
+          ...
+    int env_variable_n;
+  } Clos;
+  
+  // Function pointer typedef
+  typedef int (*ClosureCodeType)(ClosureEnv, int);
+  
+  typedef struct Closure {
+    ClosureEnv env;
+    ClosureCodeType code;
+  } Closure;
+
+Closure creation time constructs the ClosureEnv struct and pairs it
+with the function pointer. It's this separation of enviornment and
+closure argument that's critical.
+
+Closure call time simply calls clos->code(clos->env, arg).
+
+*** An optimization?
+I think this works. I flip-flop'd on it while writing this, twice.
+
+  // WRONG - does not separate pairing with enviornment 
+  // and actual application.
+  typedef struct Closure {
+    int env_variable_1;
+    int env_variable_1;
+          ...
+    int env_variable_n;
+    int (*code)(int, .. int, int);
+  } Clos;
+  
+Closure creation time simply assigns into each field. Closure call
+time becomes
+
+  clos->code(clos->env_variable_1, ..., clos->env_variable_n, arg) 
+  
+TODO - is this any better? Might spare us pointer dereferences in
+clos->code, by eating them once up front. But what if they're never
+used? Ah, but we know all of them are used, since we only close over
+the necassary variables. So it really depends on how many times the
+values are referenced. I think it's likely that the register
+allocation in any mature C compiler will make the difference
+marginal. Unless we use the value a lot...?
+
+*** Comments 
+
+I actually used writing this post as method to think aloud about the
+problem.
+
+The way I think about closures during closure conversion and during
+codegen is pretty different; I wonder if that's a design flaw in my
+code, or if this is really just some two-stage nature of closure
+conversion as a compiler pass.
+
+** Still need to use existential types in simply-typed closure conversion.
+   
 Simply-typed closure conversion still needs to switch to existential
 types for representing closures, though; I'm currently doing a naive
 pair-and-projection representation. I'm just not sure how to feed the
@@ -65,21 +143,6 @@ value) variables defined in external (lexical) scopes.
 
 I'm trying to turn them into structs and function pointers in C. The
 struct holds the values of those externally-defined variables. 
-
-**** Do the function pointers take structs or do the structs have function pointers?
-I'll write my answer here when I figure it out. I suspect the answer
-doesn't matter; it just needs to match up with your definition of
-function calls.
-
-This is tricky question that's kinda specific to my code base. The
-intermediate language prior to conversion-to-c does not currently
-differentiate between application and function application.
-
-***** Function pointers take struct
-At function calls, need to know the application is a closure.
-
-***** Struct contains function pointers.
-At function calls,
 
 ** Code design question
 One general functional-code-style design question: I never know when
@@ -121,3 +184,13 @@ cool hip features later, depending on my long-term motivation), it
 makes sense to use one such 
 
 This post was inspired by Rui Ueyama's post about writing 8cc. 
+
+** Ergonomics
+My fingers actually hurt typing this; I wrote more than 600 lines of
+code. Even with trying to be smart with vim editing patterns, my
+fingers still feel sore. I should set up a Space-Leader based 'cargo
+run' command.
+
+It might be smart for me to invest in some ergonomic keyboard, but I
+worry about being able to use laptops happily, and I really enjoy
+biking to places to code.
