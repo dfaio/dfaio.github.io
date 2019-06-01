@@ -1,5 +1,3 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="mnml.css">
-
-#+OPTIONS: TITLE:dfa.io
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="mnml.css"/>
 
 a regular website
