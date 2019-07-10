@@ -21,3 +21,5 @@ percentage of programming jobs are Silicon Valley programming jobs.
 
 The book made me think about the culture of the industry I work in. I
 recommended it.
+
+[[file:about.org][about me]]
