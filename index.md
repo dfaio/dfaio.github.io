@@ -6,6 +6,8 @@ Hey, I´m Evan. Welcome to my slice of the internet.
 
 [It´s halting problems all the way down](/superhalts.html)
 
+[A Turing machine quine](/quine.html)
+
 [Traversing a tree where every child has infinitely many children](/traversal.html)
 
 [Some books I like](/books.html)
