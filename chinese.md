@@ -1,0 +1,25 @@
+# Tools for long-form reading Chinese as a second language
+
+2018-01-04, updated 2020-05-17
+
+## Study what you want to know.
+
+Do you want to pass standardized exams? If so, study those vocab lists. Do you want to read a book? If so, collect a list of the most frequently used words in the book and study those.
+
+## Collecting vocab from books
+
+Open a txt file of the book you want to read in ChineseTextAnalyzer.  For popular books, googling the Chinese title and ´mobi´ or ´txt´ usually turns up a copy of the book. will 
+
+ChineseTextAnalyzer splits the file up into words (presumably with longest-match against CC-CEDICT). Based on a set of 'known words,' ChineseTextAnalyzer can give you a list of unknown words, sorted by frequency of appearance in the text. It's then super easy to export these words into a CSV file and import into Anki.
+
+I find this method of gathering vocab to be much more motivating that studying lists of words from a textbook. This way, I get longer-form reading with content I'm interested in, and a vocab list custom-tailored to the content I want to consume.
+
+(Shout out to the incredible 书博 for telling me about this one).
+
+## Define-on-highlight in Kindle (with pinyin)
+
+I consider highlight-on-lookup an essential feature for reading 'real' Chinese long-form material. I don't have the patience to handwrite characters into Pleco every time I don't understand what's going on. Finding a good mobi file for the English-Chinese dictionary CC-CEDICT does wonders.
+
+I put this file in the documents/dictionaries directory on my Kindle; it might be different for your e-reader. If your e-reader doesn't support mobi, I suggest the wonderful tool ebook-convert as a means to convert it to epub.
+
+This isn't a perfect solution; CC-CEDICT is probably my least favorite English-Chinese dictionary around, but I have been unable to find any other dictionaries in electronic form. The Kindle has a English-Chinese dictionary by default, but for baffling reasons, it does not include pinyin.

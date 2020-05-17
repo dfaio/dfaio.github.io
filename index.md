@@ -10,4 +10,6 @@ Hey, I´m Evan. Welcome to my slice of the internet.
 
 [Traversing a tree where every child has infinitely many children](/traversal.html)
 
+[Some comments on learning Chinese](/chinese.html)
+
 [Some books I like](/books.html)
