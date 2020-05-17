@@ -1,5 +1,0 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="mnml.css"/>
-
-[[file:about.org][about me]]
-
-[[file:books.org][some books I like]]

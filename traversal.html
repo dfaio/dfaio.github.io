@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="mnml.css" type="text/css" />
+</head>
+<body>
+<h1 id="traversing-the-infinite-complete-omega-nary-tree">Traversing the Infinite Complete <span class="math inline"><em>ω</em></span>-nary Tree</h1>
+<p>2016-03-03</p>
+<p>The infinite complete <span class="math inline"><em>ω</em></span>-nary tree is one where every node has <span class="math inline">ℕ</span>-many children. There are no leaves; the tree just extends downward infinitely. Call this graph <span class="math inline">𝔊</span>.</p>
+<p>We can't BFS or DFS over <span class="math inline">𝔊</span>. A DFS would simply get stuck on the leftmost branch forever and a BFS would never reach depth 2. How then are we to traverse it?</p>
+<p>In the infinite complete <em>binary</em> tree, nodes are uniquely indentified by a finite length binary string. In <span class="math inline">𝔊</span>, nodes are uniquely indentified by a finite sequence of natural numbers. Let <span class="math inline"><em>s</em>(<em>v</em>)</span> be <span class="math inline"><em>v</em></span>'s corresponding sequence. In <span class="math inline">𝔊</span>, <span class="math inline"><em>u</em></span> is the parent of <span class="math inline"><em>v</em></span> iff <span class="math inline"><em>s</em>(<em>u</em>)</span>'s length is one less than <span class="math inline"><em>s</em>(<em>v</em>)</span>'s' and <span class="math inline"><em>s</em>(<em>u</em>)</span> is a prefix of <span class="math inline"><em>s</em>(<em>v</em>)</span>.</p>
+<p>Any tree traversal produces a well order on the tree's vertices. BFS on the complete infinite binary tree is the shortlex ordering (sort first by length, then lexographically). In fact, on level <span class="math inline"><em>i</em></span>, the set of corresponding binary strings is the set of all <span class="math inline"><em>i</em></span>-bit natural numbers, and the nodes are visited in increasing order.</p>
+<p>Further, any tree tree traversal has order type <span class="math inline"><em>ω</em></span>.</p>
+<p>A traversal of <span class="math inline">𝔊</span> is a well order on the nodes of <span class="math inline">𝔊</span>. What does this order look like? Here's the idea (nodes are represented as int tuples):</p>
+<p>{% highlight python %} def traverse(): visitedNextChild = {() : 0} while True: currentlyVisited = visitedNextChild.keys() for v in currentlyVisited: nextChild = v + (visitedNextChild[v],) visit(nextChild) visitedNextChild[v] += 1 visitedNextChild[nextChild] = 0 {% endhighlight %} Here, We start with the root node, which we can represent as the empty tuple. We maintain a mapping from visited nodes to the next child of theirs to visit. At each iteration, we visit each of the prescribed next children, and update the mapping.</p>
+<p>The fact that this visits every node in <span class="math inline">𝔊</span> follows easily by induction.</p>
+<p>In math symbols, if <span class="math inline"><em>S</em><sub><em>i</em></sub></span> is the set of visited nodes at iteration <span class="math inline"><em>i</em></span>, then</p>
+<p><br /><span class="math display">$$
+\begin{align*}
+S_{i+1} = S_i &amp;\cup \{s + 0 \mid s \in S_i \} \\
+&amp;\cup \{s_1s_2\ldots (s_n+1)\mid s_1s_2\ldots s_n \in S_i \}
+\end{align*}
+$$</span><br /></p>
+<p>(there are totally duplicates being added here, but that's the beauty of sets).</p>
+<p>Fix the nodes <span class="math inline"><em>u</em> = <em>s</em><sub>1</sub>…<em>s</em><sub><em>n</em> − 1</sub></span> and <span class="math inline"><em>v</em> = <em>s</em><sub>1</sub>…<em>s</em><sub><em>n</em> − 1</sub><em>s</em><sub><em>n</em></sub></span>. Define <span class="math inline"><em>t</em>(<em>x</em>)</span> to be the iteration at which <span class="math inline"><em>x</em></span> is visited. Then <span class="math inline"><em>t</em>(<em>v</em>)=<em>t</em>(<em>u</em>)+<em>s</em><sub><em>n</em></sub> + 1</span>. This leads to this gorgeous fact:</p>
+<p><span class="math inline"><em>s</em><sub>1</sub>…<em>s</em><sub><em>n</em></sub></span> is visited at iteration <span class="math inline">$\sum_{i=1}^n (s_i + 1) = n + \sum_{i=1}^n s_i$</span>.</p>
+<p>This means that our tree traversal has a pretty interesting sub-relation: namely that <span class="math inline"><em>u</em> &lt; <em>v</em></span> if <span class="math inline"><em>u</em></span>'s length + <span class="math inline"><em>u</em></span>'s digit sum is less than <span class="math inline"><em>v</em></span>'s length + <span class="math inline"><em>v</em></span>'s digit sum. Or, (if we one-index), just the digit sums.</p>
+<p>From here on out, we'll one-index for simplicity's sake. (That is, assume <span class="math inline">ℕ</span> starts at 1).</p>
+<p>Let's see if we can characterize the entire ordering. (That is, instead of building a relation based on iteration, build a relation built on precise ordering of traversal).</p>
+<p>It's exactly the same relation, but if they tied, you recurse on the largest proper prefix of each.</p>
+<p>{% highlight python %} def lessThan(u, v): # u &lt; v return digitSum(u) &lt; digitSum(v) or lessThan(u[::-1], v[::-1]) {% endhighlight %}</p>
+<p>So the empty sequence is the least element (as we visit the root of <span class="math inline">𝔊</span> first). I'm fairly certain that if you create the corresponding <span class="math inline">≤</span> relation, this becomes a total order.</p>
+<p>Here's the cool thing: we've produced an order on <span class="math inline">ℕ<sup>*</sup></span> that has order type <span class="math inline"><em>ω</em></span>! (The normal shortlex trick doesn't work when our alphabet is countably infinite).</p>
+<p>In general, if we want to produce an ordering of order type <span class="math inline"><em>ω</em></span> on <br /><span class="math display">ℕ<sup>*</sup></span><br />, it suffices to partition <span class="math inline">ℕ<sup>*</sup></span> into countably many partitions, each of finite size. Then the &quot;concatentation&quot; of these partitions yields order type <span class="math inline"><em>ω</em></span>.</p>
+<p>Just some fun observations :)</p>
+</body>
+</html>

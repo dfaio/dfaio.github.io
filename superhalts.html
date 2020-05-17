@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="mnml.css" type="text/css" />
+</head>
+<body>
+<h1 id="phone-a-friend-and-superhalts">Phone-a-Friend and SUPERHALTS</h1>
+<p>2015-04-09</p>
+<p>Deciding things is hard. There are countably many Turing machines, but an uncountable number of decision problems! Sometimes, maybe asking our TM M for a decision is unreasonable - maybe sometimes we should let him phone-a-friend. A reasonable question to ask is: if our friend always gives us the right answer, is this enough?</p>
+<p>We define the phone-a-friend mechanism as follows: our TM M is given access to an <em>oracle</em>. The TM may ask the oracle a membership question: is this string \(w\) in some set \(S\)? The oracle is all-knowing and will return a yes or no answer immediately. The oracle will always answer correctly. We call a Turing machine with access to an oracle an <em>oracle Turing machine</em>.</p>
+<p>So certainly, all of a sudden, life gets a lot easier! For example, solving HALTS is trivial! Just ask the oracle. But here's an interesting question: is there a decision problem that a Turing machine can't solve, even when given an oracle to HALTS? Which is to say, is there a problem that our TM M's friend <em>can't</em> know?</p>
+<p>Unfortunately, (and maybe unsurprisingly), yes. Consider this following problem, which we call \(SUPERHALTS\):</p>
+<p>\[ \{(M, x) | M\} \]</p>
+<p>We can use the classic diagonalization argument to show that this is undecidable. Suppose we have some oracle Turing machine \(H\) that decides SUPERHALTS. Then we can define a new TM D to be:</p>
+<p>D(X): If H(X, X) accepts with an oracle, then LOOP else ACCEPT</p>
+<p>But then D(D) halts if and only if H(D, D) accepts. But H(D, D) accepts iff D(D) loops! So we have that D(D) halts if and only if it loops, a contradiction. Even if you've seen this argument before, take a minute and reason through that last sentence. It's good for you.</p>
+<p>So this is interesting. We've found a problem that's <em>harder than the halting problem</em>. Significantly so. Which brings us to something called <em>Turing degrees</em>. Computable functions have Turing degree 1. Anything reducible to the halting problem has Turing degree 2. The SUPERHALTS is our first problem with Turing greater than two.</p>
+<p>It's interesting how coarse a measurement Turing degree really is. Obviously, it doesn't touch notions of complexity, with no regard for the distinction between, say \(P\) and \(ELEMENTARY\). But further, it doesn't even distinguish between Turing-decidable and Turing-recognizable! (Or if you prefer, recursively enumerable). (A Turing-recognizable set is similar to a decidable one, we just relax the restriction that the TM must halt on all inputs).</p>
+<p>So here's another question: is there any problem of intermediate degree? Some problem that falls between HALTS and SUPERHALTS? This is known as the <em>Post problem</em> (different from the Post Correspondence Problem). And the answer, apparently, is yes.</p>
+<p>The result involves something called a <em>priority ordering</em>. In a priority ordering, we define some set \(X\). Then we make a (potentially infinite) list of requirements. Each of these requirements specifies whether or not some set of elements is in \(X\). So we start with, say, the universe. Then requirement 1 specifies that elements in \(X\) must have some feature. And requirement 2 does similarly. Maybe requirement \(k\) designates that some element get thrown back into \(X\). And so on.</p>
+<p>Anyway, this technique can be used to generate two problems A and B, both of which can be solved with an oracle to the halting problem, but neither can be solved with an oracle to the other! I guess you use the priority ordering technique to forbid any Turing machine that would reduce A to B or vice versa.</p>
+<p>And into the world of non-computability we go! And you thought complexity was bad...</p>
+</body>
+</html>
