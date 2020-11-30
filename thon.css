@@ -1,0 +1,34 @@
+@import url(https://fonts.googleapis.com/css?family=VT323);
+@import url(//fonts.googleapis.com/css?family=Inconsolata:400,700);
+@import url("https://rsms.me/inter/inter.css");
+@import url("https://rsms.me/res/fonts/iaw.css");
+body {
+    font-family: 'Inter', sans-serif;
+    /* background: #fdf6e3; */
+    /* color: #657b83; */
+    font-size: 24;
+    background: #f9fffb;
+    color: #354552;
+    margin-left: 4%;
+    max-width:40rem;
+    line-height: 1.5;
+}
+h1 {
+  /* color: #859900; */
+  font-size: 34px;
+  letter-spacing: 0.25px;
+  line-height: 1.5;
+  /* color: #268bd2 */
+}
+h2 {
+  font-size: 24px;
+  line-height: 1;
+  /* color: #268bd2 */
+}
+h3 {
+  line-height: 1;
+  /* color: #cb4b16 */
+}
+code {
+  font: 18px/1.5 VT323;
+}

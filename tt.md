@@ -1,0 +1,177 @@
+---
+title: from types to programming languages
+author: Evan Bergeron
+header-includes: |
+    \usepackage{tikz,pgfplots}
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[CO,CE]{This is fancy}
+    \fancyfoot[CO,CE]{So is this}
+    \fancyfoot[LE,RO]{\thepage}
+abstract: This is a pandoc test with Markdown + inline LaTeX
+---
+
+# from types to programming languages
+
+hello. this is a document talking about how to write programming languages. the type theory research community has many good ideas. i'd like to learn some and share what i learn here. 
+
+## a simple lambda calculus
+
+
+```sml
+    datatype exp =
+        Zero
+      | Var of string * int
+      | Succ of exp
+      | Fn of string * typ * exp
+      | Let of string * typ * exp * exp
+      | App of exp * exp
+      | Fix of string  * typ  * exp 
+      | Ifz of exp * exp * string * exp
+```
+
+pcf is a small functional programming language. It has a couple nice
+things and really nothing else: natural numbers, functions, recursion,
+and polymorphism.
+
+Here's some code:
+```
+let isone : nat -> nat = 
+  \ n : nat ->
+    ifz n of
+      Z -> Z (*false*)
+    | S p -> ifz p of Z -> S Z | S p -> Z
+in fun iseven : nat -> nat =
+  \ n : nat ->
+    ifz n of
+      Z -> S Z (*true*)
+    | S p -> ifz (iseven p) of Z -> S Z | S p -> Z
+in fun divbytwo : nat -> nat =
+  \ n : nat ->
+    ifz n of
+      Z -> Z
+    | S p -> ifz p of Z -> Z | S p' -> (S (divbytwo p'))
+in fun multbythree : nat -> nat =
+  \ n : nat ->
+    ifz n of
+      Z -> Z
+   | S nminusone -> S S S (multbythree nminusone)
+in fun collatz : nat -> nat =
+  \ n : nat ->
+    ifz (isone n) of
+      Z -> (
+        ifz (iseven n) of
+          Z -> collatz (S (multbythree n))
+        | S p -> (collatz (divbytwo n))
+      )
+    | S p -> (S Z)
+in (collatz (S S Z))
+```
+
+And here's how to run the code:
+```
+git clone somewhere
+install sml
+$ sml
+- CM.make "path/to/pcf.cm";
+- runFile "path/to/collatz.pcf";
+```
+
+And here's a discussion in plain terms about what all the pieces and
+parts of this means:
+
+## natural numbers
+
+`Z` is the natural number 0. `S Z` is 1 (the succesor of one). `S S Z` is 2, and so on.
+
+## functions
+
+In pcf, functions are expressions just like numbers are. pcf
+supports anonymous functions and named, recursive functions.
+
+Here are some example anonymous functions.
+
+```
+\ x : nat -> x
+\ x : nat -> (\ y : nat -> y)
+```
+
+Functions are applied to their arguments by juxtaposition.
+
+```
+((\ x : nat -> x) Z)
+```
+
+Here's a divide-by-two function:
+
+```
+fun divbytwo : nat -> nat =
+  \ n : nat ->
+    ifz n of
+      Z -> Z
+    | S p -> ifz p of Z -> Z | S p' -> (S (divbytwo p'))
+in divbytwo (S S S S Z)
+```
+If the number is zero, we're done. Otherwise, it has some predecessor
+number `p`. If `p` is zero, then return zero (taking the
+floor). Otherwise, recurse on the predecessor of the predecessor `n-2`
+and add one to whatever that gave us.
+
+Under the hood, recursive functions are implemented as a fixed point
+expression that substitutes itself in for itself. It's like a
+recursive function, but it doesn't have to be a function, it can be
+any expression. Here's an amusing way to loop forever:
+
+```
+fix loop : nat in loop
+```
+
+## variables
+
+```
+let x : nat = Z in x
+```
+binds the name `x` in the expression following the `in` keyword.
+
+## parametric polymorphism
+
+Parametric polymorphism lets us reuse code you wrote for many
+different types, with the guarantee that the code will behave the
+same for all types.
+
+```
+poly t -> \ x : t -> x
+```
+is the polymorphic identity function. Feed it a type to get the
+identity function on that type. e.g.
+
+```
+(poly t -> \ x : t -> x) nat
+```
+evaluates to the identity function on natural numbers.
+
+## thanks
+
+I've mostly been working out of Bob Harper's "Practical Foundations
+for Programming Languages," though Pierce's "Types and Programming
+Languages" has been a useful source of examples and exposition as
+well. I am also grateful to Rob Simmons and every other contributor to
+the SML starter code for CMU's Fall 2016 compilers course.
+
+pcf was originally introduced by Gordon Plotkin and stands for
+"programming language for computable functions."
+
+## ps
+
+Sorry about the abbreviated git commit history (if you care at
+all). The "first commit" is really like 100 or so commits spread
+intermittently across a couple months.
+
+I wrote more code for more features on top of this (existential and
+recursive types), then wanted to add even more features (ooh mutable
+data ooh linear types), then got worried about mixing those features
+together, so I cut this "branch" out as a separate repo both for my
+own reference as a simpler starting place and also as a way to call
+something "done." (for once!)
+
+enjoy!

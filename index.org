@@ -1,0 +1,1172 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/home/evan/no.css" />
+
+Hey, I´m Evan. Welcome to my slice of the internet.
+
+I have a pet programming language, [[https://dfa.io/thon.html][thon]], and a pet tabletop [[https://dfa.io/rqg.html][rqg game]].
+
+Here are some recipes of mine.
+
+* Arranging keys on my key holder is NP-hard
+
+2015-10-20
+
+This past summer, I bought a key-holding gadget. There´s two screws on
+either end that pierce through the keys. The keys fold in on each
+other. I'm a little paranoia about losing my keys, so I figured it'd
+be a good way to make sure I don't lose any of them.
+
+But god forbid you ever have to change what keys you carry with you.
+
+I just bought a USB drive to put on it (I recently had a snafu with
+arch and had to chroot in. But I had to go a couple hours without my
+laptop because I didn't have a boot USB on me. Never again).
+
+Anyway.
+
+30 minutes into the process of rearranging my keys so that the USB
+drive would fit on it, I thought to myself: "this has to be NP-hard."
+
+And indeed it is.
+
+We reduce from PARTITION. (Really, they're nearly the same
+problem). Take a second and gaze at the key holder on the linked
+amazon page to get a sense for the problem. We want to arrange the
+keys so that all keys fit on the keyring and there's no "tangling" of
+keys in the middle.
+
+Call the length of the key holder $l$.
+
+Suppose I give you a bunch of keys to put on the key holder. Each key
+is very short - maybe $\frac{l}{3}$. So the length of the keys won't
+be an issue - it's mostly an issue of getting the heights to
+match. The keys are of varying heights.
+
+Certainly, the key holder needs to have equal height on each
+end. Additionally, every key must be present (like, why would you even
+buy one of these things if you're still going to have keys jangling
+around)?
+
+So then, if the sum of the heights of the keys is $S$, each side of
+the key holder must have height $\frac{S}{2}$.
+
+But this is just exactly PARTITION, which we know to be NP-complete.
+
+Sigh. Wikipedia says that there's a pseudo-poly time dynamic
+programming solution for PARTITION, which has led PARTITION to be
+called "The Easiest Hard Problem".
+
+Though to be frank, I don't know if I consider that to be much
+condolence.
+
+* Phone-a-Friend and SUPERHALTS
+
+2015-04-09
+
+Deciding things is hard. There are countably many Turing machines, but
+an uncountable number of decision problems! Sometimes, maybe asking
+our TM M for a decision is unreasonable - maybe sometimes we should
+let him phone-a-friend. A reasonable question to ask is: if our friend
+always gives us the right answer, is this enough?
+
+We define the phone-a-friend mechanism as follows: our TM M is given
+access to an *oracle*. The TM may ask the oracle a membership
+question: is this string \\(w\\) in some set \\(S\\)? The oracle is
+all-knowing and will return a yes or no answer immediately. The oracle
+will always answer correctly. We call a Turing machine with access to
+an oracle an *oracle Turing machine*.
+
+So certainly, all of a sudden, life gets a lot easier! For example,
+solving HALTS is trivial! Just ask the oracle. But here's an
+interesting question: is there a decision problem that a Turing
+machine can't solve, even when given an oracle to HALTS? Which is to
+say, is there a problem that our TM M's friend *can't* know?
+
+Unfortunately, (and maybe unsurprisingly), yes. Consider this
+following problem, which we call \\(SUPERHALTS\\):
+
+\\[ \\{(M, x) \| M\text{, with an oracle for the halting problem,
+halts on x}\\} \\]
+
+We can use the classic diagonalization argument to show that this is
+undecidable. Suppose we have some oracle Turing machine \\(H\\) that
+decides SUPERHALTS. Then we can define a new TM D to be:
+
+D(X): If H(X, X) accepts with an oracle, then LOOP else ACCEPT
+
+But then D(D) halts if and only if H(D, D) accepts. But H(D, D)
+accepts iff D(D) loops! So we have that D(D) halts if and only if it
+loops, a contradiction. Even if you've seen this argument before, take
+a minute and reason through that last sentence. It's good for you.
+
+So this is interesting. We've found a problem that's *harder than the
+halting problem*. Significantly so. Which brings us to something
+called *Turing degrees*. Computable functions have Turing
+degree 1. Anything reducible to the halting problem has Turing
+degree 2. The SUPERHALTS is our first problem with Turing greater than
+two.
+
+It's interesting how coarse a measurement Turing degree really
+is. Obviously, it doesn't touch notions of complexity, with no regard
+for the distinction between, say \\(P\\) and \\(ELEMENTARY\\). But
+further, it doesn't even distinguish between Turing-decidable and
+Turing-recognizable! (Or if you prefer, recursively enumerable). (A
+Turing-recognizable set is similar to a decidable one, we just relax
+the restriction that the TM must halt on all inputs).
+
+So here's another question: is there any problem of intermediate
+degree? Some problem that falls between HALTS and SUPERHALTS? This is
+known as the *Post problem* (different from the Post Correspondence
+Problem). And the answer, apparently, is yes.
+
+The result involves something called a *priority ordering*. In a
+priority ordering, we define some set \\(X\\). Then we make a
+(potentially infinite) list of requirements. Each of these
+requirements specifies whether or not some set of elements is in
+\\(X\\). So we start with, say, the universe. Then requirement 1
+specifies that elements in \\(X\\) must have some feature. And
+requirement 2 does similarly. Maybe requirement \\(k\\) designates
+that some element get thrown back into \\(X\\). And so on.
+
+Anyway, this technique can be used to generate two problems A and B,
+both of which can be solved with an oracle to the halting problem, but
+neither can be solved with an oracle to the other! I guess you use the
+priority ordering technique to forbid any Turing machine that would
+reduce A to B or vice versa.
+
+And into the world of non-computability we go! And you thought
+complexity was bad...
+
+* A Turing Machine Quine
+
+2015-03-13
+
+Today, we'll talk about something quite exciting. We define a Turing
+machine that prints its own source code. This construction offers us
+insight into how one may construct quines in any programming language.
+
+First, some quick definitions. A *quine* is a program that prints
+itself. At first this may seem impossible! A first attempt in python
+may look something like
+
+print "print"
+
+But wait. We missed the first print. So perhaps we'll add another
+print? But then we have
+
+print "print 'print'"
+
+and we have the problem we started with. Let's revisit this is a
+moment.
+
+A *Turing machine* is an abstraction of a computer. It has some finite
+number of states, transitions between those states, and infinite
+memory. Excitingly, this turns out to be a quite reasonable definition
+of computation. There's a very important result in computer science
+called the Church-Turing Thesis, which basically says that anything
+your-programming-language-here can do, so can a Turing machine.
+
+Consequently, offering a Turing machine quine is a way of offering a
+quine for every programming language! We'll find that it's actually
+quite instructive to talk about quines in the abstract first, before
+moving into specific programming languages.
+
+Right. So let's get started. We present the following lemma:
+
+> There is a computable function \\(q\\), where if \\(w\\) is some string, \\(q(w)\\) is a description of a Turing machine that prints out \\(w\\) and halts.
+
+We offer the following TM as a construction of this function:
+
+Q = "On input string w:
+    1. Construct the following TM P_w:
+        P_w = 'On any input:
+            1. Erase the input
+            2. Write w to the tape
+            3. Halt'
+    2. return P_w"
+
+The distinction between \\(q\\) the function and Q the Turing machine
+can be a bit subtle. \\(q\\) is function that maps strings to Turing
+machines. Q (the Turing machine) is the result of applying \\(q\\)
+(the function) to \\(w\\). That is, Q = \\(q(w)\\).
+
+So our TM Q takes a string w and outputs a TM that prints w. Perfect!
+Exactly what we wanted. Let's come back to this - we'll see why this
+is useful in a moment.
+
+With this lemma in hand, we proceed to the main task: building a TM
+that prints itself. We'll split the machine up into two parts - A and
+B. First A will run, then B. Let's start with a description for A.
+
+A's description depends on B, so let's assume we've written
+B. Remember the function \\(q\\) we just defined? We define A to be
+\\(q(B)\\). Which is to say, A is just a TM that, on any input, just
+prints a description of part B. This depends on our definition of B,
+so let's talk about that now.
+
+B's the second and last part of the program, so at the end, we should
+have printed a full description of AB. By the time we get to B, A just
+ran, leaving a copy of B's source code sitting on the tape. Which
+means at this point, B has a description of itself. So then how do we
+get a description of A?
+
+Here's the trick: we apply \\(q\\) to our description of B. By our
+definition, \\(q(B)\\) is a TM that, on any input, prints a copy of
+B. This was exactly our definition of part A!  So B takes its own
+source code and applies \\(q\\) to it, obtaining a description of
+A. Then B outputs AB, completing the proof.
+
+To summarize:
+
+QUINE = "On input string w:
+    1. A = q(B) # A Turing machine that always prints B
+    2. B = 'On input M, where M is a part of a TM:
+        1. return q(M) + M'"
+
+Using this proof as a template, let's consider how we would write a
+quine in python. As before, let's consider part A first. Part A needs
+to give B a copy of B's source code. In the TM model, this was
+achieved by leaving a copy of B's description on the tape.
+
+In python, we can just assign into a variable to achieve the same
+effect. So our part A should look something like
+
+b = "b's source code here"
+
+Part B should print part A and then print part B. Something like:
+
+print "b = %s" % b  # Print part A
+print b             # Then print part B
+
+Combining these two together (along with some careful tiptoe-ing
+around python formatting) yields:
+
+b = 'print "b = %r" % b; print b'
+print "b = %r" % b; print b
+
+And there you have it! A general guideline to make quines followed by
+an example. You are now equipped to go out and impress all your
+friends with your quine-making abilities. :P
+
+[Traversing a tree where every child has infinitely many children](/traversal.html)
+
+* Traversing the Infinite Complete ω-nary Tree
+
+2016-03-03
+
+The infinite complete <span class="math inline">*ω*</span>-nary tree is
+one where every node has <span class="math inline">ℕ</span>-many
+children. There are no leaves; the tree just extends downward
+infinitely. Call this graph <span class="math inline">𝔊</span>.
+
+We can't BFS or DFS over <span class="math inline">𝔊</span>. A DFS would
+simply get stuck on the leftmost branch forever and a BFS would never
+reach depth 2. How then are we to traverse it?
+
+In the infinite complete *binary* tree, nodes are uniquely indentified
+by a finite length binary string. In <span class="math inline">𝔊</span>,
+nodes are uniquely indentified by a finite sequence of natural numbers.
+Let <span class="math inline">*s*(*v*)</span> be <span
+class="math inline">*v*</span>'s corresponding sequence. In <span
+class="math inline">𝔊</span>, <span class="math inline">*u*</span> is
+the parent of <span class="math inline">*v*</span> iff <span
+class="math inline">*s*(*u*)</span>'s length is one less than <span
+class="math inline">*s*(*v*)</span>'s' and <span
+class="math inline">*s*(*u*)</span> is a prefix of <span
+class="math inline">*s*(*v*)</span>.
+
+Any tree traversal produces a well order on the tree's vertices. BFS on
+the complete infinite binary tree is the shortlex ordering (sort first
+by length, then lexographically). In fact, on level <span
+class="math inline">*i*</span>, the set of corresponding binary strings
+is the set of all <span class="math inline">*i*</span>-bit natural
+numbers, and the nodes are visited in increasing order.
+
+Further, any tree tree traversal has order type <span
+class="math inline">*ω*</span>.
+
+A traversal of <span class="math inline">𝔊</span> is a well order on the
+nodes of <span class="math inline">𝔊</span>. What does this order look
+like? Here's the idea (nodes are represented as int tuples):
+
+{% highlight python %} def traverse(): visitedNextChild = {() : 0} while
+True: currentlyVisited = visitedNextChild.keys() for v in
+currentlyVisited: nextChild = v + (visitedNextChild\[v\],)
+visit(nextChild) visitedNextChild\[v\] += 1
+visitedNextChild\[nextChild\] = 0 {% endhighlight %} Here, We start with
+the root node, which we can represent as the empty tuple. We maintain a
+mapping from visited nodes to the next child of theirs to visit. At each
+iteration, we visit each of the prescribed next children, and update the
+mapping.
+
+The fact that this visits every node in <span
+class="math inline">𝔊</span> follows easily by induction.
+
+In math symbols, if <span class="math inline">*S*~*i*~</span> is the set
+of visited nodes at iteration <span class="math inline">*i*</span>, then
+
+\
+<span class="math display">\$\$ \\begin{align\*} S\_{i+1} = S\_i &\\cup
+\\{s + 0 \\mid s \\in S\_i \\} \\\\ &\\cup \\{s\_1s\_2\\ldots
+(s\_n+1)\\mid s\_1s\_2\\ldots s\_n \\in S\_i \\} \\end{align\*}
+\$\$</span>\
+
+(there are totally duplicates being added here, but that's the beauty of
+sets).
+
+Fix the nodes <span class="math inline">*u* = *s*~1~…*s*~*n* − 1~</span>
+and <span class="math inline">*v* = *s*~1~…*s*~*n* − 1~*s*~*n*~</span>.
+Define <span class="math inline">*t*(*x*)</span> to be the iteration at
+which <span class="math inline">*x*</span> is visited. Then <span
+class="math inline">*t*(*v*)=*t*(*u*)+*s*~*n*~ + 1</span>. This leads to
+this gorgeous fact:
+
+<span class="math inline">*s*~1~…*s*~*n*~</span> is visited at iteration
+<span class="math inline">\$\\sum\_{i=1}\^n (s\_i + 1) = n +
+\\sum\_{i=1}\^n s\_i\$</span>.
+
+This means that our tree traversal has a pretty interesting
+sub-relation: namely that <span class="math inline">*u* &lt; *v*</span>
+if <span class="math inline">*u*</span>'s length + <span
+class="math inline">*u*</span>'s digit sum is less than <span
+class="math inline">*v*</span>'s length + <span
+class="math inline">*v*</span>'s digit sum. Or, (if we one-index), just
+the digit sums.
+
+From here on out, we'll one-index for simplicity's sake. (That is,
+assume <span class="math inline">ℕ</span> starts at 1).
+
+Let's see if we can characterize the entire ordering. (That is, instead
+of building a relation based on iteration, build a relation built on
+precise ordering of traversal).
+
+It's exactly the same relation, but if they tied, you recurse on the
+largest proper prefix of each.
+
+{% highlight python %} def lessThan(u, v): \# u &lt; v return
+digitSum(u) &lt; digitSum(v) or lessThan(u\[::-1\], v\[::-1\]) {%
+endhighlight %}
+
+So the empty sequence is the least element (as we visit the root of
+<span class="math inline">𝔊</span> first). I'm fairly certain that if
+you create the corresponding <span class="math inline">≤</span>
+relation, this becomes a total order.
+
+Here's the cool thing: we've produced an order on <span
+class="math inline">ℕ^\*^</span> that has order type <span
+class="math inline">*ω*</span>! (The normal shortlex trick doesn't work
+when our alphabet is countably infinite).
+
+In general, if we want to produce an ordering of order type <span
+class="math inline">*ω*</span> on\
+<span class="math display">ℕ^\*^</span>\
+, it suffices to partition <span class="math inline">ℕ^\*^</span> into
+countably many partitions, each of finite size. Then the
+"concatentation" of these partitions yields order type <span
+class="math inline">*ω*</span>.
+
+Just some fun observations :)
+
+
+[Some comments on learning Chinese](/chinese.html)
+
+[Some books I like](/books.html)
+* Tools for long-form reading Chinese as a second language
+2018-01-04, updated 2020-05-17
+
+Study what you want to know. Do you want to pass standardized exams?
+If so, study those vocab lists. Do you want to read a book? If so,
+collect a list of the most frequently used words in the book and study
+those.
+
+Collecting vocab from books.
+
+Open a txt file of the book you want to read in
+ChineseTextAnalyzer. For popular books, googling the Chinese title and
+´mobi´ or ´txt´ usually turns up a copy of the book. will
+
+ChineseTextAnalyzer splits the file up into words (presumably with
+longest-match against CC-CEDICT). Based on a set of 'known words,'
+ChineseTextAnalyzer can give you a list of unknown words, sorted by
+frequency of appearance in the text. It's then super easy to export
+these words into a CSV file and import into Anki.
+
+I find this method of gathering vocab to be much more motivating that
+studying lists of words from a textbook. This way, I get longer-form
+reading with content I'm interested in, and a vocab list
+custom-tailored to the content I want to consume.
+
+(Shout out to the incredible 书博 for telling me about this one).
+
+** Define-on-highlight in Kindle (with pinyin)
+
+I consider highlight-on-lookup an essential feature for reading 'real'
+Chinese long-form material. I don't have the patience to handwrite
+characters into Pleco every time I don't understand what's going
+on. Finding a good mobi file for the English-Chinese dictionary
+CC-CEDICT does wonders.
+
+I put this file in the documents/dictionaries directory on my Kindle;
+it might be different for your e-reader. If your e-reader doesn't
+support mobi, I suggest the wonderful tool ebook-convert as a means to
+convert it to epub.
+
+This isn't a perfect solution; CC-CEDICT is probably my least favorite
+English-Chinese dictionary around, but I have been unable to find any
+other dictionaries in electronic form. The Kindle has a
+English-Chinese dictionary by default, but for baffling reasons, it
+does not include pinyin.
+* Some books I've read, enjoyed, and would recommend.
+
+*Coders, the Making of a New Tribe.*
+
+A book on programmer culture over the years. The author knows how to code some, but is not a programmer by trade. There's discussion programmer mental health, gender inequality, and social norms. The chapter 'The ENIAC girls' taught me that programming was originally a largely female profession. There is discussion of the bootcamp phenomenon.
+
+The book made me think about the culture of the industry I work in. I
+recommended it.
+
+*More Happy Than Not*
+
+A queer love story with a surrealist twist. The first queer fiction
+I've sought out.
+
+*Goodbye, Things*
+
+One of my favorite books on minimalism. The author is open about his
+insecurities and the ways in which he would use things to compensate:
+abstruse books to seem literary, a big TV to seem like a film
+enthusiast.
+* Nice things to cook and eat
+** Fried rice
+I've made this well over 10 times, maybe 20. Not a lifetime of
+refinement, but enough to have a couple details I try to include:
+
+- Let the rice sit on the pan for a while so it gets real crispy.
+- Fry the egg whites separately from the yolk for varied texture and color.
+  
+Couple different flavor profiles:
+
+- Fish sauce (tablespoon per block of tofu), light rice vinegar,
+  cilantro, mint, jalapenos (and fermented jalapeno sauce), crab,
+  kumquats.
+- Soy sauce, dark rice vinegar, shaoxing rice wine, chili oil.
+  
+I usually just fry up a block of tofu and stick it in with the veggies.
+
+Tips to prep before:
+
+- Chooped boy choy and carrots keep nicely in the fridge.
+
+Haven't found a tofu marinade I like much. It seems to make it wetter,
+which prevents it from getting crispy in the frier. 
+
+** Bread
+I've made the Joy of Cooking white bread recipe several times and
+have enjoyed it. It toasts up well nicely on a cast iron pan, as
+well.
+
+** Cinnamon-garlic-ginger garbonzo bean soup
+Amanda's always been the one to make this, I can't claim to know how
+to make it offhand. That's a TODO haha.
+
+** Slow cooked pork
+Cut pork shoulder into about 3x3x3 inch blocks. Place in slow cooker
+with a half cup water and a half teaspoon salt for each pound of
+meat. Cook on low for 8 hours. Fries up nicely.
+
+Keeps in the fridge for a couple days, I didn't get sick eating it 3
+days later (having cooked it on the sell-by date).
+
+** Larder
+*** Lacto-fermented hot sauces
+I've tried this with jalapenos and have some poblanos and serranos
+going at the time of writing.
+
+Stem and seed about a pount of peppers. Puree. Add salt (0.075 x the
+weight of pepper puree). Stir. Place in big mason jar, wait 4 weeks.
+
+Be sure the peppers are totally covered by the brine. Feel free to add
+more brine if needed (not sure how the added brine strategy plays out,
+that's still a WIP).
+
+At the end of the 4 weeks, place the pepper puree in some vinegar
+(TODO how much?) and briefly boil. Keeps in the fridge for about 6
+months, apparently.
+
+*** Chili Oil
+Still new to me, on my second try.
+
+- Canola Oil (obv not ideal)
+- Chinese dried peppers (not sure on the details)
+- Sichuan peppercorns, toasted and ground
+- Anise, toasted and ground.
+  
+Some tweaks and things to try:
+
+- Use a peanut oil of Chinese manufacture.
+- Experiment with different dried peppers
+- This second time I tried soaking the peppers in water after
+  toasting, as if I was making mole. I also chopped the peppers into
+  small rings.
+- More "five spices" - fennel, cloves, and (cassia?) cinnamon.
+- Fried soybeans
+
+*** Salsas
+My fave is wrapping garlic, tomatillos, and serranos in some foil and
+heating in a pan for maybe 20-30 mins, then puree-ing with some salt
+and lime.
+* thon is a programming language.
+  :PROPERTIES:
+  :CUSTOM_ID: thon
+  :END:
+
+thon is a small programming language. Here's an example program that
+verifies the empty list is empty.
+
+#+BEGIN_EXAMPLE
+    fun isempty : (data l = (unit | nat * l)) -> nat =
+      \ natlist : (data l = (unit | nat * l)) ->
+            (case (unfold natlist) of
+               empty -> S Z
+             | not -> Z)
+    in let nil : (data l = (unit | nat * l)) =
+        fold data l = (unit | nat * l) with
+        left unit : (unit
+                   | nat * (data l = (unit | nat * l)))
+    in
+    (isempty nil)
+#+END_EXAMPLE
+
+thon has natural numbers, functions, recursion, binary product and sum
+types, polymorphism, existential packages (a formalization of
+interfaces), and recursive types.
+
+** natural numbers
+   :PROPERTIES:
+   :CUSTOM_ID: natural-numbers
+   :END:
+
+=Z= is the natural number 0. =S Z= is 1 (the succesor of one). =S S Z=
+is 2, and so on.
+
+** functions
+   :PROPERTIES:
+   :CUSTOM_ID: functions
+   :END:
+
+In thon, functions are expressions just like numbers are. thon supports
+anonymous functions and named, recursive functions.
+
+Here are some example anonymous functions.
+
+#+BEGIN_EXAMPLE
+    \ x : nat -> x
+    \ x : nat -> (\ y : nat -> y)
+#+END_EXAMPLE
+
+Functions are applied to their arguments by juxtaposition.
+
+#+BEGIN_EXAMPLE
+    ((\ x : nat -> x) Z)
+#+END_EXAMPLE
+
+Here's a divide-by-two function:
+
+#+BEGIN_EXAMPLE
+    fun divbytwo : nat -> nat =
+      \ n : nat ->
+        ifz n of
+          Z -> Z
+        | S p -> ifz p of Z -> Z | S p' -> (S (divbytwo p'))
+    in divbytwo (S S S S Z)
+#+END_EXAMPLE
+
+If the number is zero, we're done. Otherwise, it has some predecessor
+number =p=. If =p= is zero, then return zero (taking the floor).
+Otherwise, recurse on the predecessor of the predecessor =n-2= and add
+one to whatever that gave us.
+
+Under the hood, recursive functions are implemented as a fixed point
+expression that substitutes itself in for itself. It's like a recursive
+function, but it doesn't have to be a function, it can be any
+expression. Here's an amusing way to loop forever:
+
+#+BEGIN_EXAMPLE
+    fix loop : nat in loop
+#+END_EXAMPLE
+
+** variables
+   :PROPERTIES:
+   :CUSTOM_ID: variables
+   :END:
+
+#+BEGIN_EXAMPLE
+    let x : nat = Z in x
+#+END_EXAMPLE
+
+binds the name =x= in the expression following the =in= keyword.
+
+** polymorphism
+   :PROPERTIES:
+   :CUSTOM_ID: polymorphism
+   :END:
+
+Polymorphism lets us reuse code you wrote for many different types, with
+the guarantee that the code will behave the same for all types.
+
+#+BEGIN_EXAMPLE
+    poly t -> \ x : t -> x
+#+END_EXAMPLE
+
+is the polymorphic identity function. Feed it a type to get the identity
+function on that type. e.g.
+
+#+BEGIN_EXAMPLE
+    (poly t -> \ x : t -> x) nat
+#+END_EXAMPLE
+
+evaluates to the identity function on natural numbers.
+
+** existential packages hide types
+   :PROPERTIES:
+   :CUSTOM_ID: existential-packages-hide-types
+   :END:
+
+They let us write a piece of code with a private implementation type.
+Clients that use this implementation don't know what type was used. This
+property is enforced by the type system.
+
+Ok, so how do we use them in thon? Let's consider a sort-of-silly
+example.
+
+The interface is just "set" and "get." We feed in a number, get a number
+back. However the implementation stores the number is up to them.
+
+We have two implementations with two separate implementation types. The
+first just holds on to the number.
+
+#+BEGIN_EXAMPLE
+    ((*set*) \ x : nat -> x,
+     (*get*) \ x : nat -> x)
+#+END_EXAMPLE
+
+The second stores in the number in a tuple (for no real good reason -
+you didn't write this code, it's not your fault it does it this way).
+
+#+BEGIN_EXAMPLE
+    ((*set*) \ x : nat -> (x, Z),
+     (*get*) \ tup : (nat * nat) -> fst tup)
+#+END_EXAMPLE
+
+Now each of these implementations can be packed away with the syntax
+
+#+BEGIN_EXAMPLE
+    impl some t. ((nat -> t) * (t -> nat)) with nat as
+    (
+        ((*set*) \ x : nat -> x,
+        (*get*) \ x : nat -> x)
+    )
+#+END_EXAMPLE
+
+and
+
+#+BEGIN_EXAMPLE
+    impl some t. ((nat -> t) * (t -> nat)) with (nat, nat) as
+    (
+        ((*set*) \ x : nat -> (x, Z),
+        (*get*) \ tup : (nat * nat) -> fst tup)
+    )
+#+END_EXAMPLE
+
+Both of these expression have type =((nat -> T) * (T -> nat))= for some
+type =T=. Note this is an existential claim, hence the name existential
+packages.
+
+An implementation can be used as follows:
+
+#+BEGIN_EXAMPLE
+    let setget : some t. ((nat -> t) * (t -> nat)) =
+        (impl some t. ((nat -> t) * (t -> nat)) with nat as
+        (
+            ((*set*) \ x : nat -> x,
+            (*get*) \ x : nat -> x)
+         ))
+    in use setget as (sg, t) in
+    let set : (nat -> t) = fst sg in
+    let get : (t -> nat) = snd sg in
+    let s : t = set (S S Z) in
+    let g : nat = get s in
+    g
+#+END_EXAMPLE
+
+Note that since the type variable =t= declared in the =use= clause is
+abstract, we can equivalently use the other implementation.
+
+** recursive types
+   :PROPERTIES:
+   :CUSTOM_ID: recursive-types
+   :END:
+
+=data nats = (unit | (nat * nats))= is the type of lists natural
+numbers.
+
+#+BEGIN_EXAMPLE
+    fold data nats = (unit | (nat * nats))
+    with left unit : (unit | (nat * (data nats = (unit | (nat * nats)))))
+#+END_EXAMPLE
+
+is the empty list of natural numbers.
+
+#+BEGIN_EXAMPLE
+    \ (nat * (data nats = (unit | nat * nats))) ->
+       fold data nats = (unit | nat * nats) with
+       right 0 : (unit | nat * (data nats = (unit | nat * nats)))
+#+END_EXAMPLE
+
+is a function that takes a pair (nat, natlist) and prepends nat to
+natlist.
+
+** thanks
+   :PROPERTIES:
+   :CUSTOM_ID: thanks
+   :END:
+
+I've mostly been working out of Bob Harper's "Practical Foundations for
+Programming Languages," though Pierce's "Types and Programming
+Languages" has been a useful source of examples and exposition as well.
+I am also grateful to Rob Simmons and every other contributor to the SML
+starter code for CMU's Fall 2016 compilers course.
+
+** install (ubuntu 20)
+   :PROPERTIES:
+   :CUSTOM_ID: install-ubuntu-20
+   :END:
+
+Wow, you read this far! (or scrolled this far, at least) If you'd like
+to program in thon, the code is publicly available.
+
+#+BEGIN_EXAMPLE
+    $ git clone https://git.sr.ht/~thon/thon
+    $ sudo apt install smlnj ml-yaxx ml-lex ml-lpt
+    $ sml
+    - CM.make "path/to/your/git/clone/thon.cm";
+    - Thon.run "some thon program here";
+#+END_EXAMPLE
+
+If you figure out install instructions on mac or windows or have any
+other questions or comments, please email me at bergeronej@gmail.com. I
+would love to hear from you!
+
+** collatz conjecture
+   :PROPERTIES:
+   :CUSTOM_ID: collatz-conjecture
+   :END:
+
+A fun program I wrote after adding recursion. Pretty much all the code
+I've written in thon is available through the git repo.
+
+#+BEGIN_EXAMPLE
+    let isone : nat -> nat = 
+      \ n : nat ->
+        ifz n of
+          Z -> Z (*false*)
+        | S p -> ifz p of Z -> S Z | S p -> Z
+    in fun iseven : nat -> nat =
+      \ n : nat ->
+        ifz n of
+          Z -> S Z (*true*)
+        | S p -> ifz (iseven p) of Z -> S Z | S p -> Z
+    in fun divbytwo : nat -> nat =
+      \ n : nat ->
+        ifz n of
+          Z -> Z
+        | S p -> ifz p of Z -> Z | S p' -> (S (divbytwo p'))
+    in fun multbythree : nat -> nat =
+      \ n : nat ->
+        ifz n of
+          Z -> Z
+       | S nminusone -> S S S (multbythree nminusone)
+    in fun collatz : nat -> nat =
+      \ n : nat ->
+        ifz (isone n) of
+          Z -> (
+            ifz (iseven n) of
+              Z -> collatz (S (multbythree n))
+            | S p -> (collatz (divbytwo n))
+          )
+        | S p -> (S Z)
+    in (collatz (S S Z))
+#+END_EXAMPLE
+
+[[https://xkcd.com/710/][relevant xkcd]]
+* Players have might, speed, and intellect points.
+These are combined health / mana pools. Physical damage reduces your
+might pool, some magical damage can reduce speed or intellect. Most
+spells require spending intellect points. Many specialized physical
+attacks require spending might or speed.
+
+You can spend pool points to add any roll. At first level, you can
+spend up to 3 pool points for a single roll.
+
+Each of your pools has an associated *edge*. Edge reduces how many
+pool points you need to spend. For instance, a might edge of 1 makes
+it free to spend one might pool point.
+
+You are an adjective noun that verbs
+
+* Choose a noun
+** Fighter
+- Might 10, Edge 1
+- Speed 10, Edge 0
+- Intellect 8, Edge 0
+
+And an additional 6 points to distribute as you choose.
+
+You are practiced in all weapons and can use them without penalty.
+
+*Choose* three special abilities:
+
+- *Quick on the draw*. You get +3 to your initiative rolls.
+- *Shove*. Spend 1 might to melee attack and move an opponent into a
+  position you desire within immediate range. Deals 1 less damage than
+  usual.
+- *Stab*. Spend 1 might to deal 1 extra damage with a weapon with a sharp point.
+- *Daze*. Spend 1 might point to daze an opponent for one round,
+  during which time the difficulty of all their actions is increased
+  by 3. Deals one less damage than usual.
+- *Sharpshooter*. Spend 1 speed to deal 1 extra damage with a ranged
+  weapon.
+- *Overwatch*. You use a ranged weapon to target a narrow location
+  (e.g. a hallway or just above a rock etc.) and attack the first
+  creature that appears. This is a trigger action (occurs when someone
+  appears). This attack negates any advantage the creature would have
+  from cover or surprise (+3 and +6 to difficulty, respectively).
+** Traveler
+- Might 10, Edge 1
+- Speed 9, Edge 0
+- Intellect 9, Edge 0
+
+And an additional 6 points to distribute as you choose. If you wield a heavy
+weapon, increase the attack difficulty by 3.
+
+*Choose* three special abilities:
+
+- *Danger sense*. The difficulty of your initiative is reduced by 3.
+- *Block*. Spend 3 speed points to automatically block the next melee attack against you.
+- *Decipher*. Spend 1 intellect point to examine a piece of writing or code you
+  do not understand. Make a intellect roll of 3 (or higher, depending on the
+  code or language). On success, you get the gist of the message. If used
+  in combat, takes an action.
+- *Endurance*. Any duration of physical action is halved or doubled. E.g. you can
+  march twice as long in a day, or poison wears off twice as fast, or you can
+  hold your breathe twice as long. Minimum duration one round.
+- *Fleet of foot*. If you succeed a difficulty 6 speed roll to run, you can move
+  a short distance and take an action in the same round.
+- *Strive*. Spend 2 might points to reduce the difficulty of all non-attack might-based
+  rolls by 3. Lasts 10 minutes.
+- You have a Might Edge of 1 and a Speed Edge of 1.
+- You are trained in two skills you are not already trained in.
+- You can use heavy weapons.
+** Seer
+- Might 7, Edge 0
+- Speed 9, Edge 0
+- Intellect 12, Edge 1
+
+*Choose* three special abilities:
+
+- *Truesight vision*. You carry with you a plant offering temporary
+  truesight vision. Upon smoking, the plant offers you insight into
+  nature of the world around you. This can be the level of a creature,
+  or the fact that there is a metal object in a nearby wooden chest,
+  etc. After a few moments, the truesight ends and you are left
+  mentally befuddled. Costs 2 intellect points.
+- *Warding*. You once happened across a plant of warding. You gain 1 Armor
+  permanently.
+- *Mindkiller*. Spend 1 intellect to deal either 2 intellect damage or 4 physical damage. The
+  intellect damage
+  action next turn. Agreed upon by the GM prior to rolling.
+- *Mind trick*. Spend 1 intellect to convince cognizant creature to do
+  a reasonable action next turn. Agreed upon by the GM prior to
+  rolling.
+- *These are not the droids you're looking for*. Spend 1 intellect
+  point to convince an individual that you are not part of a group of
+  people. For instance, you are not from a certain town or tribe. The
+  effect lasts for 1 hour or until the individual learns of facts
+  otherwise. To cast on multiple creatures, 1 additional intellect
+  point per creature.
+- You are *trained* in intellect defense tasks and have +2 to armor against
+  damage that selectively targets intellect (this normally would rely on your
+  usual armor).
+
+** Rogue
+- Might 10, Edge 1
+- Speed 9, Edge 0
+- Intellect 9, Edge 0
+
+And an additional 6 points to distribute as you choose. If you wield a heavy
+weapon, increase the attack difficulty by three.
+
+*Choose* three special abilities:
+
+- *Danger sense*. The difficulty of your initiative is reduced by 3.
+- *Block*. Spend 3 speed points to automatically block the next melee attack against you.
+- *Decipher*. Spend 1 intellect point to examine a piece of writing or code you
+  do not understand. Make a intellect roll of 3 (or higher, depending on the
+  code or language). On success, you get the gist of the message. If used
+  in combat, takes an action.
+- *Endurance*. Any duration of physical action is halved or doubled. E.g. you can
+  march twice as long in a day, or poison wears off twice as fast, or you can
+  hold your breathe twice as long. Minimum duration one round.
+- You have a Might Edge of 1 and a Speed Edge of 1.
+- *Fleet of foot*. If you succeed a difficulty 6 speed roll to run, you can move
+  a short distance and take an action in the same round.
+- *Goad*. After you successfully attack a creature, the difficulty of
+  all others speed defense against the creature's attacks decreased by
+  three until the next round.
+- *Sleight of hand*. 1 speed point. You can e.g. move a object from
+  your hand to a desired spot (e.g. your pocket). You can make someone
+  believe they have something in their possession that they do not
+  have (or vice versa). You can switch objects right in front of
+  someone's eyes. Action.
+- *Opportunist*. You have an asset on any attack roll you make on a
+  creature that has already been attacked this round and is within immediate range.
+- You are trained in two skills you are not already trained in.
+
+* Choose an adjective
+** Charming
++2 Intellect. *Trained* in pleasant social interaction and special
+abilities that influence the minds of others. You not much of a
+bookworm and so *struggle* in lore, knowledge, or understanding and
+resisting mental attacks.
+
+** Driven
++2 Might. Trained in intellect defense. Each day you are *trained* in
+a skill of your choice that you believe will help you reach your
+goal. You are so focused on your mission, you don't notice other
+things and *struggle* on all perception tasks.
+
+When you choose this descriptor, choose a mission you want to
+accomplish. You probably talk about it a lot. When you accomplish the
+mission, choose another.
+
+** Exiled
++2 might. As a loner, you gain no benefit when someone with training
+helps you with a task. You're *trained* in sneaking, foraging,
+hunting, and finding safe places. Your extended solitary time causes
+you to *struggle* in social situation.
+
+Perhaps you committed a horrible deed or carry some token from an
+earlier, cheerier time in your life.
+
+** Intelligent
++2 intellect. *Trained* in area of knowledge of your choice and all
+tasks that draw from your memory.
+  
+** Maeha
++2 might. You are half human, half bison. You are *trained* in
+foraging, nature-based history, smell-based perception checks, and a
+sense of direction in the open plains. You *struggle* with
+vision-based perception checks. Your permanent horns are a medium
+weapon.
+
+** Mysterious
+Trained in stealth and resisting interrogation. Once per recovery
+period, you can attempt any action as if you were trained in it. You
+*struggle* in getting people to believe or trust you.
+
+** Perceptive
++2 intellect. *Trained* in finding or noticing small
+details, identifying objects, recalling trivia, and intimidating
+another creature. You *struggle* in positive social interaction.
+
+** Rugged
+*Trained* in climbing, jumping, running, swimming. *Trained* in
+training, riding, or placating natural animals. Trained in
+identifying or using natural plants. You struggle with charm,
+persuasion, etiquette and deception.
+
+** Sharp
+Trained in initiative and perception. If an opponent has a
+straightforward weakness, the GM will tell you.
+
+** Spiritual
++2 intellect. Trained in pleasant social interaction,
+intellect defense tasks, and resisting temptation. When you help
+someone, they add 1 to their roll. You hesistate when taking in
+novel details, and so *struggle* with initiative actions.
+
+** Stealthy
++2 speed. Trained in stealth, lying, and trickery and all such special
+abilities. You're stealthy but not fast and so struggle with
+movement-related tasks.
+
+* Choose a verb
+** Abides in pumice
+You are a creature of pumice, not flesh. You can move, speak, and feel
+pain. Your pumice body makes it harder to take damage, but also harder
+to heal. You typically do not wear clothes, though your stone frame
+may be carved as such.
+
+Minor effect suggestion: you step on the target and prevent it from
+moving next turn.  Major effect suggestion: you break a weapon,
+shield, or piece of armor the target is using.
+
+You gain +1 to armor, +1 might edge, and 5 additional might
+points. You do not need to eat or drink or breathe (though you still
+need to rest and sleep). You move more stiffly than a creature of
+flesh, so can never be trained in speed defense rolls. You are
+practiced as using your stone fists as a medium weapon.
+
+You are unable to use the first, single-action recovery roll of the
+day. Thus, the first recovery roll uses ten minutes, the second uses
+an hour, and the last requires ten hours.
+** Carries a quiver
+Minor effect suggestion: hit in a tendon or muscle, the target takes 2
+points of speed damage as well as normal damage. Major effect
+suggestion: the target is pinned in place with an arrow.
+
+You can spend points from either speed or intellect when applying
+levels of effort to increase bow damage.
+** Fights dirty
+Minor effect suggestion: You make the foe trip and fall prone. Major
+effect suggestion: You tangle something around you foe's leg and they
+lose their next turn.
+
+When your foe is disadvantaged in any way, the difficulty of attack is
+decreased by three.
+
+You are trained in deception.
+** Heals
+Minor effect suggestion: the target is healed for 1 extra point. Major
+effect suggestion: the target is healed for 2 extra points.
+
+1 intellect point. With a touch, you restore 1d6 points to any stat
+pool of a creature. Difficulty 6 intellect task. Each time you use
+this on a creature, the difficulty increases by three. Difficulty
+returns to 6 after the creature takes a long rest.
+** Hunts with great skill
+Minor effect suggestion: You can attempt an intimidating task to cause
+your foe to immediately surrender.  Major effect suggestion: Your foe
+pauses, terrified, and takes no action on their turn.
+
+You are trained in following and identifying tracks. You are trained
+in all types of movement (climbing, swimming, jumping, balancing).
+
+** Lives in the wilderness
+Minor effect suggestion: A natural creature foe flees. Major effect
+suggestion: A natural creature foe becomes warily passive.
+
+Trained in climbing, swimming, wilderness navigation, and identifying
+plants and creatures.
+
+** Murders
+Minor effect suggestion: no one but the foe notices your attack.
+Major effect suggestion: if you have poison, you apply it just before
+the strike, adding poison's effects to the normal damange.
+
+If you attack with surprise or before an opponent has acted, the
+difficulty of your attack is reduced by three. On a successful
+surprise attack, you inflict 2 more points of damange.
+
+You are trained in stealth and disguise.
+** Wields a fire spear
+TODO
+** Wields two weapons at once
+Minor effect suggestion: Target is intimidated and flees at its next
+action. Major effect suggestion: You can make an additional attack
+with one of your weapons.
+
+You can wield two light weapons at the same time, making two separate
+attacks with a single action. At first level, you can apply effort to
+only one of these attacks. Armor applies to both damages.
+
+* Games mechanics
+** Players make all the rolls.
+
+Every roll has a difficulty, as determined by the GM. The player must
+roll that difficulty or higher to succeed. Rolls typically have bonuses
+applied to them.
+
+Some examples of things that reduce difficulty include knowledge of a
+situation, quality weapons or armor, training, an advantageous
+situation, etc.
+
+Players can spend pool points to lower difficulties.
+
+Rolling a natural 19 or 20 (assuming the roll is a success against the
+TD) introduces a *minor* or *major effect*, respectively.
+
+Minor effects could be a particular grace to your action, or in
+combat, an extra 3 damage, the opponent knocking the foe back,
+distracting the foe, etc..
+
+Major effects could be an extra 4 damage, knocking your foe down,
+stunning them, etc. Alternatively, in combat, you may take another
+action.
+
+The verb you choose gives you some more minor and major effects.
+
+** Attacking and defending
+
+Attacking an opponent is a roll, defending an attack is a
+roll. The difficulty of these rolls is equal to the level of the opponent. For
+instance, to hit or defend against a level 2 opponent requires a 6 or higher.
+
+Damage and armor are flat numbers.
+
+- *Light weapons* deal 2 damage and reduce TD by 1, as they're quick and easy to use.
+- *Medium weapons* deal 4 damage.
+- *Heavy weapons* require two hands and deal 6 damage.
+
+Rolling a 17 deals an extra point of damage.
+Rolling high can deal more damage.
+
+- 17 deals 1 additional damage.
+- 18 deals 2 additional damage.
+- 19 deals 3 additional damage or introduces a minor effect.
+- 20 deals 4 additional damage or introduces a major effect.
+
+Armor reduces damage by a flat amount, possibly down to zero.
+
+Roll a 1 is bad as well and may introduce a GM complication. I'm not too
+familiar on the rules of GM complications now, so we'll keep it simple and
+forgiving for now :)
+
+Distance is either *immediate*, *short* (15-50"), or *long*.
+
+** Players get an action per turn.
+
+Example actions include moving to melee attack an opponent in immediate range,
+making a ranged attack, performing a short plant ritual, or moving a short
+distance.
+
+** Players have three pools of points.
+
+- Might
+- Speed
+- Intellect
+
+Each pool has an associated modifier called *edge*.
+
+Damage is dealt against one of these pools. Physical attacks against
+might. Perhaps a drug inducing clusminess may deal against speed. Some
+mystic may attack against intellect.
+
+** Players spend pool points to reduce difficulties.
+
+** Edge reduces the cost of effort.
+
+When spending pool points as effort, subtract the associated edge
+modifier from the number of pool points spent.
+
+** Resting restores 1d6 pool points.
+
+These can be distributed amongst the pools as you wish.
+
+The first rest of the day takes an action (e.g. instead of attacking
+in combat). The second rest of the day takes 10 minutes. Third takes
+an hour. Fourth is 10 hours. So per day, you can gain 4d6 points back.
+
+** Training situationally reduces difficulty.
+
+Being trained in a skill is a plus three bonus. Being specialized is a
+plus 6.
