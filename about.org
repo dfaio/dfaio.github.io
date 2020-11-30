@@ -1,4 +1,0 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="mnml.css"/>
-I'm Evan and I write this website. You can call me Laura, if you
-like. I work on a database engine. I ride bikes, drink coffee, and
-make myself sound better on the internet than I feel inside.

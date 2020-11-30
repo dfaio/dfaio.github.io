@@ -1,4 +1,4 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/home/evan/no.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="dfa.css" />
 
 Hey, I´m Evan. Welcome to my slice of the internet.
 
