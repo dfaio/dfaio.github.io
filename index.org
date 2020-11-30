@@ -1,10 +1,6 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="dfa.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/home/evan/no.css" />
 
 Hey, I´m Evan. Welcome to my slice of the internet.
-
-I have a pet programming language, [[https://dfa.io/thon.html][thon]], and a pet tabletop [[https://dfa.io/rqg.html][rqg game]].
-
-Here are some recipes of mine.
 
 * Arranging keys on my key holder is NP-hard
 
@@ -107,7 +103,7 @@ two.
 
 It's interesting how coarse a measurement Turing degree really
 is. Obviously, it doesn't touch notions of complexity, with no regard
-for the distinction between, say \\(P\\) and \\(ELEMENTARY\\). But
+for the distinction between, say $P$ and $ELEMENTARY$. But
 further, it doesn't even distinguish between Turing-decidable and
 Turing-recognizable! (Or if you prefer, recursively enumerable). (A
 Turing-recognizable set is similar to a decidable one, we just relax
