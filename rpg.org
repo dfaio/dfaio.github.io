@@ -1,3 +1,6 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: num:nil
+
 * Players have might, speed, and intellect points.
 These are combined health / mana pools. Physical damage reduces your
 might pool, some magical damage can reduce speed or intellect. Most

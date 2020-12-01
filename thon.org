@@ -1,7 +1,8 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+
 * thon is a programming language.
-  :PROPERTIES:
-  :CUSTOM_ID: thon
-  :END:
 
 thon is a small programming language. Here's an example program that
 verifies the empty list is empty.
