@@ -4,8 +4,8 @@
 
 Hey, I´m Evan. Welcome to my slice of the internet.
 
-- My pet programming language [[https://dfa.io/thon.html][thon]].
-- A small tabletop rqg [[https://dfa.io/rqg.html][game system]].
+- My pet programming language [[http://dfa.io/thon][thon]].
+- A small tabletop rqg [[http://dfa.io/rqg][game system]].
 
 * Arranging keys on my key holder is NP-hard
 

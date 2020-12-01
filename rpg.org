@@ -1,6 +1,10 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
 #+OPTIONS: num:nil
 
+This system is heavily based off the Cypher System by Monte Carlo
+games. If these rules sound interesting, I encourage you to go buy
+their book!
+
 * Players have might, speed, and intellect points.
 These are combined health / mana pools. Physical damage reduces your
 might pool, some magical damage can reduce speed or intellect. Most
