@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-11-30 Mon 20:33 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Evan Bergeron" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org12a9cd7">1. Players have might, speed, and intellect points.</a></li>
+<li><a href="#org1240d61">2. Choose a noun</a>
+<ul>
+<li><a href="#org7a3096e">2.1. Fighter</a></li>
+<li><a href="#orgf2987fb">2.2. Traveler</a></li>
+<li><a href="#org8b6fcd4">2.3. Seer</a></li>
+<li><a href="#orgdc8b8e8">2.4. Rogue</a></li>
+</ul>
+</li>
+<li><a href="#orgf0dc09f">3. Choose an adjective</a>
+<ul>
+<li><a href="#orge33570a">3.1. Charming</a></li>
+<li><a href="#org577a96b">3.2. Driven</a></li>
+<li><a href="#orgb16c7af">3.3. Exiled</a></li>
+<li><a href="#org4653009">3.4. Intelligent</a></li>
+<li><a href="#org574c92b">3.5. Maeha</a></li>
+<li><a href="#orgb5a42a2">3.6. Mysterious</a></li>
+<li><a href="#org017d8ef">3.7. Perceptive</a></li>
+<li><a href="#orgc468d87">3.8. Rugged</a></li>
+<li><a href="#org1414b7b">3.9. Sharp</a></li>
+<li><a href="#org5a859fd">3.10. Spiritual</a></li>
+<li><a href="#orgb4a9415">3.11. Stealthy</a></li>
+</ul>
+</li>
+<li><a href="#orgf814711">4. Choose a verb</a>
+<ul>
+<li><a href="#orgd721615">4.1. Abides in pumice</a></li>
+<li><a href="#org964eb8e">4.2. Carries a quiver</a></li>
+<li><a href="#org746cd53">4.3. Fights dirty</a></li>
+<li><a href="#org001e340">4.4. Heals</a></li>
+<li><a href="#org15ba022">4.5. Hunts with great skill</a></li>
+<li><a href="#orgb5bcb06">4.6. Lives in the wilderness</a></li>
+<li><a href="#org78c71a9">4.7. Murders</a></li>
+<li><a href="#org593c6ea">4.8. Wields a fire spear</a></li>
+<li><a href="#org4c0b3ff">4.9. Wields two weapons at once</a></li>
+</ul>
+</li>
+<li><a href="#org51f25db">5. Games mechanics</a>
+<ul>
+<li><a href="#orged508c7">5.1. Players make all the rolls.</a></li>
+<li><a href="#org8c787ba">5.2. Attacking and defending</a></li>
+<li><a href="#org6ea0ebf">5.3. Players get an action per turn.</a></li>
+<li><a href="#orgb7d16a5">5.4. Players have three pools of points.</a></li>
+<li><a href="#org13405a9">5.5. Players spend pool points to reduce difficulties.</a></li>
+<li><a href="#org050ac16">5.6. Edge reduces the cost of effort.</a></li>
+<li><a href="#org52646ad">5.7. Resting restores 1d6 pool points.</a></li>
+<li><a href="#org518f00f">5.8. Training situationally reduces difficulty.</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org12a9cd7" class="outline-2">
+<h2 id="org12a9cd7"><span class="section-number-2">1</span> Players have might, speed, and intellect points.</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+These are combined health / mana pools. Physical damage reduces your
+might pool, some magical damage can reduce speed or intellect. Most
+spells require spending intellect points. Many specialized physical
+attacks require spending might or speed.
+</p>
+
+<p>
+You can spend pool points to add any roll. At first level, you can
+spend up to 3 pool points for a single roll.
+</p>
+
+<p>
+Each of your pools has an associated <b>edge</b>. Edge reduces how many
+pool points you need to spend. For instance, a might edge of 1 makes
+it free to spend one might pool point.
+</p>
+
+<p>
+You are an adjective noun that verbs
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1240d61" class="outline-2">
+<h2 id="org1240d61"><span class="section-number-2">2</span> Choose a noun</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org7a3096e" class="outline-3">
+<h3 id="org7a3096e"><span class="section-number-3">2.1</span> Fighter</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>Might 10, Edge 1</li>
+<li>Speed 10, Edge 0</li>
+<li>Intellect 8, Edge 0</li>
+</ul>
+
+<p>
+And an additional 6 points to distribute as you choose.
+</p>
+
+<p>
+You are practiced in all weapons and can use them without penalty.
+</p>
+
+<p>
+<b>Choose</b> three special abilities:
+</p>
+
+<ul class="org-ul">
+<li><b>Quick on the draw</b>. You get +3 to your initiative rolls.</li>
+<li><b>Shove</b>. Spend 1 might to melee attack and move an opponent into a
+position you desire within immediate range. Deals 1 less damage than
+usual.</li>
+<li><b>Stab</b>. Spend 1 might to deal 1 extra damage with a weapon with a sharp point.</li>
+<li><b>Daze</b>. Spend 1 might point to daze an opponent for one round,
+during which time the difficulty of all their actions is increased
+by 3. Deals one less damage than usual.</li>
+<li><b>Sharpshooter</b>. Spend 1 speed to deal 1 extra damage with a ranged
+weapon.</li>
+<li><b>Overwatch</b>. You use a ranged weapon to target a narrow location
+(e.g. a hallway or just above a rock etc.) and attack the first
+creature that appears. This is a trigger action (occurs when someone
+appears). This attack negates any advantage the creature would have
+from cover or surprise (+3 and +6 to difficulty, respectively).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf2987fb" class="outline-3">
+<h3 id="orgf2987fb"><span class="section-number-3">2.2</span> Traveler</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>Might 10, Edge 1</li>
+<li>Speed 9, Edge 0</li>
+<li>Intellect 9, Edge 0</li>
+</ul>
+
+<p>
+And an additional 6 points to distribute as you choose. If you wield a heavy
+weapon, increase the attack difficulty by 3.
+</p>
+
+<p>
+<b>Choose</b> three special abilities:
+</p>
+
+<ul class="org-ul">
+<li><b>Danger sense</b>. The difficulty of your initiative is reduced by 3.</li>
+<li><b>Block</b>. Spend 3 speed points to automatically block the next melee attack against you.</li>
+<li><b>Decipher</b>. Spend 1 intellect point to examine a piece of writing or code you
+do not understand. Make a intellect roll of 3 (or higher, depending on the
+code or language). On success, you get the gist of the message. If used
+in combat, takes an action.</li>
+<li><b>Endurance</b>. Any duration of physical action is halved or doubled. E.g. you can
+march twice as long in a day, or poison wears off twice as fast, or you can
+hold your breathe twice as long. Minimum duration one round.</li>
+<li><b>Fleet of foot</b>. If you succeed a difficulty 6 speed roll to run, you can move
+a short distance and take an action in the same round.</li>
+<li><b>Strive</b>. Spend 2 might points to reduce the difficulty of all non-attack might-based
+rolls by 3. Lasts 10 minutes.</li>
+<li>You have a Might Edge of 1 and a Speed Edge of 1.</li>
+<li>You are trained in two skills you are not already trained in.</li>
+<li>You can use heavy weapons.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8b6fcd4" class="outline-3">
+<h3 id="org8b6fcd4"><span class="section-number-3">2.3</span> Seer</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>Might 7, Edge 0</li>
+<li>Speed 9, Edge 0</li>
+<li>Intellect 12, Edge 1</li>
+</ul>
+
+<p>
+<b>Choose</b> three special abilities:
+</p>
+
+<ul class="org-ul">
+<li><b>Truesight vision</b>. You carry with you a plant offering temporary
+truesight vision. Upon smoking, the plant offers you insight into
+nature of the world around you. This can be the level of a creature,
+or the fact that there is a metal object in a nearby wooden chest,
+etc. After a few moments, the truesight ends and you are left
+mentally befuddled. Costs 2 intellect points.</li>
+<li><b>Warding</b>. You once happened across a plant of warding. You gain 1 Armor
+permanently.</li>
+<li><b>Mindkiller</b>. Spend 1 intellect to deal either 2 intellect damage or 4 physical damage. The
+intellect damage
+action next turn. Agreed upon by the GM prior to rolling.</li>
+<li><b>Mind trick</b>. Spend 1 intellect to convince cognizant creature to do
+a reasonable action next turn. Agreed upon by the GM prior to
+rolling.</li>
+<li><b>These are not the droids you're looking for</b>. Spend 1 intellect
+point to convince an individual that you are not part of a group of
+people. For instance, you are not from a certain town or tribe. The
+effect lasts for 1 hour or until the individual learns of facts
+otherwise. To cast on multiple creatures, 1 additional intellect
+point per creature.</li>
+<li>You are <b>trained</b> in intellect defense tasks and have +2 to armor against
+damage that selectively targets intellect (this normally would rely on your
+usual armor).</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgdc8b8e8" class="outline-3">
+<h3 id="orgdc8b8e8"><span class="section-number-3">2.4</span> Rogue</h3>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li>Might 10, Edge 1</li>
+<li>Speed 9, Edge 0</li>
+<li>Intellect 9, Edge 0</li>
+</ul>
+
+<p>
+And an additional 6 points to distribute as you choose. If you wield a heavy
+weapon, increase the attack difficulty by three.
+</p>
+
+<p>
+<b>Choose</b> three special abilities:
+</p>
+
+<ul class="org-ul">
+<li><b>Danger sense</b>. The difficulty of your initiative is reduced by 3.</li>
+<li><b>Block</b>. Spend 3 speed points to automatically block the next melee attack against you.</li>
+<li><b>Decipher</b>. Spend 1 intellect point to examine a piece of writing or code you
+do not understand. Make a intellect roll of 3 (or higher, depending on the
+code or language). On success, you get the gist of the message. If used
+in combat, takes an action.</li>
+<li><b>Endurance</b>. Any duration of physical action is halved or doubled. E.g. you can
+march twice as long in a day, or poison wears off twice as fast, or you can
+hold your breathe twice as long. Minimum duration one round.</li>
+<li>You have a Might Edge of 1 and a Speed Edge of 1.</li>
+<li><b>Fleet of foot</b>. If you succeed a difficulty 6 speed roll to run, you can move
+a short distance and take an action in the same round.</li>
+<li><b>Goad</b>. After you successfully attack a creature, the difficulty of
+all others speed defense against the creature's attacks decreased by
+three until the next round.</li>
+<li><b>Sleight of hand</b>. 1 speed point. You can e.g. move a object from
+your hand to a desired spot (e.g. your pocket). You can make someone
+believe they have something in their possession that they do not
+have (or vice versa). You can switch objects right in front of
+someone's eyes. Action.</li>
+<li><b>Opportunist</b>. You have an asset on any attack roll you make on a
+creature that has already been attacked this round and is within immediate range.</li>
+<li>You are trained in two skills you are not already trained in.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf0dc09f" class="outline-2">
+<h2 id="orgf0dc09f"><span class="section-number-2">3</span> Choose an adjective</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orge33570a" class="outline-3">
+<h3 id="orge33570a"><span class="section-number-3">3.1</span> Charming</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
++2 Intellect. <b>Trained</b> in pleasant social interaction and special
+abilities that influence the minds of others. You not much of a
+bookworm and so <b>struggle</b> in lore, knowledge, or understanding and
+resisting mental attacks.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org577a96b" class="outline-3">
+<h3 id="org577a96b"><span class="section-number-3">3.2</span> Driven</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
++2 Might. Trained in intellect defense. Each day you are <b>trained</b> in
+a skill of your choice that you believe will help you reach your
+goal. You are so focused on your mission, you don't notice other
+things and <b>struggle</b> on all perception tasks.
+</p>
+
+<p>
+When you choose this descriptor, choose a mission you want to
+accomplish. You probably talk about it a lot. When you accomplish the
+mission, choose another.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb16c7af" class="outline-3">
+<h3 id="orgb16c7af"><span class="section-number-3">3.3</span> Exiled</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
++2 might. As a loner, you gain no benefit when someone with training
+helps you with a task. You're <b>trained</b> in sneaking, foraging,
+hunting, and finding safe places. Your extended solitary time causes
+you to <b>struggle</b> in social situation.
+</p>
+
+<p>
+Perhaps you committed a horrible deed or carry some token from an
+earlier, cheerier time in your life.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4653009" class="outline-3">
+<h3 id="org4653009"><span class="section-number-3">3.4</span> Intelligent</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
++2 intellect. <b>Trained</b> in area of knowledge of your choice and all
+tasks that draw from your memory.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org574c92b" class="outline-3">
+<h3 id="org574c92b"><span class="section-number-3">3.5</span> Maeha</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
++2 might. You are half human, half bison. You are <b>trained</b> in
+foraging, nature-based history, smell-based perception checks, and a
+sense of direction in the open plains. You <b>struggle</b> with
+vision-based perception checks. Your permanent horns are a medium
+weapon.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb5a42a2" class="outline-3">
+<h3 id="orgb5a42a2"><span class="section-number-3">3.6</span> Mysterious</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+Trained in stealth and resisting interrogation. Once per recovery
+period, you can attempt any action as if you were trained in it. You
+<b>struggle</b> in getting people to believe or trust you.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org017d8ef" class="outline-3">
+<h3 id="org017d8ef"><span class="section-number-3">3.7</span> Perceptive</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
++2 intellect. <b>Trained</b> in finding or noticing small
+details, identifying objects, recalling trivia, and intimidating
+another creature. You <b>struggle</b> in positive social interaction.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc468d87" class="outline-3">
+<h3 id="orgc468d87"><span class="section-number-3">3.8</span> Rugged</h3>
+<div class="outline-text-3" id="text-3-8">
+<p>
+<b>Trained</b> in climbing, jumping, running, swimming. <b>Trained</b> in
+training, riding, or placating natural animals. Trained in
+identifying or using natural plants. You struggle with charm,
+persuasion, etiquette and deception.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1414b7b" class="outline-3">
+<h3 id="org1414b7b"><span class="section-number-3">3.9</span> Sharp</h3>
+<div class="outline-text-3" id="text-3-9">
+<p>
+Trained in initiative and perception. If an opponent has a
+straightforward weakness, the GM will tell you.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5a859fd" class="outline-3">
+<h3 id="org5a859fd"><span class="section-number-3">3.10</span> Spiritual</h3>
+<div class="outline-text-3" id="text-3-10">
+<p>
++2 intellect. Trained in pleasant social interaction,
+intellect defense tasks, and resisting temptation. When you help
+someone, they add 1 to their roll. You hesistate when taking in
+novel details, and so <b>struggle</b> with initiative actions.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb4a9415" class="outline-3">
+<h3 id="orgb4a9415"><span class="section-number-3">3.11</span> Stealthy</h3>
+<div class="outline-text-3" id="text-3-11">
+<p>
++2 speed. Trained in stealth, lying, and trickery and all such special
+abilities. You're stealthy but not fast and so struggle with
+movement-related tasks.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf814711" class="outline-2">
+<h2 id="orgf814711"><span class="section-number-2">4</span> Choose a verb</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orgd721615" class="outline-3">
+<h3 id="orgd721615"><span class="section-number-3">4.1</span> Abides in pumice</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+You are a creature of pumice, not flesh. You can move, speak, and feel
+pain. Your pumice body makes it harder to take damage, but also harder
+to heal. You typically do not wear clothes, though your stone frame
+may be carved as such.
+</p>
+
+<p>
+Minor effect suggestion: you step on the target and prevent it from
+moving next turn.  Major effect suggestion: you break a weapon,
+shield, or piece of armor the target is using.
+</p>
+
+<p>
+You gain +1 to armor, +1 might edge, and 5 additional might
+points. You do not need to eat or drink or breathe (though you still
+need to rest and sleep). You move more stiffly than a creature of
+flesh, so can never be trained in speed defense rolls. You are
+practiced as using your stone fists as a medium weapon.
+</p>
+
+<p>
+You are unable to use the first, single-action recovery roll of the
+day. Thus, the first recovery roll uses ten minutes, the second uses
+an hour, and the last requires ten hours.
+</p>
+</div>
+</div>
+<div id="outline-container-org964eb8e" class="outline-3">
+<h3 id="org964eb8e"><span class="section-number-3">4.2</span> Carries a quiver</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Minor effect suggestion: hit in a tendon or muscle, the target takes 2
+points of speed damage as well as normal damage. Major effect
+suggestion: the target is pinned in place with an arrow.
+</p>
+
+<p>
+You can spend points from either speed or intellect when applying
+levels of effort to increase bow damage.
+</p>
+</div>
+</div>
+<div id="outline-container-org746cd53" class="outline-3">
+<h3 id="org746cd53"><span class="section-number-3">4.3</span> Fights dirty</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Minor effect suggestion: You make the foe trip and fall prone. Major
+effect suggestion: You tangle something around you foe's leg and they
+lose their next turn.
+</p>
+
+<p>
+When your foe is disadvantaged in any way, the difficulty of attack is
+decreased by three.
+</p>
+
+<p>
+You are trained in deception.
+</p>
+</div>
+</div>
+<div id="outline-container-org001e340" class="outline-3">
+<h3 id="org001e340"><span class="section-number-3">4.4</span> Heals</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+Minor effect suggestion: the target is healed for 1 extra point. Major
+effect suggestion: the target is healed for 2 extra points.
+</p>
+
+<p>
+1 intellect point. With a touch, you restore 1d6 points to any stat
+pool of a creature. Difficulty 6 intellect task. Each time you use
+this on a creature, the difficulty increases by three. Difficulty
+returns to 6 after the creature takes a long rest.
+</p>
+</div>
+</div>
+<div id="outline-container-org15ba022" class="outline-3">
+<h3 id="org15ba022"><span class="section-number-3">4.5</span> Hunts with great skill</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+Minor effect suggestion: You can attempt an intimidating task to cause
+your foe to immediately surrender.  Major effect suggestion: Your foe
+pauses, terrified, and takes no action on their turn.
+</p>
+
+<p>
+You are trained in following and identifying tracks. You are trained
+in all types of movement (climbing, swimming, jumping, balancing).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb5bcb06" class="outline-3">
+<h3 id="orgb5bcb06"><span class="section-number-3">4.6</span> Lives in the wilderness</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+Minor effect suggestion: A natural creature foe flees. Major effect
+suggestion: A natural creature foe becomes warily passive.
+</p>
+
+<p>
+Trained in climbing, swimming, wilderness navigation, and identifying
+plants and creatures.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org78c71a9" class="outline-3">
+<h3 id="org78c71a9"><span class="section-number-3">4.7</span> Murders</h3>
+<div class="outline-text-3" id="text-4-7">
+<p>
+Minor effect suggestion: no one but the foe notices your attack.
+Major effect suggestion: if you have poison, you apply it just before
+the strike, adding poison's effects to the normal damange.
+</p>
+
+<p>
+If you attack with surprise or before an opponent has acted, the
+difficulty of your attack is reduced by three. On a successful
+surprise attack, you inflict 2 more points of damange.
+</p>
+
+<p>
+You are trained in stealth and disguise.
+</p>
+</div>
+</div>
+<div id="outline-container-org593c6ea" class="outline-3">
+<h3 id="org593c6ea"><span class="section-number-3">4.8</span> Wields a fire spear</h3>
+<div class="outline-text-3" id="text-4-8">
+<p>
+TODO
+</p>
+</div>
+</div>
+<div id="outline-container-org4c0b3ff" class="outline-3">
+<h3 id="org4c0b3ff"><span class="section-number-3">4.9</span> Wields two weapons at once</h3>
+<div class="outline-text-3" id="text-4-9">
+<p>
+Minor effect suggestion: Target is intimidated and flees at its next
+action. Major effect suggestion: You can make an additional attack
+with one of your weapons.
+</p>
+
+<p>
+You can wield two light weapons at the same time, making two separate
+attacks with a single action. At first level, you can apply effort to
+only one of these attacks. Armor applies to both damages.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org51f25db" class="outline-2">
+<h2 id="org51f25db"><span class="section-number-2">5</span> Games mechanics</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orged508c7" class="outline-3">
+<h3 id="orged508c7"><span class="section-number-3">5.1</span> Players make all the rolls.</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+Every roll has a difficulty, as determined by the GM. The player must
+roll that difficulty or higher to succeed. Rolls typically have bonuses
+applied to them.
+</p>
+
+<p>
+Some examples of things that reduce difficulty include knowledge of a
+situation, quality weapons or armor, training, an advantageous
+situation, etc.
+</p>
+
+<p>
+Players can spend pool points to lower difficulties.
+</p>
+
+<p>
+Rolling a natural 19 or 20 (assuming the roll is a success against the
+TD) introduces a <b>minor</b> or <b>major effect</b>, respectively.
+</p>
+
+<p>
+Minor effects could be a particular grace to your action, or in
+combat, an extra 3 damage, the opponent knocking the foe back,
+distracting the foe, etc..
+</p>
+
+<p>
+Major effects could be an extra 4 damage, knocking your foe down,
+stunning them, etc. Alternatively, in combat, you may take another
+action.
+</p>
+
+<p>
+The verb you choose gives you some more minor and major effects.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8c787ba" class="outline-3">
+<h3 id="org8c787ba"><span class="section-number-3">5.2</span> Attacking and defending</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Attacking an opponent is a roll, defending an attack is a
+roll. The difficulty of these rolls is equal to the level of the opponent. For
+instance, to hit or defend against a level 2 opponent requires a 6 or higher.
+</p>
+
+<p>
+Damage and armor are flat numbers.
+</p>
+
+<ul class="org-ul">
+<li><b>Light weapons</b> deal 2 damage and reduce TD by 1, as they're quick and easy to use.</li>
+<li><b>Medium weapons</b> deal 4 damage.</li>
+<li><b>Heavy weapons</b> require two hands and deal 6 damage.</li>
+</ul>
+
+<p>
+Rolling a 17 deals an extra point of damage.
+Rolling high can deal more damage.
+</p>
+
+<ul class="org-ul">
+<li>17 deals 1 additional damage.</li>
+<li>18 deals 2 additional damage.</li>
+<li>19 deals 3 additional damage or introduces a minor effect.</li>
+<li>20 deals 4 additional damage or introduces a major effect.</li>
+</ul>
+
+<p>
+Armor reduces damage by a flat amount, possibly down to zero.
+</p>
+
+<p>
+Roll a 1 is bad as well and may introduce a GM complication. I'm not too
+familiar on the rules of GM complications now, so we'll keep it simple and
+forgiving for now :)
+</p>
+
+<p>
+Distance is either <b>immediate</b>, <b>short</b> (15-50"), or <b>long</b>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6ea0ebf" class="outline-3">
+<h3 id="org6ea0ebf"><span class="section-number-3">5.3</span> Players get an action per turn.</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+Example actions include moving to melee attack an opponent in immediate range,
+making a ranged attack, performing a short plant ritual, or moving a short
+distance.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb7d16a5" class="outline-3">
+<h3 id="orgb7d16a5"><span class="section-number-3">5.4</span> Players have three pools of points.</h3>
+<div class="outline-text-3" id="text-5-4">
+<ul class="org-ul">
+<li>Might</li>
+<li>Speed</li>
+<li>Intellect</li>
+</ul>
+
+<p>
+Each pool has an associated modifier called <b>edge</b>.
+</p>
+
+<p>
+Damage is dealt against one of these pools. Physical attacks against
+might. Perhaps a drug inducing clusminess may deal against speed. Some
+mystic may attack against intellect.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org13405a9" class="outline-3">
+<h3 id="org13405a9"><span class="section-number-3">5.5</span> Players spend pool points to reduce difficulties.</h3>
+</div>
+
+<div id="outline-container-org050ac16" class="outline-3">
+<h3 id="org050ac16"><span class="section-number-3">5.6</span> Edge reduces the cost of effort.</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+When spending pool points as effort, subtract the associated edge
+modifier from the number of pool points spent.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org52646ad" class="outline-3">
+<h3 id="org52646ad"><span class="section-number-3">5.7</span> Resting restores 1d6 pool points.</h3>
+<div class="outline-text-3" id="text-5-7">
+<p>
+These can be distributed amongst the pools as you wish.
+</p>
+
+<p>
+The first rest of the day takes an action (e.g. instead of attacking
+in combat). The second rest of the day takes 10 minutes. Third takes
+an hour. Fourth is 10 hours. So per day, you can gain 4d6 points back.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org518f00f" class="outline-3">
+<h3 id="org518f00f"><span class="section-number-3">5.8</span> Training situationally reduces difficulty.</h3>
+<div class="outline-text-3" id="text-5-8">
+<p>
+Being trained in a skill is a plus three bonus. Being specialized is a
+plus 6.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Evan Bergeron</p>
+<p class="date">Created: 2020-11-30 Mon 20:33</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-11-30 Mon 20:33 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Evan Bergeron" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgeb638be">1. thon is a programming language.</a>
+<ul>
+<li><a href="#natural-numbers">1.1. natural numbers</a></li>
+<li><a href="#functions">1.2. functions</a></li>
+<li><a href="#variables">1.3. variables</a></li>
+<li><a href="#polymorphism">1.4. polymorphism</a></li>
+<li><a href="#existential-packages-hide-types">1.5. existential packages hide types</a></li>
+<li><a href="#recursive-types">1.6. recursive types</a></li>
+<li><a href="#thanks">1.7. thanks</a></li>
+<li><a href="#install-ubuntu-20">1.8. install (ubuntu 20)</a></li>
+<li><a href="#collatz-conjecture">1.9. collatz conjecture</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgeb638be" class="outline-2">
+<h2 id="orgeb638be"><span class="section-number-2">1</span> thon is a programming language.</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+:CUSTOM<sub>ID</sub>: thon
+</p>
+<p>
+thon is a small programming language. Here's an example program that
+verifies the empty list is empty.
+</p>
+
+<pre class="example">
+fun isempty : (data l = (unit | nat * l)) -&gt; nat =
+  \ natlist : (data l = (unit | nat * l)) -&gt;
+        (case (unfold natlist) of
+           empty -&gt; S Z
+         | not -&gt; Z)
+in let nil : (data l = (unit | nat * l)) =
+    fold data l = (unit | nat * l) with
+    left unit : (unit
+               | nat * (data l = (unit | nat * l)))
+in
+(isempty nil)
+</pre>
+
+<p>
+thon has natural numbers, functions, recursion, binary product and sum
+types, polymorphism, existential packages (a formalization of
+interfaces), and recursive types.
+</p>
+</div>
+
+<div id="outline-container-org64e3e06" class="outline-3">
+<h3 id="natural-numbers"><a id="org64e3e06"></a><span class="section-number-3">1.1</span> natural numbers</h3>
+<div class="outline-text-3" id="text-natural-numbers">
+<p>
+<code>Z</code> is the natural number 0. <code>S Z</code> is 1 (the succesor of one). <code>S S Z</code>
+is 2, and so on.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbc61726" class="outline-3">
+<h3 id="functions"><a id="orgbc61726"></a><span class="section-number-3">1.2</span> functions</h3>
+<div class="outline-text-3" id="text-functions">
+<p>
+In thon, functions are expressions just like numbers are. thon supports
+anonymous functions and named, recursive functions.
+</p>
+
+<p>
+Here are some example anonymous functions.
+</p>
+
+<pre class="example">
+\ x : nat -&gt; x
+\ x : nat -&gt; (\ y : nat -&gt; y)
+</pre>
+
+<p>
+Functions are applied to their arguments by juxtaposition.
+</p>
+
+<pre class="example">
+((\ x : nat -&gt; x) Z)
+</pre>
+
+<p>
+Here's a divide-by-two function:
+</p>
+
+<pre class="example">
+fun divbytwo : nat -&gt; nat =
+  \ n : nat -&gt;
+    ifz n of
+      Z -&gt; Z
+    | S p -&gt; ifz p of Z -&gt; Z | S p' -&gt; (S (divbytwo p'))
+in divbytwo (S S S S Z)
+</pre>
+
+<p>
+If the number is zero, we're done. Otherwise, it has some predecessor
+number <code>p</code>. If <code>p</code> is zero, then return zero (taking the floor).
+Otherwise, recurse on the predecessor of the predecessor <code>n-2</code> and add
+one to whatever that gave us.
+</p>
+
+<p>
+Under the hood, recursive functions are implemented as a fixed point
+expression that substitutes itself in for itself. It's like a recursive
+function, but it doesn't have to be a function, it can be any
+expression. Here's an amusing way to loop forever:
+</p>
+
+<pre class="example">
+fix loop : nat in loop
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org0a1144b" class="outline-3">
+<h3 id="variables"><a id="org0a1144b"></a><span class="section-number-3">1.3</span> variables</h3>
+<div class="outline-text-3" id="text-variables">
+<pre class="example">
+let x : nat = Z in x
+</pre>
+
+<p>
+binds the name <code>x</code> in the expression following the <code>in</code> keyword.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb7a0ce2" class="outline-3">
+<h3 id="polymorphism"><a id="orgb7a0ce2"></a><span class="section-number-3">1.4</span> polymorphism</h3>
+<div class="outline-text-3" id="text-polymorphism">
+<p>
+Polymorphism lets us reuse code you wrote for many different types, with
+the guarantee that the code will behave the same for all types.
+</p>
+
+<pre class="example">
+poly t -&gt; \ x : t -&gt; x
+</pre>
+
+<p>
+is the polymorphic identity function. Feed it a type to get the identity
+function on that type. e.g.
+</p>
+
+<pre class="example">
+(poly t -&gt; \ x : t -&gt; x) nat
+</pre>
+
+<p>
+evaluates to the identity function on natural numbers.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2819816" class="outline-3">
+<h3 id="existential-packages-hide-types"><a id="org2819816"></a><span class="section-number-3">1.5</span> existential packages hide types</h3>
+<div class="outline-text-3" id="text-existential-packages-hide-types">
+<p>
+They let us write a piece of code with a private implementation type.
+Clients that use this implementation don't know what type was used. This
+property is enforced by the type system.
+</p>
+
+<p>
+Ok, so how do we use them in thon? Let's consider a sort-of-silly
+example.
+</p>
+
+<p>
+The interface is just "set" and "get." We feed in a number, get a number
+back. However the implementation stores the number is up to them.
+</p>
+
+<p>
+We have two implementations with two separate implementation types. The
+first just holds on to the number.
+</p>
+
+<pre class="example">
+((*set*) \ x : nat -&gt; x,
+ (*get*) \ x : nat -&gt; x)
+</pre>
+
+<p>
+The second stores in the number in a tuple (for no real good reason -
+you didn't write this code, it's not your fault it does it this way).
+</p>
+
+<pre class="example">
+((*set*) \ x : nat -&gt; (x, Z),
+ (*get*) \ tup : (nat * nat) -&gt; fst tup)
+</pre>
+
+<p>
+Now each of these implementations can be packed away with the syntax
+</p>
+
+<pre class="example">
+impl some t. ((nat -&gt; t) * (t -&gt; nat)) with nat as
+(
+    ((*set*) \ x : nat -&gt; x,
+    (*get*) \ x : nat -&gt; x)
+)
+</pre>
+
+<p>
+and
+</p>
+
+<pre class="example">
+impl some t. ((nat -&gt; t) * (t -&gt; nat)) with (nat, nat) as
+(
+    ((*set*) \ x : nat -&gt; (x, Z),
+    (*get*) \ tup : (nat * nat) -&gt; fst tup)
+)
+</pre>
+
+<p>
+Both of these expression have type <code>((nat -&gt; T) * (T -&gt; nat))</code> for some
+type <code>T</code>. Note this is an existential claim, hence the name existential
+packages.
+</p>
+
+<p>
+An implementation can be used as follows:
+</p>
+
+<pre class="example">
+let setget : some t. ((nat -&gt; t) * (t -&gt; nat)) =
+    (impl some t. ((nat -&gt; t) * (t -&gt; nat)) with nat as
+    (
+        ((*set*) \ x : nat -&gt; x,
+        (*get*) \ x : nat -&gt; x)
+     ))
+in use setget as (sg, t) in
+let set : (nat -&gt; t) = fst sg in
+let get : (t -&gt; nat) = snd sg in
+let s : t = set (S S Z) in
+let g : nat = get s in
+g
+</pre>
+
+<p>
+Note that since the type variable <code>t</code> declared in the <code>use</code> clause is
+abstract, we can equivalently use the other implementation.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga511a60" class="outline-3">
+<h3 id="recursive-types"><a id="orga511a60"></a><span class="section-number-3">1.6</span> recursive types</h3>
+<div class="outline-text-3" id="text-recursive-types">
+<p>
+<code>data nats = (unit | (nat * nats))</code> is the type of lists natural
+numbers.
+</p>
+
+<pre class="example">
+fold data nats = (unit | (nat * nats))
+with left unit : (unit | (nat * (data nats = (unit | (nat * nats)))))
+</pre>
+
+<p>
+is the empty list of natural numbers.
+</p>
+
+<pre class="example">
+\ (nat * (data nats = (unit | nat * nats))) -&gt;
+   fold data nats = (unit | nat * nats) with
+   right 0 : (unit | nat * (data nats = (unit | nat * nats)))
+</pre>
+
+<p>
+is a function that takes a pair (nat, natlist) and prepends nat to
+natlist.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9d51fc2" class="outline-3">
+<h3 id="thanks"><a id="org9d51fc2"></a><span class="section-number-3">1.7</span> thanks</h3>
+<div class="outline-text-3" id="text-thanks">
+<p>
+I've mostly been working out of Bob Harper's "Practical Foundations for
+Programming Languages," though Pierce's "Types and Programming
+Languages" has been a useful source of examples and exposition as well.
+I am also grateful to Rob Simmons and every other contributor to the SML
+starter code for CMU's Fall 2016 compilers course.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1ec413b" class="outline-3">
+<h3 id="install-ubuntu-20"><a id="org1ec413b"></a><span class="section-number-3">1.8</span> install (ubuntu 20)</h3>
+<div class="outline-text-3" id="text-install-ubuntu-20">
+<p>
+Wow, you read this far! (or scrolled this far, at least) If you'd like
+to program in thon, the code is publicly available.
+</p>
+
+<pre class="example">
+$ git clone https://git.sr.ht/~thon/thon
+$ sudo apt install smlnj ml-yaxx ml-lex ml-lpt
+$ sml
+- CM.make "path/to/your/git/clone/thon.cm";
+- Thon.run "some thon program here";
+</pre>
+
+<p>
+If you figure out install instructions on mac or windows or have any
+other questions or comments, please email me at bergeronej@gmail.com. I
+would love to hear from you!
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc21459b" class="outline-3">
+<h3 id="collatz-conjecture"><a id="orgc21459b"></a><span class="section-number-3">1.9</span> collatz conjecture</h3>
+<div class="outline-text-3" id="text-collatz-conjecture">
+<p>
+A fun program I wrote after adding recursion. Pretty much all the code
+I've written in thon is available through the git repo.
+</p>
+
+<pre class="example">
+let isone : nat -&gt; nat = 
+  \ n : nat -&gt;
+    ifz n of
+      Z -&gt; Z (*false*)
+    | S p -&gt; ifz p of Z -&gt; S Z | S p -&gt; Z
+in fun iseven : nat -&gt; nat =
+  \ n : nat -&gt;
+    ifz n of
+      Z -&gt; S Z (*true*)
+    | S p -&gt; ifz (iseven p) of Z -&gt; S Z | S p -&gt; Z
+in fun divbytwo : nat -&gt; nat =
+  \ n : nat -&gt;
+    ifz n of
+      Z -&gt; Z
+    | S p -&gt; ifz p of Z -&gt; Z | S p' -&gt; (S (divbytwo p'))
+in fun multbythree : nat -&gt; nat =
+  \ n : nat -&gt;
+    ifz n of
+      Z -&gt; Z
+   | S nminusone -&gt; S S S (multbythree nminusone)
+in fun collatz : nat -&gt; nat =
+  \ n : nat -&gt;
+    ifz (isone n) of
+      Z -&gt; (
+        ifz (iseven n) of
+          Z -&gt; collatz (S (multbythree n))
+        | S p -&gt; (collatz (divbytwo n))
+      )
+    | S p -&gt; (S Z)
+in (collatz (S S Z))
+</pre>
+
+<p>
+<a href="https://xkcd.com/710/">relevant xkcd</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Evan Bergeron</p>
+<p class="date">Created: 2020-11-30 Mon 20:33</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

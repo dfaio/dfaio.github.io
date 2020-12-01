@@ -1,0 +1,284 @@
+* thon is a programming language.
+  :PROPERTIES:
+  :CUSTOM_ID: thon
+  :END:
+
+thon is a small programming language. Here's an example program that
+verifies the empty list is empty.
+
+#+BEGIN_EXAMPLE
+    fun isempty : (data l = (unit | nat * l)) -> nat =
+      \ natlist : (data l = (unit | nat * l)) ->
+            (case (unfold natlist) of
+               empty -> S Z
+             | not -> Z)
+    in let nil : (data l = (unit | nat * l)) =
+        fold data l = (unit | nat * l) with
+        left unit : (unit
+                   | nat * (data l = (unit | nat * l)))
+    in
+    (isempty nil)
+#+END_EXAMPLE
+
+thon has natural numbers, functions, recursion, binary product and sum
+types, polymorphism, existential packages (a formalization of
+interfaces), and recursive types.
+
+** natural numbers
+   :PROPERTIES:
+   :CUSTOM_ID: natural-numbers
+   :END:
+
+=Z= is the natural number 0. =S Z= is 1 (the succesor of one). =S S Z=
+is 2, and so on.
+
+** functions
+   :PROPERTIES:
+   :CUSTOM_ID: functions
+   :END:
+
+In thon, functions are expressions just like numbers are. thon supports
+anonymous functions and named, recursive functions.
+
+Here are some example anonymous functions.
+
+#+BEGIN_EXAMPLE
+    \ x : nat -> x
+    \ x : nat -> (\ y : nat -> y)
+#+END_EXAMPLE
+
+Functions are applied to their arguments by juxtaposition.
+
+#+BEGIN_EXAMPLE
+    ((\ x : nat -> x) Z)
+#+END_EXAMPLE
+
+Here's a divide-by-two function:
+
+#+BEGIN_EXAMPLE
+    fun divbytwo : nat -> nat =
+      \ n : nat ->
+        ifz n of
+          Z -> Z
+        | S p -> ifz p of Z -> Z | S p' -> (S (divbytwo p'))
+    in divbytwo (S S S S Z)
+#+END_EXAMPLE
+
+If the number is zero, we're done. Otherwise, it has some predecessor
+number =p=. If =p= is zero, then return zero (taking the floor).
+Otherwise, recurse on the predecessor of the predecessor =n-2= and add
+one to whatever that gave us.
+
+Under the hood, recursive functions are implemented as a fixed point
+expression that substitutes itself in for itself. It's like a recursive
+function, but it doesn't have to be a function, it can be any
+expression. Here's an amusing way to loop forever:
+
+#+BEGIN_EXAMPLE
+    fix loop : nat in loop
+#+END_EXAMPLE
+
+** variables
+   :PROPERTIES:
+   :CUSTOM_ID: variables
+   :END:
+
+#+BEGIN_EXAMPLE
+    let x : nat = Z in x
+#+END_EXAMPLE
+
+binds the name =x= in the expression following the =in= keyword.
+
+** polymorphism
+   :PROPERTIES:
+   :CUSTOM_ID: polymorphism
+   :END:
+
+Polymorphism lets us reuse code you wrote for many different types, with
+the guarantee that the code will behave the same for all types.
+
+#+BEGIN_EXAMPLE
+    poly t -> \ x : t -> x
+#+END_EXAMPLE
+
+is the polymorphic identity function. Feed it a type to get the identity
+function on that type. e.g.
+
+#+BEGIN_EXAMPLE
+    (poly t -> \ x : t -> x) nat
+#+END_EXAMPLE
+
+evaluates to the identity function on natural numbers.
+
+** existential packages hide types
+   :PROPERTIES:
+   :CUSTOM_ID: existential-packages-hide-types
+   :END:
+
+They let us write a piece of code with a private implementation type.
+Clients that use this implementation don't know what type was used. This
+property is enforced by the type system.
+
+Ok, so how do we use them in thon? Let's consider a sort-of-silly
+example.
+
+The interface is just "set" and "get." We feed in a number, get a number
+back. However the implementation stores the number is up to them.
+
+We have two implementations with two separate implementation types. The
+first just holds on to the number.
+
+#+BEGIN_EXAMPLE
+    ((*set*) \ x : nat -> x,
+     (*get*) \ x : nat -> x)
+#+END_EXAMPLE
+
+The second stores in the number in a tuple (for no real good reason -
+you didn't write this code, it's not your fault it does it this way).
+
+#+BEGIN_EXAMPLE
+    ((*set*) \ x : nat -> (x, Z),
+     (*get*) \ tup : (nat * nat) -> fst tup)
+#+END_EXAMPLE
+
+Now each of these implementations can be packed away with the syntax
+
+#+BEGIN_EXAMPLE
+    impl some t. ((nat -> t) * (t -> nat)) with nat as
+    (
+        ((*set*) \ x : nat -> x,
+        (*get*) \ x : nat -> x)
+    )
+#+END_EXAMPLE
+
+and
+
+#+BEGIN_EXAMPLE
+    impl some t. ((nat -> t) * (t -> nat)) with (nat, nat) as
+    (
+        ((*set*) \ x : nat -> (x, Z),
+        (*get*) \ tup : (nat * nat) -> fst tup)
+    )
+#+END_EXAMPLE
+
+Both of these expression have type =((nat -> T) * (T -> nat))= for some
+type =T=. Note this is an existential claim, hence the name existential
+packages.
+
+An implementation can be used as follows:
+
+#+BEGIN_EXAMPLE
+    let setget : some t. ((nat -> t) * (t -> nat)) =
+        (impl some t. ((nat -> t) * (t -> nat)) with nat as
+        (
+            ((*set*) \ x : nat -> x,
+            (*get*) \ x : nat -> x)
+         ))
+    in use setget as (sg, t) in
+    let set : (nat -> t) = fst sg in
+    let get : (t -> nat) = snd sg in
+    let s : t = set (S S Z) in
+    let g : nat = get s in
+    g
+#+END_EXAMPLE
+
+Note that since the type variable =t= declared in the =use= clause is
+abstract, we can equivalently use the other implementation.
+
+** recursive types
+   :PROPERTIES:
+   :CUSTOM_ID: recursive-types
+   :END:
+
+=data nats = (unit | (nat * nats))= is the type of lists natural
+numbers.
+
+#+BEGIN_EXAMPLE
+    fold data nats = (unit | (nat * nats))
+    with left unit : (unit | (nat * (data nats = (unit | (nat * nats)))))
+#+END_EXAMPLE
+
+is the empty list of natural numbers.
+
+#+BEGIN_EXAMPLE
+    \ (nat * (data nats = (unit | nat * nats))) ->
+       fold data nats = (unit | nat * nats) with
+       right 0 : (unit | nat * (data nats = (unit | nat * nats)))
+#+END_EXAMPLE
+
+is a function that takes a pair (nat, natlist) and prepends nat to
+natlist.
+
+** thanks
+   :PROPERTIES:
+   :CUSTOM_ID: thanks
+   :END:
+
+I've mostly been working out of Bob Harper's "Practical Foundations for
+Programming Languages," though Pierce's "Types and Programming
+Languages" has been a useful source of examples and exposition as well.
+I am also grateful to Rob Simmons and every other contributor to the SML
+starter code for CMU's Fall 2016 compilers course.
+
+** install (ubuntu 20)
+   :PROPERTIES:
+   :CUSTOM_ID: install-ubuntu-20
+   :END:
+
+Wow, you read this far! (or scrolled this far, at least) If you'd like
+to program in thon, the code is publicly available.
+
+#+BEGIN_EXAMPLE
+    $ git clone https://git.sr.ht/~thon/thon
+    $ sudo apt install smlnj ml-yaxx ml-lex ml-lpt
+    $ sml
+    - CM.make "path/to/your/git/clone/thon.cm";
+    - Thon.run "some thon program here";
+#+END_EXAMPLE
+
+If you figure out install instructions on mac or windows or have any
+other questions or comments, please email me at bergeronej@gmail.com. I
+would love to hear from you!
+
+** collatz conjecture
+   :PROPERTIES:
+   :CUSTOM_ID: collatz-conjecture
+   :END:
+
+A fun program I wrote after adding recursion. Pretty much all the code
+I've written in thon is available through the git repo.
+
+#+BEGIN_EXAMPLE
+    let isone : nat -> nat = 
+      \ n : nat ->
+        ifz n of
+          Z -> Z (*false*)
+        | S p -> ifz p of Z -> S Z | S p -> Z
+    in fun iseven : nat -> nat =
+      \ n : nat ->
+        ifz n of
+          Z -> S Z (*true*)
+        | S p -> ifz (iseven p) of Z -> S Z | S p -> Z
+    in fun divbytwo : nat -> nat =
+      \ n : nat ->
+        ifz n of
+          Z -> Z
+        | S p -> ifz p of Z -> Z | S p' -> (S (divbytwo p'))
+    in fun multbythree : nat -> nat =
+      \ n : nat ->
+        ifz n of
+          Z -> Z
+       | S nminusone -> S S S (multbythree nminusone)
+    in fun collatz : nat -> nat =
+      \ n : nat ->
+        ifz (isone n) of
+          Z -> (
+            ifz (iseven n) of
+              Z -> collatz (S (multbythree n))
+            | S p -> (collatz (divbytwo n))
+          )
+        | S p -> (S Z)
+    in (collatz (S S Z))
+#+END_EXAMPLE
+
+[[https://xkcd.com/710/][relevant xkcd]]
