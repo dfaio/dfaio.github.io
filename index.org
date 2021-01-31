@@ -5,7 +5,7 @@
 Hey, I´m Evan. Welcome to my slice of the internet.
 
 - My pet programming language [[http://dfa.io/thon][thon]].
-- A small tabletop rqg [[http://dfa.io/rqg][game system]].
+- A small tabletop rpg [[http://dfa.io/rpg][game system]].
 
 * Arranging keys on my key holder is NP-hard
 
@@ -71,7 +71,7 @@ always gives us the right answer, is this enough?
 
 We define the phone-a-friend mechanism as follows: our TM M is given
 access to an *oracle*. The TM may ask the oracle a membership
-question: is this string \\(w\\) in some set \\(S\\)? The oracle is
+question: is this string $w$ in some set $S$? The oracle is
 all-knowing and will return a yes or no answer immediately. The oracle
 will always answer correctly. We call a Turing machine with access to
 an oracle an *oracle Turing machine*.
@@ -83,16 +83,19 @@ machine can't solve, even when given an oracle to HALTS? Which is to
 say, is there a problem that our TM M's friend *can't* know?
 
 Unfortunately, (and maybe unsurprisingly), yes. Consider this
-following problem, which we call \\(SUPERHALTS\\):
+following problem, which we call SUPERHALTS:
 
-\\[ \\{(M, x) \| M\text{, with an oracle for the halting problem,
-halts on x}\\} \\]
+$$
+\{(M, x) | M\text{, with an oracle for the halting problem, halts on x}\}
+$$
 
 We can use the classic diagonalization argument to show that this is
-undecidable. Suppose we have some oracle Turing machine \\(H\\) that
+undecidable. Suppose we have some oracle Turing machine H that
 decides SUPERHALTS. Then we can define a new TM D to be:
 
+#+BEGIN_SRC
 D(X): If H(X, X) accepts with an oracle, then LOOP else ACCEPT
+#+END_SRC
 
 But then D(D) halts if and only if H(D, D) accepts. But H(D, D)
 accepts iff D(D) loops! So we have that D(D) halts if and only if it
@@ -515,3 +518,24 @@ Some tweaks and things to try:
 My fave is wrapping garlic, tomatillos, and serranos in some foil and
 heating in a pan for maybe 20-30 mins, then puree-ing with some salt
 and lime.
+
+* Review of Darth Bane trilogy first book
+  
+This book has spoilers for the KOTOR game series, so if you haven't
+played those and still intend to, start there. (I still haven't played
+them myself and was a bit bummed to hear how some of the storylines
+played out).
+
+The book is pretty good. Easy to read. The writing style is breezy. I
+could have done without the romantic subplot. Bane's origin story is
+believable and well done. The book overall doesn't have a lot of
+description - many character's physical appearance is maybe briefly
+mentioned. The same is true for physical locations.
+
+I don't know how well the ending sets up the rest of the series. I'm
+not sure I will continue to read the rest of the trilogy.
+
+I would say this novel is not as good as the Thrawn trilogy, but is
+still an enjoyable story. I like the Old Republic setting (largely
+because it avoids any mention of the Skywalker saga). I recommend this
+book to anyone looking for an easy-to-read Sith-centered origin story.
