@@ -5,8 +5,8 @@
 
 Hey, I´m Evan. Welcome to my slice of the internet.
 
-- My pet programming language [[file:thon.html][thon]].
-- A small tabletop rpg [[file:rpg.html][game system]].
+- [[file:thon.html][My pet programming language thon]].
+- [[file:rpg.html][A small tabletop rpg ame system]].
 - [[file:keys.html][Arranging keys on my key holder is NP-hard.]]
 - [[file:superhalts.html][It's halting problems all the way down.]]
 - [[file:quine.html][A turing machine quine.]]
