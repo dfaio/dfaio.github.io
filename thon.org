@@ -1,7 +1,7 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
-#+AUTHOR: evan
+#+OPTIONS: html-postamble:nil
 
 * thon is a programming language.
 

@@ -1,7 +1,7 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
-#+AUTHOR: evan
+#+OPTIONS: html-postamble:nil
 * Traversing the Infinite Complete ω-nary Tree
 
 2016-03-03

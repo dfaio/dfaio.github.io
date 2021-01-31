@@ -1,7 +1,7 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
-#+AUTHOR: evan
+#+OPTIONS: html-postamble:nil
 * Nice things to cook and eat
 ** Fried rice
 I've made this well over 10 times, maybe 20. Not a lifetime of

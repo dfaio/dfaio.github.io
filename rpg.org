@@ -1,6 +1,6 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
 #+OPTIONS: num:nil
-#+AUTHOR: evan
+#+OPTIONS: html-postamble:nil
 
 This system is heavily based off the Cypher System by Monte Carlo
 games. If these rules sound interesting, I encourage you to go buy
