@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-01-30 Sat 19:58 -->
+<!-- 2021-01-30 Sat 20:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -252,9 +252,9 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<div id="outline-container-orgb12b829" class="outline-2">
-<h2 id="orgb12b829">Traversing the Infinite Complete ω-nary Tree</h2>
-<div class="outline-text-2" id="text-orgb12b829">
+<div id="outline-container-org2bdc443" class="outline-2">
+<h2 id="org2bdc443">Traversing the Infinite Complete ω-nary Tree</h2>
+<div class="outline-text-2" id="text-org2bdc443">
 <p>
 2016-03-03
 </p>
@@ -267,18 +267,18 @@ infinitely. Call this graph 𝔊.
 </p>
 
 <p>
-We can't BFS or DFS over 𝔊. A DFS would
-simply get stuck on the leftmost branch forever and a BFS would never
-reach depth 2. How then are we to traverse it?
+We can't BFS or DFS over 𝔊. A DFS would simply get stuck on the
+leftmost branch forever and a BFS would never reach depth 2. How then
+are we to traverse it?
 </p>
 
 <p>
 In the infinite complete <b>binary</b> tree, nodes are uniquely indentified
 by a finite length binary string. In 𝔊, nodes are uniquely indentified
-by a finite sequence of natural numbers. Let <b>s*(*v</b>) be <b>v</b>'s
-corresponding sequence. In 𝔊, <b>u</b> is the parent of <b>v</b> iff <b>s*(*u</b>)'s
-length is one less than <b>s*(*v</b>)'s and <b>s*(*u</b>) is a prefix of
-<b>s*(*v</b>).
+by a finite sequence of natural numbers. Let <b>s(v)</b> be <b>v</b>'s
+corresponding sequence. In 𝔊, <b>u</b> is the parent of <b>v</b> iff <b>s(u)</b>'s
+length is one less than <b>s(v)</b>'s and <b>s(u)</b> is a prefix of
+<b>s(v)</b>.
 </p>
 
 <p>
@@ -299,34 +299,38 @@ nodes of 𝔊. What does this order look
 like? Here's the idea (nodes are represented as int tuples):
 </p>
 
+<pre class="example">
+def traverse():
+    visitedNextChild = {() : 0}
+    while True:
+        currentlyVisited = visitedNextChild.keys()
+        for v in currentlyVisited:
+            nextChild = v + (visitedNextChild[v],)
+            visit(nextChild) visitedNextChild[v] += 1
+            visitedNextChild[nextChild] = 0
+</pre>
+
 <p>
-{% highlight python %} def traverse(): visitedNextChild = {() : 0} while
-True: currentlyVisited = visitedNextChild.keys() for v in
-currentlyVisited: nextChild = v + (visitedNextChild\[v\],)
-visit(nextChild) visitedNextChild\[v\] += 1
-visitedNextChild\[nextChild\] = 0 {% endhighlight %} Here, We start with
-the root node, which we can represent as the empty tuple. We maintain a
-mapping from visited nodes to the next child of theirs to visit. At each
-iteration, we visit each of the prescribed next children, and update the
-mapping.
+Here, We start with the root node, which we can represent as the empty
+tuple. We maintain a mapping from visited nodes to the next child of
+theirs to visit. At each iteration, we visit each of the prescribed
+next children, and update the mapping.
 </p>
 
 <p>
-The fact that this visits every node in &lt;span
-class="math inline"&gt;𝔊&lt;/span&gt; follows easily by induction.
+The fact that this visits every node in 𝔊 follows by induction.
+In math symbols, if S<sub>i</sub> is the set of visited nodes at iteration i, then
 </p>
 
 <p>
-In math symbols, if *S*~*i*~&lt;/span&gt; is the set
-of visited nodes at iteration *i*&lt;/span&gt;, then
+S<sub>i+1</sub> = S\<sub>i</sub> \&cup;
 </p>
 
+
 <p>
-\
-&lt;span class="math display"&gt;\\(\\) \\begin{align\*} S\<sub>i+1</sub> = S\<sub>i</sub> &amp;\&cup;
 \\{s + 0 \\mid s \&isin; S\<sub>i</sub> \\} \\\\ &amp;\&cup; \\{s\<sub>1s</sub>\<sub>2\\ldots</sub>
 (s\<sub>n</sub>+1)\\mid s\<sub>1s</sub>\<sub>2\\ldots</sub> s\<sub>n</sub> \&isin; S\<sub>i</sub> \\} \\end{align\*}
-\$\$&lt;/span&gt;\
+\\(\\)
 </p>
 
 <p>
@@ -361,7 +365,7 @@ the digit sums.
 
 <p>
 From here on out, we'll one-index for simplicity's sake. (That is,
-assume ℕ&lt;/span&gt; starts at 1).
+assume ℕ starts at 1).
 </p>
 
 <p>
@@ -375,54 +379,40 @@ It's exactly the same relation, but if they tied, you recurse on the
 largest proper prefix of each.
 </p>
 
-<p>
-{% highlight python %} def lessThan(u, v): \# u &amp;lt; v return
-digitSum(u) &amp;lt; digitSum(v) or lessThan(u\[::-1\], v\[::-1\]) {%
+<pre class="example">
+def lessThan(u, v):
+    return digitSum(u) &amp;lt; digitSum(v) or lessThan(u\[::-1\], v\[::-1\]) {%
 endhighlight %}
-</p>
+</pre>
 
 <p>
-So the empty sequence is the least element (as we visit the root of
-𝔊&lt;/span&gt; first). I'm fairly certain that if
-you create the corresponding ≤&lt;/span&gt;
+So the empty sequence is the least element (as we visit the root of 𝔊
+first). I'm fairly certain that if you create the corresponding ≤
 relation, this becomes a total order.
 </p>
 
 <p>
-Here's the cool thing: we've produced an order on &lt;span
-class="math inline"&gt;ℕ^\*^&lt;/span&gt; that has order type &lt;span
-class="math inline"&gt;*ω*&lt;/span&gt;! (The normal shortlex trick doesn't work
+Here's the cool thing: we've produced an order on 
+ℕ^\* that has order type <b>ω</b>! (The normal shortlex trick doesn't work
 when our alphabet is countably infinite).
 </p>
 
 <p>
-In general, if we want to produce an ordering of order type &lt;span
-class="math inline"&gt;*ω*&lt;/span&gt; on\
-&lt;span class="math display"&gt;ℕ^\*^&lt;/span&gt;\
-, it suffices to partition ℕ^\*^&lt;/span&gt; into
-countably many partitions, each of finite size. Then the
-"concatentation" of these partitions yields order type &lt;span
-class="math inline"&gt;*ω*&lt;/span&gt;.
+In general, if we want to produce an ordering of order type ω on ℕ^\*,
+it suffices to partition ℕ^\*^ into countably many partitions, each of
+finite size. Then the "concatentation" of these partitions yields
+order type ω.
 </p>
 
 <p>
 Just some fun observations :)
-</p>
-
-
-<p>
-[Some comments on learning Chinese](/chinese.html)
-</p>
-
-<p>
-[Some books I like](/books.html)
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: evan</p>
-<p class="date">Created: 2021-01-30 Sat 19:58</p>
+<p class="date">Created: 2021-01-30 Sat 20:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
