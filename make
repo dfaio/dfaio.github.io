@@ -9,4 +9,5 @@ emacsclient -e "(progn (find-file \"tree.org\") (org-html-export-to-html) (kill-
 emacsclient -e "(progn (find-file \"readchinese.org\") (org-html-export-to-html) (kill-buffer))" 
 emacsclient -e "(progn (find-file \"books.org\") (org-html-export-to-html) (kill-buffer))" 
 emacsclient -e "(progn (find-file \"cooking.org\") (org-html-export-to-html) (kill-buffer))" 
+emacsclient -e "(progn (find-file \"aphoa.org\") (org-html-export-to-html) (kill-buffer))" 
 

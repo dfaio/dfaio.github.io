@@ -1,0 +1,27 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: html-postamble:nil
+* Aphoa
+
+Half bison half woman, the Maeha graze the plains. Their men are
+masterful weavers and potters. Their legends speak of colossal
+ancestors crossing the ice.
+
+The cacti speak, their black eyes piercing. The most beautiful among
+them bear bright, spiney flowers on their heads. They speak in riddles
+and are quick to flee.
+
+To the south, octogonal cities rise from the earth. The empress has
+reigned as long as anyone still living can remember.
+
+An amphibious people live in the swamps across the bay from the
+empire. Aside from their glazey-blue eyes, many of their kind resemble
+the slaves fleeing from the empire north.
+
+A slaves' journey north is grueling. If not caught by slaver caravans,
+they still must contend with fearsome beasts of the earth. Great
+horned creatures made of clay. Silent pumice giants. 
+
+Not all who flee north are ex-slaves. Some are escaping debt or
+fleeing the law.
