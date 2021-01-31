@@ -3,7 +3,7 @@
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
 
-Hey, I´m Evan. Welcome to my slice of the internet.
+dfa.io is online.
 
 - [[file:thon.html][My pet programming language thon]].
 - [[file:rpg.html][A small tabletop rpg ame system]].
