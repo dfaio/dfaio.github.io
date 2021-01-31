@@ -13,5 +13,5 @@ dfa.io is on the world wide web.
 - [[file:readchinese.html][Recommendations on long-form reading Chinese as a second language.]]
 - [[file:rpg.html][A small tabletop rpg game system]].
 - [[file:books.html][Some books reviews]]
-- [[file:cooking.html][A collection of recipes.]]
+- [[file:cookbook.html][A collection of recipes.]]
 - [[file:aphoa.html][Aphoa]]

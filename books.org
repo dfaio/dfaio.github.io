@@ -1,7 +1,7 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
-#+AUTHOR: evan
+#+OPTIONS: html-postamble:nil
 * Coders, the Making of a New Tribe.
 
 A book on programmer culture over the years. The author knows how to code some, but is not a programmer by trade. There's discussion programmer mental health, gender inequality, and social norms. The chapter 'The ENIAC girls' taught me that programming was originally a largely female profession. There is discussion of the bootcamp phenomenon.
