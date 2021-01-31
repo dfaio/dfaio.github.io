@@ -3,12 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-30 Mon 20:36 -->
+<!-- 2021-01-30 Sat 19:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="Evan Bergeron" />
+<meta name="author" content="evan" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -231,15 +231,15 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 
-<div id="outline-container-org38fba43" class="outline-2">
-<h2 id="org38fba43">thon is a programming language.</h2>
-<div class="outline-text-2" id="text-org38fba43">
+<div id="outline-container-orgfd56f72" class="outline-2">
+<h2 id="orgfd56f72">thon is a programming language.</h2>
+<div class="outline-text-2" id="text-orgfd56f72">
 <p>
 thon is a small programming language. Here's an example program that
 verifies the empty list is empty.
 </p>
 
-<pre>
+<pre class="example">
 fun isempty : (data l = (unit | nat * l)) -&gt; nat =
   \ natlist : (data l = (unit | nat * l)) -&gt;
         (case (unfold natlist) of
@@ -260,8 +260,8 @@ interfaces), and recursive types.
 </p>
 </div>
 
-<div id="outline-container-orgeea0bc1" class="outline-3">
-<h3 id="natural-numbers"><a id="orgeea0bc1"></a>natural numbers</h3>
+<div id="outline-container-orgec22d4f" class="outline-3">
+<h3 id="natural-numbers"><a id="orgec22d4f"></a>natural numbers</h3>
 <div class="outline-text-3" id="text-natural-numbers">
 <p>
 <code>Z</code> is the natural number 0. <code>S Z</code> is 1 (the succesor of one). <code>S S Z</code>
@@ -270,8 +270,8 @@ is 2, and so on.
 </div>
 </div>
 
-<div id="outline-container-orgd1d4a92" class="outline-3">
-<h3 id="functions"><a id="orgd1d4a92"></a>functions</h3>
+<div id="outline-container-org964bc1c" class="outline-3">
+<h3 id="functions"><a id="org964bc1c"></a>functions</h3>
 <div class="outline-text-3" id="text-functions">
 <p>
 In thon, functions are expressions just like numbers are. thon supports
@@ -328,8 +328,8 @@ fix loop : nat in loop
 </div>
 </div>
 
-<div id="outline-container-orgecb900d" class="outline-3">
-<h3 id="variables"><a id="orgecb900d"></a>variables</h3>
+<div id="outline-container-org87ba111" class="outline-3">
+<h3 id="variables"><a id="org87ba111"></a>variables</h3>
 <div class="outline-text-3" id="text-variables">
 <pre class="example">
 let x : nat = Z in x
@@ -341,8 +341,8 @@ binds the name <code>x</code> in the expression following the <code>in</code> ke
 </div>
 </div>
 
-<div id="outline-container-orgcaa8ff9" class="outline-3">
-<h3 id="polymorphism"><a id="orgcaa8ff9"></a>polymorphism</h3>
+<div id="outline-container-org979cc36" class="outline-3">
+<h3 id="polymorphism"><a id="org979cc36"></a>polymorphism</h3>
 <div class="outline-text-3" id="text-polymorphism">
 <p>
 Polymorphism lets us reuse code you wrote for many different types, with
@@ -368,8 +368,8 @@ evaluates to the identity function on natural numbers.
 </div>
 </div>
 
-<div id="outline-container-org6701707" class="outline-3">
-<h3 id="existential-packages-hide-types"><a id="org6701707"></a>existential packages hide types</h3>
+<div id="outline-container-org435010d" class="outline-3">
+<h3 id="existential-packages-hide-types"><a id="org435010d"></a>existential packages hide types</h3>
 <div class="outline-text-3" id="text-existential-packages-hide-types">
 <p>
 They let us write a piece of code with a private implementation type.
@@ -463,8 +463,8 @@ abstract, we can equivalently use the other implementation.
 </div>
 </div>
 
-<div id="outline-container-org890bc04" class="outline-3">
-<h3 id="recursive-types"><a id="org890bc04"></a>recursive types</h3>
+<div id="outline-container-org09559fa" class="outline-3">
+<h3 id="recursive-types"><a id="org09559fa"></a>recursive types</h3>
 <div class="outline-text-3" id="text-recursive-types">
 <p>
 <code>data nats = (unit | (nat * nats))</code> is the type of lists natural
@@ -493,8 +493,8 @@ natlist.
 </div>
 </div>
 
-<div id="outline-container-org28f9d4a" class="outline-3">
-<h3 id="thanks"><a id="org28f9d4a"></a>thanks</h3>
+<div id="outline-container-orgf287950" class="outline-3">
+<h3 id="thanks"><a id="orgf287950"></a>thanks</h3>
 <div class="outline-text-3" id="text-thanks">
 <p>
 I've mostly been working out of Bob Harper's "Practical Foundations for
@@ -506,8 +506,8 @@ starter code for CMU's Fall 2016 compilers course.
 </div>
 </div>
 
-<div id="outline-container-org3a6c38a" class="outline-3">
-<h3 id="install-ubuntu-20"><a id="org3a6c38a"></a>install (ubuntu 20)</h3>
+<div id="outline-container-org514065f" class="outline-3">
+<h3 id="install-ubuntu-20"><a id="org514065f"></a>install (ubuntu 20)</h3>
 <div class="outline-text-3" id="text-install-ubuntu-20">
 <p>
 Wow, you read this far! (or scrolled this far, at least) If you'd like
@@ -530,8 +530,8 @@ would love to hear from you!
 </div>
 </div>
 
-<div id="outline-container-org5fe37ae" class="outline-3">
-<h3 id="collatz-conjecture"><a id="org5fe37ae"></a>collatz conjecture</h3>
+<div id="outline-container-org1734e1f" class="outline-3">
+<h3 id="collatz-conjecture"><a id="org1734e1f"></a>collatz conjecture</h3>
 <div class="outline-text-3" id="text-collatz-conjecture">
 <p>
 A fun program I wrote after adding recursion. Pretty much all the code
@@ -579,8 +579,8 @@ in (collatz (S S Z))
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Evan Bergeron</p>
-<p class="date">Created: 2020-11-30 Mon 20:36</p>
+<p class="author">Author: evan</p>
+<p class="date">Created: 2021-01-30 Sat 19:58</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

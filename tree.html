@@ -227,24 +227,198 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
+<div id="outline-container-orgb12b829" class="outline-2">
+<h2 id="orgb12b829">Traversing the Infinite Complete ω-nary Tree</h2>
+<div class="outline-text-2" id="text-orgb12b829">
 <p>
-Hey, I´m Evan. Welcome to my slice of the internet.
+2016-03-03
 </p>
 
-<ul class="org-ul">
-<li>My pet programming language <a href="thon.html">thon</a>.</li>
-<li>A small tabletop rpg <a href="rpg.html">game system</a>.</li>
-<li><a href="keys.html">Arranging keys on my key holder is NP-hard.</a></li>
-<li><a href="superhalts.html">It's halting problems all the way down.</a></li>
-<li><a href="quine.html">A turing machine quine.</a></li>
-<li><a href="tree.html">Traversing the Infinite Complete ω-nary Tree</a></li>
-<li><a href="readchinese.html">Recommendations on long-form reading Chinese as a second language.</a></li>
-<li><a href="books.html">Some books reviews</a></li>
-<li><a href="cooking.html">A collection of recipes.</a></li>
-</ul>
+<p>
+The infinite complete ω-nary tree is
+one where every node has ℕ-many
+children. There are no leaves; the tree just extends downward
+infinitely. Call this graph 𝔊.
+</p>
+
+<p>
+We can't BFS or DFS over 𝔊. A DFS would
+simply get stuck on the leftmost branch forever and a BFS would never
+reach depth 2. How then are we to traverse it?
+</p>
+
+<p>
+In the infinite complete <b>binary</b> tree, nodes are uniquely indentified
+by a finite length binary string. In 𝔊, nodes are uniquely indentified
+by a finite sequence of natural numbers. Let <b>s*(*v</b>) be <b>v</b>'s
+corresponding sequence. In 𝔊, <b>u</b> is the parent of <b>v</b> iff <b>s*(*u</b>)'s
+length is one less than <b>s*(*v</b>)'s and <b>s*(*u</b>) is a prefix of
+<b>s*(*v</b>).
+</p>
+
+<p>
+Any tree traversal produces a well order on the tree's vertices. BFS on
+the complete infinite binary tree is the shortlex ordering (sort first
+by length, then lexographically). In fact, on level <b>i</b>, the set of corresponding binary strings
+is the set of all <b>i</b>-bit natural
+numbers, and the nodes are visited in increasing order.
+</p>
+
+<p>
+Further, any tree tree traversal has order type <b>ω</b>.
+</p>
+
+<p>
+A traversal of 𝔊 is a well order on the
+nodes of 𝔊. What does this order look
+like? Here's the idea (nodes are represented as int tuples):
+</p>
+
+<p>
+{% highlight python %} def traverse(): visitedNextChild = {() : 0} while
+True: currentlyVisited = visitedNextChild.keys() for v in
+currentlyVisited: nextChild = v + (visitedNextChild\[v\],)
+visit(nextChild) visitedNextChild\[v\] += 1
+visitedNextChild\[nextChild\] = 0 {% endhighlight %} Here, We start with
+the root node, which we can represent as the empty tuple. We maintain a
+mapping from visited nodes to the next child of theirs to visit. At each
+iteration, we visit each of the prescribed next children, and update the
+mapping.
+</p>
+
+<p>
+The fact that this visits every node in &lt;span
+class="math inline"&gt;𝔊&lt;/span&gt; follows easily by induction.
+</p>
+
+<p>
+In math symbols, if *S*~*i*~&lt;/span&gt; is the set
+of visited nodes at iteration *i*&lt;/span&gt;, then
+</p>
+
+<p>
+\
+&lt;span class="math display"&gt;\\(\\) \\begin{align\*} S\<sub>i+1</sub> = S\<sub>i</sub> &amp;\&cup;
+\\{s + 0 \\mid s \&isin; S\<sub>i</sub> \\} \\\\ &amp;\&cup; \\{s\<sub>1s</sub>\<sub>2\\ldots</sub>
+(s\<sub>n</sub>+1)\\mid s\<sub>1s</sub>\<sub>2\\ldots</sub> s\<sub>n</sub> \&isin; S\<sub>i</sub> \\} \\end{align\*}
+\$\$&lt;/span&gt;\
+</p>
+
+<p>
+(there are totally duplicates being added here, but that's the beauty of
+sets).
+</p>
+
+<p>
+Fix the nodes *u* = *s*~1~…*s*~*n* − 1~&lt;/span&gt;
+and <b>v* = *s*~1~…*s*~*n* − 1~*s*~*n*~&lt;/span&gt;.
+Define *t*(*x</b>)&lt;/span&gt; to be the iteration at
+which <b>x*&lt;/span&gt; is visited. Then &lt;span
+class="math inline"&gt;*t*(*v</b>)=*t*(<b>u</b>)+*s*~*n*~ + 1&lt;/span&gt;. This leads to
+this gorgeous fact:
+</p>
+
+<p>
+*s*~1~…*s*~*n*~&lt;/span&gt; is visited at iteration
+\$\&sum;\<sub>i=1</sub>\<sup>n</sup> (s\<sub>i</sub> + 1) = n +
+\&sum;\<sub>i=1</sub>\<sup>n</sup> s\<sub>i</sub>\$&lt;/span&gt;.
+</p>
+
+<p>
+This means that our tree traversal has a pretty interesting
+sub-relation: namely that *u* &amp;lt; *v*&lt;/span&gt;
+if *u*&lt;/span&gt;'s length + &lt;span
+class="math inline"&gt;*u*&lt;/span&gt;'s digit sum is less than &lt;span
+class="math inline"&gt;*v*&lt;/span&gt;'s length + &lt;span
+class="math inline"&gt;*v*&lt;/span&gt;'s digit sum. Or, (if we one-index), just
+the digit sums.
+</p>
+
+<p>
+From here on out, we'll one-index for simplicity's sake. (That is,
+assume ℕ&lt;/span&gt; starts at 1).
+</p>
+
+<p>
+Let's see if we can characterize the entire ordering. (That is, instead
+of building a relation based on iteration, build a relation built on
+precise ordering of traversal).
+</p>
+
+<p>
+It's exactly the same relation, but if they tied, you recurse on the
+largest proper prefix of each.
+</p>
+
+<p>
+{% highlight python %} def lessThan(u, v): \# u &amp;lt; v return
+digitSum(u) &amp;lt; digitSum(v) or lessThan(u\[::-1\], v\[::-1\]) {%
+endhighlight %}
+</p>
+
+<p>
+So the empty sequence is the least element (as we visit the root of
+𝔊&lt;/span&gt; first). I'm fairly certain that if
+you create the corresponding ≤&lt;/span&gt;
+relation, this becomes a total order.
+</p>
+
+<p>
+Here's the cool thing: we've produced an order on &lt;span
+class="math inline"&gt;ℕ^\*^&lt;/span&gt; that has order type &lt;span
+class="math inline"&gt;*ω*&lt;/span&gt;! (The normal shortlex trick doesn't work
+when our alphabet is countably infinite).
+</p>
+
+<p>
+In general, if we want to produce an ordering of order type &lt;span
+class="math inline"&gt;*ω*&lt;/span&gt; on\
+&lt;span class="math display"&gt;ℕ^\*^&lt;/span&gt;\
+, it suffices to partition ℕ^\*^&lt;/span&gt; into
+countably many partitions, each of finite size. Then the
+"concatentation" of these partitions yields order type &lt;span
+class="math inline"&gt;*ω*&lt;/span&gt;.
+</p>
+
+<p>
+Just some fun observations :)
+</p>
+
+
+<p>
+[Some comments on learning Chinese](/chinese.html)
+</p>
+
+<p>
+[Some books I like](/books.html)
+</p>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: evan</p>

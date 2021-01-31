@@ -227,24 +227,142 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
+<div id="outline-container-org9ef50ce" class="outline-2">
+<h2 id="org9ef50ce">It's halting problems all the way down.</h2>
+<div class="outline-text-2" id="text-org9ef50ce">
 <p>
-Hey, I´m Evan. Welcome to my slice of the internet.
+2015-04-09
 </p>
 
-<ul class="org-ul">
-<li>My pet programming language <a href="thon.html">thon</a>.</li>
-<li>A small tabletop rpg <a href="rpg.html">game system</a>.</li>
-<li><a href="keys.html">Arranging keys on my key holder is NP-hard.</a></li>
-<li><a href="superhalts.html">It's halting problems all the way down.</a></li>
-<li><a href="quine.html">A turing machine quine.</a></li>
-<li><a href="tree.html">Traversing the Infinite Complete ω-nary Tree</a></li>
-<li><a href="readchinese.html">Recommendations on long-form reading Chinese as a second language.</a></li>
-<li><a href="books.html">Some books reviews</a></li>
-<li><a href="cooking.html">A collection of recipes.</a></li>
-</ul>
+<p>
+Deciding things is hard. There are countably many Turing machines, but
+an uncountable number of decision problems! Sometimes, maybe asking
+our TM M for a decision is unreasonable - maybe sometimes we should
+let him phone-a-friend. A reasonable question to ask is: if our friend
+always gives us the right answer, is this enough?
+</p>
+
+<p>
+We define the phone-a-friend mechanism as follows: our TM M is given
+access to an <b>oracle</b>. The TM may ask the oracle a membership
+question: is this string \(w\) in some set \(S\)? The oracle is
+all-knowing and will return a yes or no answer immediately. The oracle
+will always answer correctly. We call a Turing machine with access to
+an oracle an <b>oracle Turing machine</b>.
+</p>
+
+<p>
+So certainly, all of a sudden, life gets a lot easier! For example,
+solving HALTS is trivial! Just ask the oracle. But here's an
+interesting question: is there a decision problem that a Turing
+machine can't solve, even when given an oracle to HALTS? Which is to
+say, is there a problem that our TM M's friend <b>can't</b> know?
+</p>
+
+<p>
+Unfortunately, (and maybe unsurprisingly), yes. Consider this
+following problem, which we call SUPERHALTS:
+</p>
+
+<p>
+\[
+\{(M, x) | M\text{, with an oracle for the halting problem, halts on x}\}
+\]
+</p>
+
+<p>
+We can use the classic diagonalization argument to show that this is
+undecidable. Suppose we have some oracle Turing machine H that
+decides SUPERHALTS. Then we can define a new TM D to be:
+</p>
+
+<pre class="example">
+D(X): If H(X, X) accepts with an oracle, then LOOP else ACCEPT
+</pre>
+
+<p>
+But then D(D) halts if and only if H(D, D) accepts. But H(D, D)
+accepts iff D(D) loops! So we have that D(D) halts if and only if it
+loops, a contradiction. Even if you've seen this argument before, take
+a minute and reason through that last sentence. It's good for you.
+</p>
+
+<p>
+So this is interesting. We've found a problem that's <b>harder than the
+halting problem</b>. Significantly so. Which brings us to something
+called <b>Turing degrees</b>. Computable functions have Turing
+degree 1. Anything reducible to the halting problem has Turing
+degree 2. The SUPERHALTS is our first problem with Turing greater than
+two.
+</p>
+
+<p>
+It's interesting how coarse a measurement Turing degree really
+is. Obviously, it doesn't touch notions of complexity, with no regard
+for the distinction between, say \(P\) and \(ELEMENTARY\). But
+further, it doesn't even distinguish between Turing-decidable and
+Turing-recognizable! (Or if you prefer, recursively enumerable). (A
+Turing-recognizable set is similar to a decidable one, we just relax
+the restriction that the TM must halt on all inputs).
+</p>
+
+<p>
+So here's another question: is there any problem of intermediate
+degree? Some problem that falls between HALTS and SUPERHALTS? This is
+known as the <b>Post problem</b> (different from the Post Correspondence
+Problem). And the answer, apparently, is yes.
+</p>
+
+<p>
+The result involves something called a <b>priority ordering</b>. In a
+priority ordering, we define some set \\(X\\). Then we make a
+(potentially infinite) list of requirements. Each of these
+requirements specifies whether or not some set of elements is in
+\\(X\\). So we start with, say, the universe. Then requirement 1
+specifies that elements in \\(X\\) must have some feature. And
+requirement 2 does similarly. Maybe requirement \\(k\\) designates
+that some element get thrown back into \\(X\\). And so on.
+</p>
+
+<p>
+Anyway, this technique can be used to generate two problems A and B,
+both of which can be solved with an oracle to the halting problem, but
+neither can be solved with an oracle to the other! I guess you use the
+priority ordering technique to forbid any Turing machine that would
+reduce A to B or vice versa.
+</p>
+
+<p>
+And into the world of non-computability we go! And you thought
+complexity was bad&#x2026;
+</p>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: evan</p>

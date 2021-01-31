@@ -227,24 +227,214 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
+<div id="outline-container-org24aac02" class="outline-2">
+<h2 id="org24aac02">A Turing Machine Quine</h2>
+<div class="outline-text-2" id="text-org24aac02">
 <p>
-Hey, I´m Evan. Welcome to my slice of the internet.
+2015-03-13
 </p>
 
-<ul class="org-ul">
-<li>My pet programming language <a href="thon.html">thon</a>.</li>
-<li>A small tabletop rpg <a href="rpg.html">game system</a>.</li>
-<li><a href="keys.html">Arranging keys on my key holder is NP-hard.</a></li>
-<li><a href="superhalts.html">It's halting problems all the way down.</a></li>
-<li><a href="quine.html">A turing machine quine.</a></li>
-<li><a href="tree.html">Traversing the Infinite Complete ω-nary Tree</a></li>
-<li><a href="readchinese.html">Recommendations on long-form reading Chinese as a second language.</a></li>
-<li><a href="books.html">Some books reviews</a></li>
-<li><a href="cooking.html">A collection of recipes.</a></li>
-</ul>
+<p>
+Today, we'll talk about something quite exciting. We define a Turing
+machine that prints its own source code. This construction offers us
+insight into how one may construct quines in any programming language.
+</p>
+
+<p>
+First, some quick definitions. A <b>quine</b> is a program that prints
+itself. At first this may seem impossible! A first attempt in python
+may look something like
+</p>
+
+<p>
+print "print"
+</p>
+
+<p>
+But wait. We missed the first print. So perhaps we'll add another
+print? But then we have
+</p>
+
+<p>
+print "print 'print'"
+</p>
+
+<p>
+and we have the problem we started with. Let's revisit this is a
+moment.
+</p>
+
+<p>
+A <b>Turing machine</b> is an abstraction of a computer. It has some finite
+number of states, transitions between those states, and infinite
+memory. Excitingly, this turns out to be a quite reasonable definition
+of computation. There's a very important result in computer science
+called the Church-Turing Thesis, which basically says that anything
+your-programming-language-here can do, so can a Turing machine.
+</p>
+
+<p>
+Consequently, offering a Turing machine quine is a way of offering a
+quine for every programming language! We'll find that it's actually
+quite instructive to talk about quines in the abstract first, before
+moving into specific programming languages.
+</p>
+
+<p>
+Right. So let's get started. We present the following lemma:
+</p>
+
+<p>
+&gt; There is a computable function \\(q\\), where if \\(w\\) is some string, \\(q(w)\\) is a description of a Turing machine that prints out \\(w\\) and halts.
+</p>
+
+<p>
+We offer the following TM as a construction of this function:
+</p>
+
+<p>
+Q = "On input string w:
+</p>
+<ol class="org-ol">
+<li>Construct the following TM P<sub>w</sub>:
+P<sub>w</sub> = 'On any input:
+<ol class="org-ol">
+<li>Erase the input</li>
+<li>Write w to the tape</li>
+<li>Halt'</li>
+</ol></li>
+<li>return P<sub>w</sub>"</li>
+</ol>
+
+<p>
+The distinction between \\(q\\) the function and Q the Turing machine
+can be a bit subtle. \\(q\\) is function that maps strings to Turing
+machines. Q (the Turing machine) is the result of applying \\(q\\)
+(the function) to \\(w\\). That is, Q = \\(q(w)\\).
+</p>
+
+<p>
+So our TM Q takes a string w and outputs a TM that prints w. Perfect!
+Exactly what we wanted. Let's come back to this - we'll see why this
+is useful in a moment.
+</p>
+
+<p>
+With this lemma in hand, we proceed to the main task: building a TM
+that prints itself. We'll split the machine up into two parts - A and
+B. First A will run, then B. Let's start with a description for A.
+</p>
+
+<p>
+A's description depends on B, so let's assume we've written
+B. Remember the function \\(q\\) we just defined? We define A to be
+\\(q(B)\\). Which is to say, A is just a TM that, on any input, just
+prints a description of part B. This depends on our definition of B,
+so let's talk about that now.
+</p>
+
+<p>
+B's the second and last part of the program, so at the end, we should
+have printed a full description of AB. By the time we get to B, A just
+ran, leaving a copy of B's source code sitting on the tape. Which
+means at this point, B has a description of itself. So then how do we
+get a description of A?
+</p>
+
+<p>
+Here's the trick: we apply \\(q\\) to our description of B. By our
+definition, \\(q(B)\\) is a TM that, on any input, prints a copy of
+B. This was exactly our definition of part A!  So B takes its own
+source code and applies \\(q\\) to it, obtaining a description of
+A. Then B outputs AB, completing the proof.
+</p>
+
+<p>
+To summarize:
+</p>
+
+<p>
+QUINE = "On input string w:
+</p>
+<ol class="org-ol">
+<li>A = q(B) # A Turing machine that always prints B</li>
+<li>B = 'On input M, where M is a part of a TM:
+<ol class="org-ol">
+<li>return q(M) + M'"</li>
+</ol></li>
+</ol>
+
+<p>
+Using this proof as a template, let's consider how we would write a
+quine in python. As before, let's consider part A first. Part A needs
+to give B a copy of B's source code. In the TM model, this was
+achieved by leaving a copy of B's description on the tape.
+</p>
+
+<p>
+In python, we can just assign into a variable to achieve the same
+effect. So our part A should look something like
+</p>
+
+<p>
+b = "b's source code here"
+</p>
+
+<p>
+Part B should print part A and then print part B. Something like:
+</p>
+
+<p>
+print "b = %s" % b  # Print part A
+print b             # Then print part B
+</p>
+
+<p>
+Combining these two together (along with some careful tiptoe-ing
+around python formatting) yields:
+</p>
+
+<p>
+b = 'print "b = %r" % b; print b'
+print "b = %r" % b; print b
+</p>
+
+<p>
+And there you have it! A general guideline to make quines followed by
+an example. You are now equipped to go out and impress all your
+friends with your quine-making abilities. :P
+</p>
+
+<p>
+[Traversing a tree where every child has infinitely many children](/traversal.html)
+</p>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: evan</p>
