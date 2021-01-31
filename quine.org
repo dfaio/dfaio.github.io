@@ -38,7 +38,9 @@ moving into specific programming languages.
 
 Right. So let's get started. We present the following lemma:
 
-> There is a computable function \\(q\\), where if \\(w\\) is some string, \\(q(w)\\) is a description of a Turing machine that prints out \\(w\\) and halts.
+There is a computable function $q$, where if $w$ is some string,
+$q(w)$ is a description of a Turing machine that prints out
+$w$ and halts.
 
 We offer the following TM as a construction of this function:
 
@@ -50,10 +52,10 @@ Q = "On input string w:
             3. Halt'
     2. return P_w"
 
-The distinction between \\(q\\) the function and Q the Turing machine
-can be a bit subtle. \\(q\\) is function that maps strings to Turing
-machines. Q (the Turing machine) is the result of applying \\(q\\)
-(the function) to \\(w\\). That is, Q = \\(q(w)\\).
+The distinction between $q$ the function and Q the Turing machine
+can be a bit subtle. $q$ is function that maps strings to Turing
+machines. Q (the Turing machine) is the result of applying $q$
+(the function) to $w$. That is, Q = $q(w)$.
 
 So our TM Q takes a string w and outputs a TM that prints w. Perfect!
 Exactly what we wanted. Let's come back to this - we'll see why this
@@ -64,8 +66,8 @@ that prints itself. We'll split the machine up into two parts - A and
 B. First A will run, then B. Let's start with a description for A.
 
 A's description depends on B, so let's assume we've written
-B. Remember the function \\(q\\) we just defined? We define A to be
-\\(q(B)\\). Which is to say, A is just a TM that, on any input, just
+B. Remember the function $q$ we just defined? We define A to be
+$q(B)$. Which is to say, A is just a TM that, on any input, just
 prints a description of part B. This depends on our definition of B,
 so let's talk about that now.
 
@@ -75,10 +77,10 @@ ran, leaving a copy of B's source code sitting on the tape. Which
 means at this point, B has a description of itself. So then how do we
 get a description of A?
 
-Here's the trick: we apply \\(q\\) to our description of B. By our
-definition, \\(q(B)\\) is a TM that, on any input, prints a copy of
+Here's the trick: we apply $q$ to our description of B. By our
+definition, $q(B)$ is a TM that, on any input, prints a copy of
 B. This was exactly our definition of part A!  So B takes its own
-source code and applies \\(q\\) to it, obtaining a description of
+source code and applies $q$ to it, obtaining a description of
 A. Then B outputs AB, completing the proof.
 
 To summarize:
@@ -96,22 +98,26 @@ achieved by leaving a copy of B's description on the tape.
 In python, we can just assign into a variable to achieve the same
 effect. So our part A should look something like
 
+#+BEGIN_EXAMPLE
 b = "b's source code here"
+#+END_EXAMPLE
 
 Part B should print part A and then print part B. Something like:
 
+#+BEGIN_EXAMPLE
 print "b = %s" % b  # Print part A
 print b             # Then print part B
+#+END_EXAMPLE
 
 Combining these two together (along with some careful tiptoe-ing
 around python formatting) yields:
 
+#+BEGIN_EXAMPLE
 b = 'print "b = %r" % b; print b'
 print "b = %r" % b; print b
+#+END_EXAMPLE
 
 And there you have it! A general guideline to make quines followed by
 an example. You are now equipped to go out and impress all your
 friends with your quine-making abilities. :P
-
-[Traversing a tree where every child has infinitely many children](/traversal.html)
 

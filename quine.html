@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-01-30 Sat 20:09 -->
+<!-- 2021-01-30 Sat 20:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -252,9 +252,9 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<div id="outline-container-orgb1ac748" class="outline-2">
-<h2 id="orgb1ac748">A Turing Machine Quine</h2>
-<div class="outline-text-2" id="text-orgb1ac748">
+<div id="outline-container-orgb57409a" class="outline-2">
+<h2 id="orgb57409a">A Turing Machine Quine</h2>
+<div class="outline-text-2" id="text-orgb57409a">
 <p>
 2015-03-13
 </p>
@@ -310,7 +310,9 @@ Right. So let's get started. We present the following lemma:
 </p>
 
 <p>
-&gt; There is a computable function \\(q\\), where if \\(w\\) is some string, \\(q(w)\\) is a description of a Turing machine that prints out \\(w\\) and halts.
+There is a computable function \(q\), where if \(w\) is some string,
+\(q(w)\) is a description of a Turing machine that prints out
+\(w\) and halts.
 </p>
 
 <p>
@@ -332,10 +334,10 @@ P<sub>w</sub> = 'On any input:
 </ol>
 
 <p>
-The distinction between \\(q\\) the function and Q the Turing machine
-can be a bit subtle. \\(q\\) is function that maps strings to Turing
-machines. Q (the Turing machine) is the result of applying \\(q\\)
-(the function) to \\(w\\). That is, Q = \\(q(w)\\).
+The distinction between \(q\) the function and Q the Turing machine
+can be a bit subtle. \(q\) is function that maps strings to Turing
+machines. Q (the Turing machine) is the result of applying \(q\)
+(the function) to \(w\). That is, Q = \(q(w)\).
 </p>
 
 <p>
@@ -352,8 +354,8 @@ B. First A will run, then B. Let's start with a description for A.
 
 <p>
 A's description depends on B, so let's assume we've written
-B. Remember the function \\(q\\) we just defined? We define A to be
-\\(q(B)\\). Which is to say, A is just a TM that, on any input, just
+B. Remember the function \(q\) we just defined? We define A to be
+\(q(B)\). Which is to say, A is just a TM that, on any input, just
 prints a description of part B. This depends on our definition of B,
 so let's talk about that now.
 </p>
@@ -367,10 +369,10 @@ get a description of A?
 </p>
 
 <p>
-Here's the trick: we apply \\(q\\) to our description of B. By our
-definition, \\(q(B)\\) is a TM that, on any input, prints a copy of
+Here's the trick: we apply \(q\) to our description of B. By our
+definition, \(q(B)\) is a TM that, on any input, prints a copy of
 B. This was exactly our definition of part A!  So B takes its own
-source code and applies \\(q\\) to it, obtaining a description of
+source code and applies \(q\) to it, obtaining a description of
 A. Then B outputs AB, completing the proof.
 </p>
 
@@ -401,44 +403,40 @@ In python, we can just assign into a variable to achieve the same
 effect. So our part A should look something like
 </p>
 
-<p>
+<pre class="example">
 b = "b's source code here"
-</p>
+</pre>
 
 <p>
 Part B should print part A and then print part B. Something like:
 </p>
 
-<p>
+<pre class="example">
 print "b = %s" % b  # Print part A
 print b             # Then print part B
-</p>
+</pre>
 
 <p>
 Combining these two together (along with some careful tiptoe-ing
 around python formatting) yields:
 </p>
 
-<p>
+<pre class="example">
 b = 'print "b = %r" % b; print b'
 print "b = %r" % b; print b
-</p>
+</pre>
 
 <p>
 And there you have it! A general guideline to make quines followed by
 an example. You are now equipped to go out and impress all your
 friends with your quine-making abilities. :P
 </p>
-
-<p>
-[Traversing a tree where every child has infinitely many children](/traversal.html)
-</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: evan</p>
-<p class="date">Created: 2021-01-30 Sat 20:09</p>
+<p class="date">Created: 2021-01-30 Sat 20:16</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

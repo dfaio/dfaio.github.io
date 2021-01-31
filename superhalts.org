@@ -66,13 +66,13 @@ known as the *Post problem* (different from the Post Correspondence
 Problem). And the answer, apparently, is yes.
 
 The result involves something called a *priority ordering*. In a
-priority ordering, we define some set \\(X\\). Then we make a
+priority ordering, we define some set $X$. Then we make a
 (potentially infinite) list of requirements. Each of these
 requirements specifies whether or not some set of elements is in
-\\(X\\). So we start with, say, the universe. Then requirement 1
-specifies that elements in \\(X\\) must have some feature. And
-requirement 2 does similarly. Maybe requirement \\(k\\) designates
-that some element get thrown back into \\(X\\). And so on.
+$X$. So we start with, say, the universe. Then requirement 1
+specifies that elements in $X$ must have some feature. And
+requirement 2 does similarly. Maybe requirement $k$ designates
+that some element get thrown back into $X$. And so on.
 
 Anyway, this technique can be used to generate two problems A and B,
 both of which can be solved with an oracle to the halting problem, but
