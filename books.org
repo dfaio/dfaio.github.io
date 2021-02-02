@@ -2,26 +2,8 @@
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
-* Coders, the Making of a New Tribe.
-
-A book on programmer culture over the years. The author knows how to code some, but is not a programmer by trade. There's discussion programmer mental health, gender inequality, and social norms. The chapter 'The ENIAC girls' taught me that programming was originally a largely female profession. There is discussion of the bootcamp phenomenon.
-
-The book made me think about the culture of the industry I work in. I
-recommended it.
-
-* More Happy Than Not
-
-A queer love story with a surrealist twist. The first queer fiction
-I've sought out.
-
-* Goodbye, Things
-
-One of my favorite books on minimalism. The author is open about his
-insecurities and the ways in which he would use things to compensate:
-abstruse books to seem literary, a big TV to seem like a film
-enthusiast.
-
-* Darth Bane trilogy first book
+* 2021
+** Jan 23 - Darth Bane trilogy first book
   
 This book has spoilers for the KOTOR game series, so if you haven't
 played those and still intend to, start there. (I still haven't played
@@ -42,6 +24,31 @@ still an enjoyable story. I like the Old Republic setting (largely
 because it avoids any mention of the Skywalker saga). I recommend this
 book to anyone looking for an easy-to-read Sith-centered origin story.
 
-* Parable of Sower
+** Jan 30 - Parable of Sower
+Frankly depicts many serious themes. Real page turner. Protagonist is
+likeable and relatable. I started reading this a while back and only
+got 40 pages in. It picks up after that point. Lots of interesting
+tropes in this book as well, though I'll refrain from talking about
+them here for fear of spoilers.
+  
+* < 2021
 
-Great book.
+** Coders, the Making of a New Tribe.
+
+A book on programmer culture over the years. The author knows how to code some, but is not a programmer by trade. There's discussion programmer mental health, gender inequality, and social norms. The chapter 'The ENIAC girls' taught me that programming was originally a largely female profession. There is discussion of the bootcamp phenomenon.
+
+The book made me think about the culture of the industry I work in. I
+recommended it.
+
+** More Happy Than Not
+
+A queer love story with a surrealist twist. The first queer fiction
+I've sought out.
+
+** Goodbye, Things
+
+One of my favorite books on minimalism. The author is open about his
+insecurities and the ways in which he would use things to compensate:
+abstruse books to seem literary, a big TV to seem like a film
+enthusiast.
+
