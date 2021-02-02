@@ -1,0 +1,16 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: html-postamble:nil
+
+* Blogroll
+A plain text rss feed, of sorts. Haven't read a lot of the content in some of these links.
+
+- [[https://danluu.com/][dan luu]]
+- [[https://tynan.net][tynan]]
+- [[https://lwander.github.io/][lwander]]
+- [[https://bestmotherfucking.website/][bestmotherf*cking.website]]
+- [[https://codevoid.de/][codevoid.de]]
+- [[https://tilde.club/~droob/][droob]]
+- [[https://tilde.club/~jonbell/][jonbell]]
+- [[https://gwern.net][gwern]]
