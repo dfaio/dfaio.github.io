@@ -2,6 +2,7 @@
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
 * 2021
 ** Jan 23 - Darth Bane trilogy first book
   

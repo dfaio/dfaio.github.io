@@ -2,6 +2,7 @@
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
 * Traversing the Infinite Complete ω-nary Tree
 
 2016-03-03

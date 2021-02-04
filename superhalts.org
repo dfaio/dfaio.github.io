@@ -2,6 +2,7 @@
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
 * It's halting problems all the way down.
 
 2015-04-09

@@ -1,6 +1,7 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
 Some nice things to cook and eat. Some of these things I've made many
 times, some of this is a wishlist reference for myself.
 * Fried rice

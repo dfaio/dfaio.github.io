@@ -2,6 +2,8 @@
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
+
 * Aphoa
 
 Half bison half woman, the Maeha graze the plains. Their men are
