@@ -1,0 +1,9 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
+
+Emacs writeroom mode is great. To install it, I needed to `package-refresh-contents`. `toggle-truncate-lines` and `writeroom-mode` are the two commands to enter into the ~ blissed out ~ minimal writing enviornment.
+
+Now I have a very minimal looking writing enviornment that line wraps and centers text. I've missed writeroom since I left osx for linux in 2015 or so. Glad I finally set it up.

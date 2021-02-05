@@ -16,3 +16,4 @@ dfa.io is on the world wide web.
 - [[file:cookbook.html][A collection of recipes.]]
 - [[file:aphoa.html][Aphoa]]
 - [[file:blogroll.html][Blogroll]]
+- [[file:writeroommode.html][Writeroom mode]]
