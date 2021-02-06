@@ -12,3 +12,4 @@ emacsclient -e "(progn (find-file \"books.org\") (org-html-export-to-html) (kill
 emacsclient -e "(progn (find-file \"cookbook.org\") (org-html-export-to-html) (kill-buffer))"
 emacsclient -e "(progn (find-file \"aphoa.org\") (org-html-export-to-html) (kill-buffer))"
 emacsclient -e "(progn (find-file \"writeroommode.org\") (org-html-export-to-html) (kill-buffer))"
+emacsclient -e "(progn (find-file \"modules.org\") (org-html-export-to-html) (kill-buffer))"

@@ -231,24 +231,218 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <p>
-dfa.io is on the world wide web.
+<a href="index.html">dfa.io</a>
 </p>
 
-<ul class="org-ul">
-<li><a href="thon.html">My pet programming language thon</a>.</li>
-<li><a href="superhalts.html">It's halting problems all the way down.</a></li>
-<li><a href="quine.html">A turing machine quine.</a></li>
-<li><a href="keys.html">Arranging keys on my key holder is NP-hard.</a></li>
-<li><a href="tree.html">Traversing the Infinite Complete ω-nary Tree</a></li>
-<li><a href="readchinese.html">Reading reading Chinese as a second language.</a></li>
-<li><a href="rpg.html">A small tabletop rpg game system</a>.</li>
-<li><a href="books.html">Some books reviews</a></li>
-<li><a href="cookbook.html">A collection of recipes.</a></li>
-<li><a href="aphoa.html">Aphoa</a></li>
-<li><a href="blogroll.html">Blogroll</a></li>
-<li><a href="writeroommode.html">Writeroom mode</a></li>
-<li><a href="modules.html">Modules</a></li>
-</ul>
+<div id="outline-container-org9749301" class="outline-2">
+<h2 id="org9749301">Ok let's figure out modularity together.</h2>
+<div class="outline-text-2" id="text-org9749301">
+<p>
+First we need to understand existential types. They're a form of
+polymorphism. Let's go rule by rule.
+</p>
+
+<p>
+Δ holds judgements of the form "this type is well-formed." Γ holds
+judgements of the form "expression e has type t," which we write as
+e : t. 
+</p>
+
+<pre class="example">
+ Δ, t type ⊢ τ type
+---------------------
+Δ ⊢ (some t. τ) type
+</pre>
+<p>
+This says that if τ is a well-formed type, then so is some t. τ. We
+omit writing Γ here, as it's not relevant to the judgement.
+</p>
+
+<pre class="example">
+            Δ ⊢ p type 
+            Δ, t type ⊢ τ type 
+            Δ Γ ⊢ e : [p/t]τ
+------------------------------------------------
+Δ Γ ⊢ (impl (some t.τ) with p as e) : (some t.τ)
+</pre>
+
+<p>
+If τ is a type referring to the free variable t, and p is some type,
+then [p/t]τ is the type produced by substituting p for t in τ.
+</p>
+
+<p>
+The above rule is the introduction form for expressions of existential
+type. It's a sort of "backwards substitution."
+</p>
+
+<p>
+The inputs are a type p to redact, a type (some t.τ) to expose, and an
+expression e. If t is a type, then τ is a type. The type of e refers
+to the type p. It has type [p/t]τ, a type that's constructable by
+assumpting t is a type, forming τ that refers to t, and then
+substituting p for t in τ.
+</p>
+
+<p>
+The impl expression hides this type p in some way. (impl (some t.τ)
+with p as e) has type some t.τ, which could potentially not refer to
+p.
+</p>
+
+<p>
+The programmer must provide an explicit typing for the impl
+expression, as otherwise, there are multiple valid typings. For
+instance, the (invalid in thon) expression
+</p>
+<pre class="example">
+impl with nat as (0, 0)
+</pre>
+<p>
+could have type some t. (t * nat), some t. (nat * t), or some t. (t *
+t).
+</p>
+
+<pre class="example">
+            Δ Γ ⊢ e_1 : (some t.τ)
+            Δ, t type Γ, x : τ ⊢ e_2 : τ_2
+            Δ ⊢ τ2 type
+------------------------------------------------
+Δ Γ ⊢ (use e_1 as (t, x) in e_2) : τ_2
+</pre>
+<p>
+States if we have a existential package e<sub>1</sub> of type (some t.τ), then
+we can unpack e<sub>1</sub> into two new variables - a type variable t and an
+expression variable x. t is an abstract type, providing opaque
+reference to the type the impl redacted. x provides the implementation
+specified by (some t.τ).
+</p>
+</div>
+
+<div id="outline-container-org142d72c" class="outline-3">
+<h3 id="org142d72c">A set/get existential package.</h3>
+<div class="outline-text-3" id="text-org142d72c">
+<p>
+We can consider a simple set/get interface. We set a nat to an
+internal vessel type. We get a nat from the internal vessel
+type.
+</p>
+
+<pre class="example">
+impl (some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)))
+with nat as
+((
+   \ x : nat -&gt; x, (*set*)
+   \ x : nat -&gt; x  (*get*)
+))
+</pre>
+<p>
+This package has type (some vessel. ((nat -&gt; vessel) * (t -&gt;
+vessel))), but we could have just as easily implemented it as
+</p>
+<pre class="example">
+impl (some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)))
+with (nat * nat) as
+((
+   \ x : nat -&gt; (x, 0),         (*set*)
+   \ x : (nat * nat)  -&gt; fst x  (*get*)
+))
+</pre>
+<p>
+It'd be pretty silly to store a single nat in a tuple of nats, of course.
+But this package also has type some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)).
+</p>
+
+<p>
+Then we can use these impls as so
+</p>
+<pre class="example">
+let setget : some vessel. ((nat -&gt; vessel) * (t -&gt; vessel))
+    = ... (* either impl *) in
+use setget as (sg, t) in
+let set : (nat -&gt; t) = fst sg in
+let get : (t -&gt; nat) = snd sg in
+let s : t = set (2) in
+let g : nat = get s in
+g
+</pre>
+<p>
+which will evaluate to 2.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4f452b8" class="outline-2">
+<h2 id="org4f452b8">Assorted rough notes, please ignore.</h2>
+<div class="outline-text-2" id="text-org4f452b8">
+<p>
+The main goal here is to provide a slightly nicer.
+</p>
+</div>
+<div id="outline-container-org73cc5e1" class="outline-3">
+<h3 id="org73cc5e1">Signatures without structures are types.</h3>
+<div class="outline-text-3" id="text-org73cc5e1">
+<p>
+signature NatSig:
+        type nat
+        val Z nat
+        val S nat -&gt; nat
+</p>
+
+<p>
+is sugar for
+</p>
+
+<p>
+type NatSig = some nat . (Z: nat * s: nat -&gt; nat)
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge60cbba" class="outline-3">
+<h3 id="orge60cbba">Do Structures have an implicit signature?</h3>
+<div class="outline-text-3" id="text-orge60cbba">
+<p>
+Namely, their "everything is public signature".
+</p>
+
+<p>
+struct Sg:
+    type container = (nat * nat)
+    val set = fn (x nat) container =&gt; (x, 0)
+    val get = fn (x container) nat =&gt; fst(x)
+</p>
+
+<p>
+could have this implicit signature
+</p>
+
+<p>
+signature:
+    type container
+    val set nat -&gt; container
+    val get container -&gt; nat
+</p>
+
+<p>
+but it could also be
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge9b75f9" class="outline-3">
+<h3 id="orge9b75f9">Or are structures without signatures just named tuples with opaque types?</h3>
+<div class="outline-text-3" id="text-orge9b75f9">
+<p>
+struct Sg:
+    type container = (nat * nat)
+    val set = fn (x nat) container =&gt; (x, 0)
+    val get = fn (x container) nat =&gt; fst(x)
+</p>
+</div>
+</div>
+</div>
 </div>
 </body>
 </html>

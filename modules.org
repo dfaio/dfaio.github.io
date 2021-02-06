@@ -1,0 +1,145 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
+
+* Ok let's figure out modularity together.
+  
+First we need to understand existential types. They're a form of
+polymorphism. Let's go rule by rule.
+
+Δ holds judgements of the form "this type is well-formed." Γ holds
+judgements of the form "expression e has type t," which we write as
+e : t. 
+
+#+BEGIN_EXAMPLE
+ Δ, t type ⊢ τ type
+---------------------
+Δ ⊢ (some t. τ) type
+#+END_EXAMPLE
+This says that if τ is a well-formed type, then so is some t. τ. We
+omit writing Γ here, as it's not relevant to the judgement.
+
+#+BEGIN_EXAMPLE
+            Δ ⊢ p type 
+            Δ, t type ⊢ τ type 
+            Δ Γ ⊢ e : [p/t]τ
+------------------------------------------------
+Δ Γ ⊢ (impl (some t.τ) with p as e) : (some t.τ)
+#+END_EXAMPLE
+
+If τ is a type referring to the free variable t, and p is some type,
+then [p/t]τ is the type produced by substituting p for t in τ.
+
+The above rule is the introduction form for expressions of existential
+type. It's a sort of "backwards substitution."
+
+The inputs are a type p to redact, a type (some t.τ) to expose, and an
+expression e. If t is a type, then τ is a type. The type of e refers
+to the type p. It has type [p/t]τ, a type that's constructable by
+assumpting t is a type, forming τ that refers to t, and then
+substituting p for t in τ.
+
+The impl expression hides this type p in some way. (impl (some t.τ)
+with p as e) has type some t.τ, which could potentially not refer to
+p.
+
+The programmer must provide an explicit typing for the impl
+expression, as otherwise, there are multiple valid typings. For
+instance, the (invalid in thon) expression
+#+BEGIN_EXAMPLE
+impl with nat as (0, 0)
+#+END_EXAMPLE
+could have type some t. (t * nat), some t. (nat * t), or some t. (t *
+t).
+
+#+BEGIN_EXAMPLE
+            Δ Γ ⊢ e_1 : (some t.τ)
+            Δ, t type Γ, x : τ ⊢ e_2 : τ_2
+            Δ ⊢ τ2 type
+------------------------------------------------
+Δ Γ ⊢ (use e_1 as (t, x) in e_2) : τ_2
+#+END_EXAMPLE
+States if we have a existential package e_1 of type (some t.τ), then
+we can unpack e_1 into two new variables - a type variable t and an
+expression variable x. t is an abstract type, providing opaque
+reference to the type the impl redacted. x provides the implementation
+specified by (some t.τ).
+
+** A set/get existential package.
+We can consider a simple set/get interface. We set a nat to an
+internal vessel type. We get a nat from the internal vessel
+type.
+
+#+BEGIN_EXAMPLE
+impl (some vessel. ((nat -> vessel) * (t -> vessel)))
+with nat as
+((
+   \ x : nat -> x, (*set*)
+   \ x : nat -> x  (*get*)
+))
+#+END_EXAMPLE
+This package has type (some vessel. ((nat -> vessel) * (t ->
+vessel))), but we could have just as easily implemented it as
+#+BEGIN_EXAMPLE
+impl (some vessel. ((nat -> vessel) * (t -> vessel)))
+with (nat * nat) as
+((
+   \ x : nat -> (x, 0),         (*set*)
+   \ x : (nat * nat)  -> fst x  (*get*)
+))
+#+END_EXAMPLE
+It'd be pretty silly to store a single nat in a tuple of nats, of course.
+But this package also has type some vessel. ((nat -> vessel) * (t -> vessel)).
+
+Then we can use these impls as so
+#+BEGIN_EXAMPLE
+let setget : some vessel. ((nat -> vessel) * (t -> vessel))
+    = ... (* either impl *) in
+use setget as (sg, t) in
+let set : (nat -> t) = fst sg in
+let get : (t -> nat) = snd sg in
+let s : t = set (2) in
+let g : nat = get s in
+g
+#+END_EXAMPLE
+which will evaluate to 2.
+
+* Assorted rough notes, please ignore.
+  
+The main goal here is to provide a slightly nicer.
+** Signatures without structures are types.
+  
+signature NatSig:
+        type nat
+        val Z nat
+        val S nat -> nat
+
+is sugar for
+
+type NatSig = some nat . (Z: nat * s: nat -> nat)
+
+** Do Structures have an implicit signature?
+Namely, their "everything is public signature".
+
+struct Sg:
+    type container = (nat * nat)
+    val set = fn (x nat) container => (x, 0)
+    val get = fn (x container) nat => fst(x)
+    
+could have this implicit signature
+
+signature:
+    type container
+    val set nat -> container
+    val get container -> nat
+    
+but it could also be
+
+** Or are structures without signatures just named tuples with opaque types?
+  
+struct Sg:
+    type container = (nat * nat)
+    val set = fn (x nat) container => (x, 0)
+    val get = fn (x container) nat => fst(x)
