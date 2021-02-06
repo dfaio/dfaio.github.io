@@ -7,11 +7,13 @@
 * Ok let's figure out modularity together.
   
 First we need to understand existential types. They're a form of
-polymorphism. Let's go rule by rule.
+polymorphism.
 
-Δ holds judgements of the form "this type is well-formed." Γ holds
-judgements of the form "expression e has type t," which we write as
-e : t. 
+* Existential types
+
+Let's go rule by rule. Δ holds judgements of the form "this type is
+well-formed." Γ holds judgements of the form "expression e has type
+t," which we write as e : t.
 
 #+BEGIN_EXAMPLE
  Δ, t type ⊢ τ type
@@ -67,7 +69,7 @@ expression variable x. t is an abstract type, providing opaque
 reference to the type the impl redacted. x provides the implementation
 specified by (some t.τ).
 
-** A set/get existential package.
+* A set/get existential package.
 We can consider a simple set/get interface. We set a nat to an
 internal vessel type. We get a nat from the internal vessel
 type.
@@ -106,7 +108,7 @@ g
 #+END_EXAMPLE
 which will evaluate to 2.
 
-* From impl and use to something ergonomic.
+* From existential packages to something ergonomic.
   
 ** Modules as structures and signatures
 Let's borrow syntax from section section 10.1.6 of Russo's [[https://www.microsoft.com/en-us/research/wp-content/uploads/1998/03/Types-for-Modules.pdf][Types for
