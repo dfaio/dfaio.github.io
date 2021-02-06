@@ -6,6 +6,8 @@
 
 * Ok let's figure out modularity together.
   
+2021-02-06
+  
 First we need to understand existential types. They're a form of
 polymorphism.
 

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-02-06 Sat 04:38 -->
+<!-- 2021-02-06 Sat 04:40 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -234,9 +234,13 @@ for the JavaScript code in this tag.
 <a href="index.html">dfa.io</a>
 </p>
 
-<div id="outline-container-orge9c336b" class="outline-2">
-<h2 id="orge9c336b">Ok let's figure out modularity together.</h2>
-<div class="outline-text-2" id="text-orge9c336b">
+<div id="outline-container-orgdf4e328" class="outline-2">
+<h2 id="orgdf4e328">Ok let's figure out modularity together.</h2>
+<div class="outline-text-2" id="text-orgdf4e328">
+<p>
+2021-02-06
+</p>
+
 <p>
 First we need to understand existential types. They're a form of
 polymorphism.
@@ -244,9 +248,9 @@ polymorphism.
 </div>
 </div>
 
-<div id="outline-container-org7993899" class="outline-2">
-<h2 id="org7993899">Existential types</h2>
-<div class="outline-text-2" id="text-org7993899">
+<div id="outline-container-orgbbde122" class="outline-2">
+<h2 id="orgbbde122">Existential types</h2>
+<div class="outline-text-2" id="text-orgbbde122">
 <p>
 Let's go rule by rule. Δ holds judgements of the form "this type is
 well-formed." Γ holds judgements of the form "expression e has type
@@ -325,9 +329,9 @@ specified by (some t.τ).
 </div>
 </div>
 
-<div id="outline-container-org8713c7b" class="outline-2">
-<h2 id="org8713c7b">A set/get existential package.</h2>
-<div class="outline-text-2" id="text-org8713c7b">
+<div id="outline-container-org4b0f135" class="outline-2">
+<h2 id="org4b0f135">A set/get existential package.</h2>
+<div class="outline-text-2" id="text-org4b0f135">
 <p>
 We can consider a simple set/get interface. We set a nat to an
 internal vessel type. We get a nat from the internal vessel
@@ -378,13 +382,13 @@ which will evaluate to 2.
 </div>
 </div>
 
-<div id="outline-container-org86ba815" class="outline-2">
-<h2 id="org86ba815">From existential packages to something ergonomic.</h2>
-<div class="outline-text-2" id="text-org86ba815">
+<div id="outline-container-orgede6854" class="outline-2">
+<h2 id="orgede6854">From existential packages to something ergonomic.</h2>
+<div class="outline-text-2" id="text-orgede6854">
 </div>
-<div id="outline-container-org966b002" class="outline-3">
-<h3 id="org966b002">Modules as structures and signatures</h3>
-<div class="outline-text-3" id="text-org966b002">
+<div id="outline-container-org40f66ef" class="outline-3">
+<h3 id="org40f66ef">Modules as structures and signatures</h3>
+<div class="outline-text-3" id="text-org40f66ef">
 <p>
 Let's borrow syntax from section section 10.1.6 of Russo's <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1998/03/Types-for-Modules.pdf">Types for
 Modules</a>. They implemented something very similar in Moscow ML (Before
@@ -452,9 +456,9 @@ structure SafeNat:
 </pre>
 </div>
 
-<div id="outline-container-org3be0f14" class="outline-4">
-<h4 id="org3be0f14">Outstanding questions</h4>
-<div class="outline-text-4" id="text-org3be0f14">
+<div id="outline-container-orgcb1298f" class="outline-4">
+<h4 id="orgcb1298f">Outstanding questions</h4>
+<div class="outline-text-4" id="text-orgcb1298f">
 <ul class="org-ul">
 <li>What is a structure without a signature? Just a named tuple?</li>
 <li>What is a signature without a structure? Just a type? If so, then</li>
@@ -482,9 +486,9 @@ type NatSig = some nat . (Z: nat * s: nat -&gt; nat)
 </div>
 </div>
 
-<div id="outline-container-org5736f3b" class="outline-3">
-<h3 id="org5736f3b">Modules as generalized tuples</h3>
-<div class="outline-text-3" id="text-org5736f3b">
+<div id="outline-container-org2a28bbd" class="outline-3">
+<h3 id="org2a28bbd">Modules as generalized tuples</h3>
+<div class="outline-text-3" id="text-org2a28bbd">
 <p>
 Modules are kind of like named tuples where some of the names refer to
 expressions and some of the names refer to types. A type name could be
@@ -506,9 +510,9 @@ are visible outside the named tuple.
 </div>
 </div>
 
-<div id="outline-container-orgdf7cf6f" class="outline-3">
-<h3 id="orgdf7cf6f">Modules as datatypes</h3>
-<div class="outline-text-3" id="text-orgdf7cf6f">
+<div id="outline-container-org5bf9c43" class="outline-3">
+<h3 id="org5bf9c43">Modules as datatypes</h3>
+<div class="outline-text-3" id="text-org5bf9c43">
 <p>
 Algebraic datatypes in thon elaborate to existential packages. This
 approach is borrowed from section 3.4 of Harper and Stone's <a href="https://www.cs.cmu.edu/~rwh/papers/ttisml/ttisml.pdf">A type-theoretic
