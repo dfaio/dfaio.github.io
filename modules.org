@@ -106,40 +106,137 @@ g
 #+END_EXAMPLE
 which will evaluate to 2.
 
-* Assorted rough notes, please ignore.
+* From impl and use to something ergonomic.
   
-The main goal here is to provide a slightly nicer.
-** Signatures without structures are types.
-  
+** Modules as structures and signatures
+Let's borrow syntax from section section 10.1.6 of Russo's [[https://www.microsoft.com/en-us/research/wp-content/uploads/1998/03/Types-for-Modules.pdf][Types for
+Modules]]. They implemented something very similar in Moscow ML (Before
+the turn of the century! Crazy how slowly type theory trickles out
+into popular programming languages).
+
+The impl and use syntax defined above is not especially
+ergonomic. It's annoying to use inside an expression. I think it also
+obscures the many-to-many relationship existential packages provide.
+Or at the very least, does not make it especially clear.
+
+Here is the code snippet from the link above. Convert the setget
+example above to this syntax is left as an exercise to me.
+
+#+BEGIN_EXAMPLE
+signature NAT = sig type nat
+                    val Z:nat
+                    val S:nat -> nat
+                    val plus: nat -> nat -> nat
+                end
+
+structure SafeNat = (* unlimited range but slow *)
+    struct
+        datatype nat = Z | S of nat
+        fun plus Z m = m
+          | plus (S n) m = S (plus n m)
+    end
+    
+
+structure FastNat = (* limited range but fast *)
+    struct type nat = int
+        val Z = 0
+        fun S n = n + 1
+        fun plus n m = n + m
+    end
+
+type natpack = [ NAT ] (* package type *)
+
+val safeNat = [ structure SafeNat as NAT ] (* packing *)
+val fastNat = [ structure FastNat as NAT ]
+
+structure Nat as NAT = (* unpacking *)
+    if (913 mod 7 = 5) then safeNat else fastNat
+
+val natlist = [safeNat,fastNat] : [ NAT ] list
+#+END_EXAMPLE
+
+I'm partial to the whitespace-sensitivity of python, so likely in the
+long run will prefer something like
+
+#+BEGIN_EXAMPLE
+structure SafeNat:
+    datatype nat = Z | S of nat
+    fun plus(z nat, m nat) nat:
+        case z:
+            Z: m
+            S n: S (plus(n, m))
+#+END_EXAMPLE
+
+*** Outstanding questions
+- What is a structure without a signature? Just a named tuple?
+- What is a signature without a structure? Just a type? If so, then
+#+BEGIN_EXAMPLE
 signature NatSig:
-        type nat
-        val Z nat
-        val S nat -> nat
+    type nat
+    val Z nat
+    val S nat -> nat
+#+END_EXAMPLE
 
 is sugar for
 
+#+BEGIN_EXAMPLE
 type NatSig = some nat . (Z: nat * s: nat -> nat)
+#+END_EXAMPLE
 
-** Do Structures have an implicit signature?
-Namely, their "everything is public signature".
+- Why does Moscow ML require type natpack = [ NAT ] to define the package type?
+- Can the programmer use a structure without first packing and unpacking it?
 
-struct Sg:
-    type container = (nat * nat)
-    val set = fn (x nat) container => (x, 0)
-    val get = fn (x container) nat => fst(x)
-    
-could have this implicit signature
+** Modules as generalized tuples
+Modules are kind of like named tuples where some of the names refer to
+expressions and some of the names refer to types. A type name could be
+opaque or transparent. If it is opaque, it sits underneath existential
+quantification. If it is transparent, it sits outside the
+quantification as a named member in the tuple.
 
-signature:
-    type container
-    val set nat -> container
-    val get container -> nat
-    
-but it could also be
+Names could be private as well, but that might require implementing
+subtyping, which I don't really want to do, as it seems very
+complicated. And I don't want to have an ad hoc solution here.
 
-** Or are structures without signatures just named tuples with opaque types?
+So for now, we'll demand that all names defined inside the named tuple
+are visible outside the named tuple.
+
+** Modules as datatypes
+   
+Algebraic datatypes in thon elaborate to existential packages. This
+approach is borrowed from section 3.4 of Harper and Stone's [[https://www.cs.cmu.edu/~rwh/papers/ttisml/ttisml.pdf][A type-theoretic
+interpretation of standard ML]]. For instance, the datatype
+
+#+BEGIN_EXAMPLE
+data List = Nil | Cons int * List
+#+END_EXAMPLE
+elaborate (roughly) to
+
+#+BEGIN_EXAMPLE
+let ListImpl : (some t. ((unit -> t) * (((nat * t) -> t)))) =
+    impl (some t. ((unit -> t) * (((nat * t) -> t))))
+    with (u List. (unit |  (nat * List))) as
+    (
+        (* Nil *)
+        \ foo : unit ->
+            fold u List. (unit | (nat * List))
+            with left foo : (unit |  (nat * (u List . (unit | (nat * List)))))
+        ,
+        (* Cons *)
+        \ natAndNatList : (nat * (u List. (unit |  (nat * List)))) ->
+            fold u List.(unit |  (nat * List))
+            with right natAndNatList : (unit
+                                     | (nat * (u List. (unit |  (nat * List)))))
+    )
+in use ListImpl as (li, List) in
+let Nil : unit -> List = fst li in
+let Cons : (nat * List) -> List = snd li in
+Z
+#+END_EXAMPLE
+There is an additional "expose" function that is generated. In the
+example above, it would map from the abstract type List to the type
+((unit -> t) * (((nat * t) -> t))). The expose function would then be
+implicitly called when case-ing on a datatype.
+
+So notably, datatypes sort-of a special case of modules. Why not unify the syntax?
+
   
-struct Sg:
-    type container = (nat * nat)
-    val set = fn (x nat) container => (x, 0)
-    val get = fn (x container) nat => fst(x)
