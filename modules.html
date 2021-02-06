@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-02-06 Sat 03:49 -->
+<!-- 2021-02-06 Sat 03:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -234,9 +234,9 @@ for the JavaScript code in this tag.
 <a href="index.html">dfa.io</a>
 </p>
 
-<div id="outline-container-org9749301" class="outline-2">
-<h2 id="org9749301">Ok let's figure out modularity together.</h2>
-<div class="outline-text-2" id="text-org9749301">
+<div id="outline-container-org9436043" class="outline-2">
+<h2 id="org9436043">Ok let's figure out modularity together.</h2>
+<div class="outline-text-2" id="text-org9436043">
 <p>
 First we need to understand existential types. They're a form of
 polymorphism. Let's go rule by rule.
@@ -319,9 +319,9 @@ specified by (some t.τ).
 </p>
 </div>
 
-<div id="outline-container-org142d72c" class="outline-3">
-<h3 id="org142d72c">A set/get existential package.</h3>
-<div class="outline-text-3" id="text-org142d72c">
+<div id="outline-container-org24e948c" class="outline-3">
+<h3 id="org24e948c">A set/get existential package.</h3>
+<div class="outline-text-3" id="text-org24e948c">
 <p>
 We can consider a simple set/get interface. We set a nat to an
 internal vessel type. We get a nat from the internal vessel
@@ -368,77 +368,6 @@ g
 </pre>
 <p>
 which will evaluate to 2.
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org4f452b8" class="outline-2">
-<h2 id="org4f452b8">Assorted rough notes, please ignore.</h2>
-<div class="outline-text-2" id="text-org4f452b8">
-<p>
-The main goal here is to provide a slightly nicer.
-</p>
-</div>
-<div id="outline-container-org73cc5e1" class="outline-3">
-<h3 id="org73cc5e1">Signatures without structures are types.</h3>
-<div class="outline-text-3" id="text-org73cc5e1">
-<p>
-signature NatSig:
-        type nat
-        val Z nat
-        val S nat -&gt; nat
-</p>
-
-<p>
-is sugar for
-</p>
-
-<p>
-type NatSig = some nat . (Z: nat * s: nat -&gt; nat)
-</p>
-</div>
-</div>
-
-<div id="outline-container-orge60cbba" class="outline-3">
-<h3 id="orge60cbba">Do Structures have an implicit signature?</h3>
-<div class="outline-text-3" id="text-orge60cbba">
-<p>
-Namely, their "everything is public signature".
-</p>
-
-<p>
-struct Sg:
-    type container = (nat * nat)
-    val set = fn (x nat) container =&gt; (x, 0)
-    val get = fn (x container) nat =&gt; fst(x)
-</p>
-
-<p>
-could have this implicit signature
-</p>
-
-<p>
-signature:
-    type container
-    val set nat -&gt; container
-    val get container -&gt; nat
-</p>
-
-<p>
-but it could also be
-</p>
-</div>
-</div>
-
-<div id="outline-container-orge9b75f9" class="outline-3">
-<h3 id="orge9b75f9">Or are structures without signatures just named tuples with opaque types?</h3>
-<div class="outline-text-3" id="text-orge9b75f9">
-<p>
-struct Sg:
-    type container = (nat * nat)
-    val set = fn (x nat) container =&gt; (x, 0)
-    val get = fn (x container) nat =&gt; fst(x)
 </p>
 </div>
 </div>

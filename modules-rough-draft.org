@@ -1,0 +1,44 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
+
+* More ramblings about modules, mostly to myself.
+** 
+* Old
+The main goal here is to provide a slightly nicer.
+** Signatures without structures are types.
+  
+signature NatSig:
+        type nat
+        val Z nat
+        val S nat -> nat
+
+is sugar for
+
+type NatSig = some nat . (Z: nat * s: nat -> nat)
+
+** Do Structures have an implicit signature?
+Namely, their "everything is public signature".
+
+struct Sg:
+    type container = (nat * nat)
+    val set = fn (x nat) container => (x, 0)
+    val get = fn (x container) nat => fst(x)
+    
+could have this implicit signature
+
+signature:
+    type container
+    val set nat -> container
+    val get container -> nat
+    
+but it could also be
+
+** Or are structures without signatures just named tuples with opaque types?
+  
+struct Sg:
+    type container = (nat * nat)
+    val set = fn (x nat) container => (x, 0)
+    val get = fn (x container) nat => fst(x)
