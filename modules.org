@@ -191,7 +191,7 @@ So there's an implicit pack, and any usage of the structure has an implicit unpa
 
 Could start by not putting the names under the dot syntax, idk.
 
-**** Set get as structure and signature
+*** Set get as structure and signature
 
 #+BEGIN_EXAMPLE
 signature SETGET:
@@ -248,7 +248,7 @@ one as a red-black tree. Then we can have two different opaque
 datatypes inside two separate structures, but then we can have the
 structures ascribe to the same interface.
 
-**** Set data structure as structure and signature
+*** Set data structure as structure and signature
 This is a good example to consider, as each implementation will have
 it's own separate internal datatype, so we can consider the
 interaction between datatypes and structures.
@@ -276,6 +276,8 @@ Bst could elaborate to (note the ctors for tree aren't exported -
 though they could be, if the user wants to - just elaborate them as if
 it was a datatype decl outside of the structure).
 
+TODO me go over this several more times.
+
 #+BEGIN_EXAMPLE
 let BstImpl : (
     some set. (
@@ -288,8 +290,16 @@ let BstImpl : (
                 ((nat * set) -> bool) *
                 ((nat * set) -> set) *
                 ((nat * set) -> set)))
-      with (u t . (unit | (nat * t * t))) as
-      ( ... )
+      with (u t . (unit | (nat * t * t))) as ( 
+          let Nil : u t . (unit | (nat * t * t)) =
+              ...
+          let Node : (nat *
+                     (u t . (unit | (nat * t * t))) *
+                     (u t . (unit | (nat * t * t)))) =
+              fold ...
+          (* actual value of the structure is this tuple *)
+          (fun space() ..., fun search() ...)
+      )
 in use BstImpl as (Bst, Bst.set) in
 let Bst.space = fst(sg) in
 let Bst.search = snd(sg) in
