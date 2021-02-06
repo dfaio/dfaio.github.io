@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-02-06 Sat 04:40 -->
+<!-- 2021-02-06 Sat 16:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -234,9 +234,9 @@ for the JavaScript code in this tag.
 <a href="index.html">dfa.io</a>
 </p>
 
-<div id="outline-container-orgdf4e328" class="outline-2">
-<h2 id="orgdf4e328">Ok let's figure out modularity together.</h2>
-<div class="outline-text-2" id="text-orgdf4e328">
+<div id="outline-container-orgae71e8c" class="outline-2">
+<h2 id="orgae71e8c">Ok let's figure out modularity together.</h2>
+<div class="outline-text-2" id="text-orgae71e8c">
 <p>
 2021-02-06
 </p>
@@ -248,9 +248,9 @@ polymorphism.
 </div>
 </div>
 
-<div id="outline-container-orgbbde122" class="outline-2">
-<h2 id="orgbbde122">Existential types</h2>
-<div class="outline-text-2" id="text-orgbbde122">
+<div id="outline-container-orgf9ee585" class="outline-2">
+<h2 id="orgf9ee585">Existential types</h2>
+<div class="outline-text-2" id="text-orgf9ee585">
 <p>
 Let's go rule by rule. Δ holds judgements of the form "this type is
 well-formed." Γ holds judgements of the form "expression e has type
@@ -313,8 +313,8 @@ t).
 </p>
 
 <pre class="example">
-            Δ Γ ⊢ e_1 : (some t.τ)
-            Δ, t type Γ, x : τ ⊢ e_2 : τ_2
+            Δ Γ ⊢ e1 : (some t.τ)
+            Δ, t type Γ, x : τ ⊢ e2 : τ2
             Δ ⊢ τ2 type
 ------------------------------------------------
 Δ Γ ⊢ (use e_1 as (t, x) in e_2) : τ_2
@@ -329,9 +329,9 @@ specified by (some t.τ).
 </div>
 </div>
 
-<div id="outline-container-org4b0f135" class="outline-2">
-<h2 id="org4b0f135">A set/get existential package.</h2>
-<div class="outline-text-2" id="text-org4b0f135">
+<div id="outline-container-orgfcd681e" class="outline-2">
+<h2 id="orgfcd681e">A set/get existential package.</h2>
+<div class="outline-text-2" id="text-orgfcd681e">
 <p>
 We can consider a simple set/get interface. We set a nat to an
 internal vessel type. We get a nat from the internal vessel
@@ -382,13 +382,13 @@ which will evaluate to 2.
 </div>
 </div>
 
-<div id="outline-container-orgede6854" class="outline-2">
-<h2 id="orgede6854">From existential packages to something ergonomic.</h2>
-<div class="outline-text-2" id="text-orgede6854">
+<div id="outline-container-org472c401" class="outline-2">
+<h2 id="org472c401">From existential packages to something ergonomic.</h2>
+<div class="outline-text-2" id="text-org472c401">
 </div>
-<div id="outline-container-org40f66ef" class="outline-3">
-<h3 id="org40f66ef">Modules as structures and signatures</h3>
-<div class="outline-text-3" id="text-org40f66ef">
+<div id="outline-container-orgbd16653" class="outline-3">
+<h3 id="orgbd16653">Modules as structures and signatures</h3>
+<div class="outline-text-3" id="text-orgbd16653">
 <p>
 Let's borrow syntax from section section 10.1.6 of Russo's <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1998/03/Types-for-Modules.pdf">Types for
 Modules</a>. They implemented something very similar in Moscow ML (Before
@@ -407,6 +407,7 @@ Or at the very least, does not make it especially clear.
 Here is the code snippet from the link above. Convert the setget
 example above to this syntax is left as an exercise to me.
 </p>
+
 
 <pre class="example">
 signature NAT = sig type nat
@@ -456,9 +457,167 @@ structure SafeNat:
 </pre>
 </div>
 
-<div id="outline-container-orgcb1298f" class="outline-4">
-<h4 id="orgcb1298f">Outstanding questions</h4>
-<div class="outline-text-4" id="text-orgcb1298f">
+<div id="outline-container-org86f7cb1" class="outline-4">
+<h4 id="org86f7cb1">A proposal</h4>
+<div class="outline-text-4" id="text-org86f7cb1">
+<p>
+Consider structure declarations as equivalent to datatype
+declarations, just as a way to declare additional members of the
+existential packge tuple interface. Instead of being "exists t. fix
+t2. sumtype", it's "exists t. tuple(&#x2026;)".
+</p>
+
+<p>
+It introduces an implicit pack and unpack. The user can optionally
+provide a signature in the structure definition to specify what
+interface type to pack in.
+</p>
+
+<p>
+This means structure definitions are generative. Each structure has a
+unique type. Bleh except then there's no polymorphism. The unpack has
+to be explicit somewhere else.
+</p>
+
+<p>
+So there's an implicit pack, and any usage of the structure has an implicit unpack?
+</p>
+
+<p>
+Could start by not putting the names under the dot syntax, idk.
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="orga614dc9"></a>Set get as structure and signature<br />
+<div class="outline-text-5" id="text-orga614dc9">
+<pre class="example">
+signature SETGET:
+    type vessel
+    val set nat -&gt; vessel
+    val get vessel -&gt; nat
+    
+structure Setget:
+    type vessel = nat
+    fun set(x nat) vessel:
+        return x
+    fun get(v vessel) nat:
+        case v:
+            Vessel n:
+                n
+                
+structure SetgetTwo:
+    type vessel = (nat * nat)
+    fun set(x nat) vessel:
+        return (x, 0)
+    fun get(v vessel) nat:
+        fst(v)
+</pre>
+
+<pre class="example">
+structure Setget:
+    datatype vessel = Vessel nat
+    fun set(x nat) vessel:
+        return Vessel x
+    fun get(v vessel) nat:
+        case v:
+            Vessel n:
+                n
+</pre>
+<p>
+could elaborate (roughly - ignoring the datatype) to
+</p>
+
+<pre class="example">
+let SetGet : (
+    some vessel. (
+        (nat -&gt; vessel) * 
+        (vessel -&gt; nat)))
+    = impl (some vessel. (
+            (nat -&gt; vessel) *
+            (vessel -&gt; nat)))
+      with nat as
+      ( ... )
+in use SetGet as (sg, SetGet.vessel) in
+let SetGet.set = fst(sg) in
+let SetGet.get = snd(sg) in
+</pre>
+
+<p>
+Hm maybe a better example is a set implementation, one as a bst and
+one as a red-black tree. Then we can have two different opaque
+datatypes inside two separate structures, but then we can have the
+structures ascribe to the same interface.
+</p>
+</div>
+</li>
+
+<li><a id="org947a9c2"></a>Set data structure as structure and signature<br />
+<div class="outline-text-5" id="text-org947a9c2">
+<p>
+This is a good example to consider, as each implementation will have
+it's own separate internal datatype, so we can consider the
+interaction between datatypes and structures.
+</p>
+
+<p>
+I think structure definitions introduce an implicit pack and unpack,
+but the user can provide a signature.
+</p>
+
+<pre class="example">
+signature Set:
+    type set
+    val space : set -&gt; nat
+    val search : (nat * set) -&gt; bool
+    val insert : (nat * set) -&gt; set
+    val delete : (nat * set) -&gt; set
+    
+signature Bst as Set:
+    datatype set = Nil | Node (nat * set * set)
+    ...
+
+signature Rbt as Set:
+    datatype set = Nil | Node (nat * bool * set * set)
+    ...
+</pre>
+<p>
+Bst could elaborate to (note the ctors for tree aren't exported -
+though they could be, if the user wants to - just elaborate them as if
+it was a datatype decl outside of the structure).
+</p>
+
+<pre class="example">
+let BstImpl : (
+    some set. (
+        (set -&gt; nat) * 
+        ((nat * set) -&gt; bool) *
+        ((nat * set) -&gt; set) *
+        ((nat * set) -&gt; set))
+    = impl (some set. (
+                (set -&gt; nat) * 
+                ((nat * set) -&gt; bool) *
+                ((nat * set) -&gt; set) *
+                ((nat * set) -&gt; set)))
+      with (u t . (unit | (nat * t * t))) as
+      ( ... )
+in use BstImpl as (Bst, Bst.set) in
+let Bst.space = fst(sg) in
+let Bst.search = snd(sg) in
+..
+</pre>
+<p>
+If we want to export the type set, we'd need a way to introduce
+another opaque type variable for that type.
+</p>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-org6735c3f" class="outline-4">
+<h4 id="org6735c3f">Outstanding questions</h4>
+<div class="outline-text-4" id="text-org6735c3f">
 <ul class="org-ul">
 <li>What is a structure without a signature? Just a named tuple?</li>
 <li>What is a signature without a structure? Just a type? If so, then</li>
@@ -480,15 +639,14 @@ type NatSig = some nat . (Z: nat * s: nat -&gt; nat)
 
 <ul class="org-ul">
 <li>Why does Moscow ML require type natpack = [ NAT ] to define the package type?</li>
-<li>Can the programmer use a structure without first packing and unpacking it?</li>
+<li>Can the programmer use a structure without first packing and unpackin</li>
 </ul>
 </div>
 </div>
 </div>
-
-<div id="outline-container-org2a28bbd" class="outline-3">
-<h3 id="org2a28bbd">Modules as generalized tuples</h3>
-<div class="outline-text-3" id="text-org2a28bbd">
+<div id="outline-container-org2bc98c3" class="outline-3">
+<h3 id="org2bc98c3">Modules as generalized tuples</h3>
+<div class="outline-text-3" id="text-org2bc98c3">
 <p>
 Modules are kind of like named tuples where some of the names refer to
 expressions and some of the names refer to types. A type name could be
@@ -510,9 +668,9 @@ are visible outside the named tuple.
 </div>
 </div>
 
-<div id="outline-container-org5bf9c43" class="outline-3">
-<h3 id="org5bf9c43">Modules as datatypes</h3>
-<div class="outline-text-3" id="text-org5bf9c43">
+<div id="outline-container-orgbc84406" class="outline-3">
+<h3 id="orgbc84406">Modules as datatypes</h3>
+<div class="outline-text-3" id="text-orgbc84406">
 <p>
 Algebraic datatypes in thon elaborate to existential packages. This
 approach is borrowed from section 3.4 of Harper and Stone's <a href="https://www.cs.cmu.edu/~rwh/papers/ttisml/ttisml.pdf">A type-theoretic

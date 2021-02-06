@@ -59,8 +59,8 @@ could have type some t. (t * nat), some t. (nat * t), or some t. (t *
 t).
 
 #+BEGIN_EXAMPLE
-            Δ Γ ⊢ e_1 : (some t.τ)
-            Δ, t type Γ, x : τ ⊢ e_2 : τ_2
+            Δ Γ ⊢ e1 : (some t.τ)
+            Δ, t type Γ, x : τ ⊢ e2 : τ2
             Δ ⊢ τ2 type
 ------------------------------------------------
 Δ Γ ⊢ (use e_1 as (t, x) in e_2) : τ_2
@@ -126,6 +126,7 @@ Or at the very least, does not make it especially clear.
 Here is the code snippet from the link above. Convert the setget
 example above to this syntax is left as an exercise to me.
 
+
 #+BEGIN_EXAMPLE
 signature NAT = sig type nat
                     val Z:nat
@@ -171,6 +172,132 @@ structure SafeNat:
             S n: S (plus(n, m))
 #+END_EXAMPLE
 
+*** A proposal
+
+Consider structure declarations as equivalent to datatype
+declarations, just as a way to declare additional members of the
+existential packge tuple interface. Instead of being "exists t. fix
+t2. sumtype", it's "exists t. tuple(...)".
+
+It introduces an implicit pack and unpack. The user can optionally
+provide a signature in the structure definition to specify what
+interface type to pack in.
+
+This means structure definitions are generative. Each structure has a
+unique type. Bleh except then there's no polymorphism. The unpack has
+to be explicit somewhere else.
+
+So there's an implicit pack, and any usage of the structure has an implicit unpack?
+
+Could start by not putting the names under the dot syntax, idk.
+
+**** Set get as structure and signature
+
+#+BEGIN_EXAMPLE
+signature SETGET:
+    type vessel
+    val set nat -> vessel
+    val get vessel -> nat
+    
+structure Setget:
+    type vessel = nat
+    fun set(x nat) vessel:
+        return x
+    fun get(v vessel) nat:
+        case v:
+            Vessel n:
+                n
+                
+structure SetgetTwo:
+    type vessel = (nat * nat)
+    fun set(x nat) vessel:
+        return (x, 0)
+    fun get(v vessel) nat:
+        fst(v)
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+structure Setget:
+    datatype vessel = Vessel nat
+    fun set(x nat) vessel:
+        return Vessel x
+    fun get(v vessel) nat:
+        case v:
+            Vessel n:
+                n
+#+END_EXAMPLE
+could elaborate (roughly - ignoring the datatype) to
+
+#+BEGIN_EXAMPLE
+let SetGet : (
+    some vessel. (
+        (nat -> vessel) * 
+        (vessel -> nat)))
+    = impl (some vessel. (
+            (nat -> vessel) *
+            (vessel -> nat)))
+      with nat as
+      ( ... )
+in use SetGet as (sg, SetGet.vessel) in
+let SetGet.set = fst(sg) in
+let SetGet.get = snd(sg) in
+#+END_EXAMPLE
+
+Hm maybe a better example is a set implementation, one as a bst and
+one as a red-black tree. Then we can have two different opaque
+datatypes inside two separate structures, but then we can have the
+structures ascribe to the same interface.
+
+**** Set data structure as structure and signature
+This is a good example to consider, as each implementation will have
+it's own separate internal datatype, so we can consider the
+interaction between datatypes and structures.
+
+I think structure definitions introduce an implicit pack and unpack,
+but the user can provide a signature.
+
+#+BEGIN_EXAMPLE
+signature Set:
+    type set
+    val space : set -> nat
+    val search : (nat * set) -> bool
+    val insert : (nat * set) -> set
+    val delete : (nat * set) -> set
+    
+signature Bst as Set:
+    datatype set = Nil | Node (nat * set * set)
+    ...
+
+signature Rbt as Set:
+    datatype set = Nil | Node (nat * bool * set * set)
+    ...
+#+END_EXAMPLE
+Bst could elaborate to (note the ctors for tree aren't exported -
+though they could be, if the user wants to - just elaborate them as if
+it was a datatype decl outside of the structure).
+
+#+BEGIN_EXAMPLE
+let BstImpl : (
+    some set. (
+        (set -> nat) * 
+        ((nat * set) -> bool) *
+        ((nat * set) -> set) *
+        ((nat * set) -> set))
+    = impl (some set. (
+                (set -> nat) * 
+                ((nat * set) -> bool) *
+                ((nat * set) -> set) *
+                ((nat * set) -> set)))
+      with (u t . (unit | (nat * t * t))) as
+      ( ... )
+in use BstImpl as (Bst, Bst.set) in
+let Bst.space = fst(sg) in
+let Bst.search = snd(sg) in
+..
+#+END_EXAMPLE
+If we want to export the type set, we'd need a way to introduce
+another opaque type variable for that type.
+
 *** Outstanding questions
 - What is a structure without a signature? Just a named tuple?
 - What is a signature without a structure? Just a type? If so, then
@@ -188,8 +315,7 @@ type NatSig = some nat . (Z: nat * s: nat -> nat)
 #+END_EXAMPLE
 
 - Why does Moscow ML require type natpack = [ NAT ] to define the package type?
-- Can the programmer use a structure without first packing and unpacking it?
-
+- Can the programmer use a structure without first packing and unpackin
 ** Modules as generalized tuples
 Modules are kind of like named tuples where some of the names refer to
 expressions and some of the names refer to types. A type name could be
