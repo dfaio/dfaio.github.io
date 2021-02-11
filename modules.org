@@ -264,11 +264,11 @@ signature Set:
     val insert : (nat * set) -> set
     val delete : (nat * set) -> set
     
-signature Bst as Set:
+structure Bst as Set:
     datatype set = Nil | Node (nat * set * set)
     ...
 
-signature Rbt as Set:
+structure Rbt as Set:
     datatype set = Nil | Node (nat * bool * set * set)
     ...
 #+END_EXAMPLE
@@ -384,3 +384,113 @@ implicitly called when case-ing on a datatype.
 So notably, datatypes sort-of a special case of modules. Why not unify the syntax?
 
   
+
+* A proposal
+
+  
+** One interface, one module.
+
+#+BEGIN_EXAMPLE
+interface Foo:
+    ...
+module Bar implements Foo:
+    ...
+let baz Bar.t = ...
+#+END_EXAMPLE
+
+** Multiple interfaces, one module.
+
+*** implements many   
+
+#+BEGIN_EXAMPLE
+interface Foo:
+    ...
+interface Foo2:
+    ...
+module Bar implements Foo, Foo2:
+    ...
+let baz Bar.t = ...
+#+END_EXAMPLE
+
+
+#+BEGIN_EXAMPLE
+interface Foo:
+    ...
+interface Foo2:
+    ...
+module Bar:
+    ...
+let baz fooType = ... Bar as Foo
+let baz foo2Type = ... Bar as Foo2
+#+END_EXAMPLE
+But still dont have a specified impl type
+
+#+BEGIN_EXAMPLE
+interface Foo:
+    ...
+interface Foo2:
+    ...
+module Bar:
+    ...
+let baz fooType = Bar(nat) as Foo
+let baz foo2Type = Bar(nat * nat) as Foo2
+#+END_EXAMPLE
+
+let baz fooType = implement Foo with Bar(nat)
+let baz foo2Type = implement Foo2 with Bar(nat * nat)
+
+** Though I think i'd rather also force the user to specify a name for the internal type.
+
+Yep. So then no 
+
+#+BEGIN_EXAMPLE
+interface Foo(t):
+    ...
+interface Foo2(t):
+    ...
+module Bar:
+    type t = ...
+    ...
+let baz fooType = Bar as Foo
+let baz foo2Type = Bar as Foo2
+#+END_EXAMPLE
+
+So then require name to be present.
+
+interface declaration defines a name for the interface and a name for the internal type associated with it.
+
+
+#+BEGIN_EXAMPLE
+interface Foo:
+    ...
+interface Foo2:
+    ...
+struct Bar:
+    ...
+let baz fooType = Bar(nat) as Foo
+let baz foo2Type = Bar(nat * nat) as Foo2
+#+END_EXAMPLE
+
+
+Nah yah gotta require the names.
+#+BEGIN_EXAMPLE
+interface Set:
+    type set
+    val space : set -> nat
+    
+(* defines Bst as a value in this scope, like a function definition *)
+(* Here, the datatype set is visible outside Bst *)
+struct Bst:
+    datatype set = Nil | Node (nat * set * set)
+    fun space(s set) nat: z
+
+(* defines Rbt as a value in this scope, like a function definition *)
+struct Rbt:
+    datatype set = Nil | Node (nat * bool * set * set)
+    fun space(s set) nat: z
+
+(* The as syntax hides away the implementation type. The datatypes are not visible.
+ * Kind of weird to have both a public and a private object in scope here, though? *)
+let set setType = Bst as Foo
+let set2 setType2 = Bar as Foo2
+#+END_EXAMPLE
