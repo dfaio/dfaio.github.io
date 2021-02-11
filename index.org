@@ -5,17 +5,29 @@
 
 dfa.io is on the world wide web.
 
+*Types and programming*
+
+- [[file:exist.html][Existential types are a type of polymorphism.]]
+- [[file:modules.html][From existential types to ergonomic modules.]]
 - [[file:thon.html][My pet programming language thon]].
-- [[file:superhalts.html][It's halting problems all the way down.]]
-- [[file:quine.html][A turing machine quine.]]
+
+*Math and computation*
+
 - [[file:keys.html][Arranging keys on my key holder is NP-hard.]]
+- [[file:quine.html][A turing machine quine.]]
+- [[file:superhalts.html][It's halting problems all the way down.]]
 - [[file:tree.html][Traversing the Infinite Complete ω-nary Tree]]
-- [[file:readchinese.html][Reading reading Chinese as a second language.]]
-- [[file:rpg.html][A small tabletop rpg game system]].
-- [[file:books.html][Some books reviews]]
+
+*Food and drink*
+
+- [[file:aeropress.html][An aeropress coffee recipe.]]
 - [[file:cookbook.html][A collection of recipes.]]
-- [[file:aphoa.html][Aphoa]]
+
+*Reading and writing*
+
+- [[file:readchinese.html][Reading Chinese as a second language.]]
+- [[file:books.html][Some books reviews]]
 - [[file:blogroll.html][Blogroll]]
+- [[file:rpg.html][A small tabletop rpg game system]].
+- [[file:aphoa.html][Aphoa]]
 - [[file:writeroommode.html][Writeroom mode]]
-- [[file:modules.html][Modules]]
-- [[file:aeropress.html][An aeropress recipe]]

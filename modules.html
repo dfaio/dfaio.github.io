@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-02-11 Thu 17:05 -->
+<!-- 2021-02-11 Thu 17:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -234,167 +234,33 @@ for the JavaScript code in this tag.
 <a href="index.html">dfa.io</a>
 </p>
 
-<div id="outline-container-org98dde65" class="outline-2">
-<h2 id="org98dde65">Ok let's figure out modularity together.</h2>
-<div class="outline-text-2" id="text-org98dde65">
+<div id="outline-container-orga025902" class="outline-2">
+<h2 id="orga025902">Ok let's figure out modularity together.</h2>
+<div class="outline-text-2" id="text-orga025902">
 <p>
 2021-02-06
 </p>
 
 <p>
-First we need to understand existential types. They're a form of
+First we need to understand <a href="exist.html">existential types</a>. They're a form of
 polymorphism.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgb819f44" class="outline-2">
-<h2 id="orgb819f44">Existential types</h2>
-<div class="outline-text-2" id="text-orgb819f44">
+<div id="outline-container-org5eb0d6c" class="outline-2">
+<h2 id="org5eb0d6c">From existential packages to something ergonomic.</h2>
+<div class="outline-text-2" id="text-org5eb0d6c">
 <p>
-Let's go rule by rule. Δ holds judgements of the form "this type is
-well-formed." Γ holds judgements of the form "expression e has type
-t," which we write as e : t.
-</p>
-
-<pre class="example">
- Δ, t type ⊢ τ type
----------------------
-Δ ⊢ (some t. τ) type
-</pre>
-<p>
-This says that if τ is a well-formed type, then so is some t. τ. We
-omit writing Γ here, as it's not relevant to the judgement.
-</p>
-
-<pre class="example">
-            Δ ⊢ p type 
-            Δ, t type ⊢ τ type 
-            Δ Γ ⊢ e : [p/t]τ
-------------------------------------------------
-Δ Γ ⊢ (impl (some t.τ) with p as e) : (some t.τ)
-</pre>
-
-<p>
-If τ is a type referring to the free variable t, and p is some type,
-then [p/t]τ is the type produced by substituting p for t in τ.
-</p>
-
-<p>
-The above rule is the introduction form for expressions of existential
-type. It's a sort of "backwards substitution."
-</p>
-
-<p>
-The inputs are a type p to redact, a type (some t.τ) to expose, and an
-expression e. If t is a type, then τ is a type. The type of e refers
-to the type p. It has type [p/t]τ, a type that's constructable by
-assumpting t is a type, forming τ that refers to t, and then
-substituting p for t in τ.
-</p>
-
-<p>
-The impl expression hides this type p in some way. (impl (some t.τ)
-with p as e) has type some t.τ, which could potentially not refer to
-p.
-</p>
-
-<p>
-The programmer must provide an explicit typing for the impl
-expression, as otherwise, there are multiple valid typings. For
-instance, the (invalid in thon) expression
-</p>
-<pre class="example">
-impl with nat as (0, 0)
-</pre>
-<p>
-could have type some t. (t * nat), some t. (nat * t), or some t. (t *
-t).
-</p>
-
-<pre class="example">
-            Δ Γ ⊢ e1 : (some t.τ)
-            Δ, t type Γ, x : τ ⊢ e2 : τ2
-            Δ ⊢ τ2 type
-------------------------------------------------
-Δ Γ ⊢ (use e_1 as (t, x) in e_2) : τ_2
-</pre>
-<p>
-States if we have a existential package e<sub>1</sub> of type (some t.τ), then
-we can unpack e<sub>1</sub> into two new variables - a type variable t and an
-expression variable x. t is an abstract type, providing opaque
-reference to the type the impl redacted. x provides the implementation
-specified by (some t.τ).
-</p>
-</div>
-</div>
-
-<div id="outline-container-orge1d7550" class="outline-2">
-<h2 id="orge1d7550">A set/get existential package.</h2>
-<div class="outline-text-2" id="text-orge1d7550">
-<p>
-We can consider a simple set/get interface. We set a nat to an
-internal vessel type. We get a nat from the internal vessel
-type.
-</p>
-
-<pre class="example">
-impl (some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)))
-with nat as
-((
-   \ x : nat -&gt; x, (*set*)
-   \ x : nat -&gt; x  (*get*)
-))
-</pre>
-<p>
-This package has type (some vessel. ((nat -&gt; vessel) * (t -&gt;
-vessel))), but we could have just as easily implemented it as
-</p>
-<pre class="example">
-impl (some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)))
-with (nat * nat) as
-((
-   \ x : nat -&gt; (x, 0),         (*set*)
-   \ x : (nat * nat)  -&gt; fst x  (*get*)
-))
-</pre>
-<p>
-It'd be pretty silly to store a single nat in a tuple of nats, of course.
-But this package also has type some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)).
-</p>
-
-<p>
-Then we can use these impls as so
-</p>
-<pre class="example">
-let setget : some vessel. ((nat -&gt; vessel) * (t -&gt; vessel))
-    = ... (* either impl *) in
-use setget as (sg, t) in
-let set : (nat -&gt; t) = fst sg in
-let get : (t -&gt; nat) = snd sg in
-let s : t = set (2) in
-let g : nat = get s in
-g
-</pre>
-<p>
-which will evaluate to 2.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgbe9452c" class="outline-2">
-<h2 id="orgbe9452c">From existential packages to something ergonomic.</h2>
-<div class="outline-text-2" id="text-orgbe9452c">
-<p>
-From <a href="https://people.mpi-sws.org/~rossberg/f-ing/f-ing-jfp.pdf%20">F-ing modules</a>, a structure is just a record of existential type ∃
+From <a href="https://people.mpi-sws.org/~rossberg/f-ing/f-ing-jfp.pdf">F-ing modules</a>, a structure is just a record of existential type ∃
 α.{l : τ}, where the type variables α represent the abstract types
 defined in the structure.
 </p>
 </div>
 
-<div id="outline-container-org4e95b48" class="outline-3">
-<h3 id="org4e95b48">Modules as structures and signatures</h3>
-<div class="outline-text-3" id="text-org4e95b48">
+<div id="outline-container-orgdbce6fb" class="outline-3">
+<h3 id="orgdbce6fb">Modules as structures and signatures</h3>
+<div class="outline-text-3" id="text-orgdbce6fb">
 <p>
 Let's borrow syntax from section section 10.1.6 of Russo's <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1998/03/Types-for-Modules.pdf">Types for
 Modules</a>. They implemented something very similar in Moscow ML (Before
@@ -463,9 +329,9 @@ structure SafeNat:
 </pre>
 </div>
 
-<div id="outline-container-org72cf0a9" class="outline-4">
-<h4 id="org72cf0a9">A proposal</h4>
-<div class="outline-text-4" id="text-org72cf0a9">
+<div id="outline-container-org0eb7bf9" class="outline-4">
+<h4 id="org0eb7bf9">A proposal</h4>
+<div class="outline-text-4" id="text-org0eb7bf9">
 <p>
 Consider structure declarations as equivalent to datatype
 declarations, just as a way to declare additional members of the
@@ -495,9 +361,9 @@ Could start by not putting the names under the dot syntax, idk.
 </div>
 </div>
 
-<div id="outline-container-org8eba892" class="outline-4">
-<h4 id="org8eba892">Set get as structure and signature</h4>
-<div class="outline-text-4" id="text-org8eba892">
+<div id="outline-container-orgd00be0f" class="outline-4">
+<h4 id="orgd00be0f">Set get as structure and signature</h4>
+<div class="outline-text-4" id="text-orgd00be0f">
 <pre class="example">
 signature SETGET:
     type vessel
@@ -559,9 +425,9 @@ structures ascribe to the same interface.
 </div>
 </div>
 
-<div id="outline-container-org2064996" class="outline-4">
-<h4 id="org2064996">Set data structure as structure and signature</h4>
-<div class="outline-text-4" id="text-org2064996">
+<div id="outline-container-orgb361a98" class="outline-4">
+<h4 id="orgb361a98">Set data structure as structure and signature</h4>
+<div class="outline-text-4" id="text-orgb361a98">
 <p>
 This is a good example to consider, as each implementation will have
 it's own separate internal datatype, so we can consider the
@@ -633,9 +499,9 @@ another opaque type variable for that type.
 </div>
 </div>
 
-<div id="outline-container-orgd2c097a" class="outline-4">
-<h4 id="orgd2c097a">Outstanding questions</h4>
-<div class="outline-text-4" id="text-orgd2c097a">
+<div id="outline-container-orgbd038b2" class="outline-4">
+<h4 id="orgbd038b2">Outstanding questions</h4>
+<div class="outline-text-4" id="text-orgbd038b2">
 <ul class="org-ul">
 <li>What is a structure without a signature? Just a named tuple?</li>
 <li>What is a signature without a structure? Just a type? If so, then</li>
@@ -662,9 +528,9 @@ type NatSig = some nat . (Z: nat * s: nat -&gt; nat)
 </div>
 </div>
 </div>
-<div id="outline-container-org300155d" class="outline-3">
-<h3 id="org300155d">Modules as generalized tuples</h3>
-<div class="outline-text-3" id="text-org300155d">
+<div id="outline-container-org56a77be" class="outline-3">
+<h3 id="org56a77be">Modules as generalized tuples</h3>
+<div class="outline-text-3" id="text-org56a77be">
 <p>
 Modules are kind of like named tuples where some of the names refer to
 expressions and some of the names refer to types. A type name could be
@@ -686,9 +552,9 @@ are visible outside the named tuple.
 </div>
 </div>
 
-<div id="outline-container-orgd50c640" class="outline-3">
-<h3 id="orgd50c640">Modules as datatypes</h3>
-<div class="outline-text-3" id="text-orgd50c640">
+<div id="outline-container-orge9d57b7" class="outline-3">
+<h3 id="orge9d57b7">Modules as datatypes</h3>
+<div class="outline-text-3" id="text-orge9d57b7">
 <p>
 Algebraic datatypes in thon elaborate to existential packages. This
 approach is borrowed from section 3.4 of Harper and Stone's <a href="https://www.cs.cmu.edu/~rwh/papers/ttisml/ttisml.pdf">A type-theoretic
@@ -743,13 +609,13 @@ So notably, datatypes sort-of a special case of modules. Why not unify the synta
 
 
 
-<div id="outline-container-orgf7885c2" class="outline-2">
-<h2 id="orgf7885c2">A proposal</h2>
-<div class="outline-text-2" id="text-orgf7885c2">
+<div id="outline-container-orge77bef5" class="outline-2">
+<h2 id="orge77bef5">A proposal</h2>
+<div class="outline-text-2" id="text-orge77bef5">
 </div>
-<div id="outline-container-org5470921" class="outline-3">
-<h3 id="org5470921">One interface, one module.</h3>
-<div class="outline-text-3" id="text-org5470921">
+<div id="outline-container-orgfe8cfcd" class="outline-3">
+<h3 id="orgfe8cfcd">One interface, one module.</h3>
+<div class="outline-text-3" id="text-orgfe8cfcd">
 <pre class="example">
 interface Foo:
     ...
@@ -760,13 +626,13 @@ let baz Bar.t = ...
 </div>
 </div>
 
-<div id="outline-container-orgaf5383d" class="outline-3">
-<h3 id="orgaf5383d">Multiple interfaces, one module.</h3>
-<div class="outline-text-3" id="text-orgaf5383d">
+<div id="outline-container-orga103a0c" class="outline-3">
+<h3 id="orga103a0c">Multiple interfaces, one module.</h3>
+<div class="outline-text-3" id="text-orga103a0c">
 </div>
-<div id="outline-container-org5a20419" class="outline-4">
-<h4 id="org5a20419">implements many</h4>
-<div class="outline-text-4" id="text-org5a20419">
+<div id="outline-container-org93b6e98" class="outline-4">
+<h4 id="org93b6e98">implements many</h4>
+<div class="outline-text-4" id="text-org93b6e98">
 <pre class="example">
 interface Foo:
     ...
@@ -811,9 +677,9 @@ let baz foo2Type = implement Foo2 with Bar(nat * nat)
 </div>
 </div>
 
-<div id="outline-container-orgf0073b4" class="outline-3">
-<h3 id="orgf0073b4">Though I think i'd rather also force the user to specify a name for the internal type.</h3>
-<div class="outline-text-3" id="text-orgf0073b4">
+<div id="outline-container-orgcc4af2e" class="outline-3">
+<h3 id="orgcc4af2e">Though I think i'd rather also force the user to specify a name for the internal type.</h3>
+<div class="outline-text-3" id="text-orgcc4af2e">
 <p>
 Yep. So then no 
 </p>
@@ -968,9 +834,9 @@ structure Foo:
 </div>
 </div>
 
-<div id="outline-container-org143616c" class="outline-3">
-<h3 id="org143616c">Some SML examples</h3>
-<div class="outline-text-3" id="text-org143616c">
+<div id="outline-container-org0fe86f1" class="outline-3">
+<h3 id="org0fe86f1">Some SML examples</h3>
+<div class="outline-text-3" id="text-org0fe86f1">
 <p>
 Basic:
 </p>

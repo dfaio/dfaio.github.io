@@ -234,13 +234,142 @@ for the JavaScript code in this tag.
 <a href="index.html">dfa.io</a>
 </p>
 
+<div id="outline-container-org6e63405" class="outline-2">
+<h2 id="org6e63405">Existential types are a form of polymorphism.</h2>
+<div class="outline-text-2" id="text-org6e63405">
 <p>
-Emacs writeroom mode is great. To install it, I needed to `package-refresh-contents`. `toggle-truncate-lines`, `toggle-word-wrap`, and `writeroom-mode` are the commands to enter into the ~ blissed out ~ minimal writing enviornment.
+2021-02-06
 </p>
 
 <p>
-Now I have a very minimal looking writing enviornment that line wraps and centers text. I've missed writeroom since I left osx for linux in 2015 or so. Glad I finally set it up.
+Let's go rule by rule. Δ holds judgements of the form "this type is
+well-formed." Γ holds judgements of the form "expression e has type
+t," which we write as e : t.
 </p>
+
+<pre class="example">
+ Δ, t type ⊢ τ type
+---------------------
+Δ ⊢ (some t. τ) type
+</pre>
+<p>
+This says that if τ is a well-formed type, then so is some t. τ. We
+omit writing Γ here, as it's not relevant to the judgement.
+</p>
+
+<pre class="example">
+            Δ ⊢ p type 
+            Δ, t type ⊢ τ type 
+            Δ Γ ⊢ e : [p/t]τ
+------------------------------------------------
+Δ Γ ⊢ (impl (some t.τ) with p as e) : (some t.τ)
+</pre>
+
+<p>
+If τ is a type referring to the free variable t, and p is some type,
+then [p/t]τ is the type produced by substituting p for t in τ.
+</p>
+
+<p>
+The above rule is the introduction form for expressions of existential
+type. It's a sort of "backwards substitution."
+</p>
+
+<p>
+The inputs are a type p to redact, a type (some t.τ) to expose, and an
+expression e. If t is a type, then τ is a type. The type of e refers
+to the type p. It has type [p/t]τ, a type that's constructable by
+assumpting t is a type, forming τ that refers to t, and then
+substituting p for t in τ.
+</p>
+
+<p>
+The impl expression hides this type p in some way. (impl (some t.τ)
+with p as e) has type some t.τ, which could potentially not refer to
+p.
+</p>
+
+<p>
+The programmer must provide an explicit typing for the impl
+expression, as otherwise, there are multiple valid typings. For
+instance, the (invalid in thon) expression
+</p>
+<pre class="example">
+impl with nat as (0, 0)
+</pre>
+<p>
+could have type some t. (t * nat), some t. (nat * t), or some t. (t *
+t).
+</p>
+
+<pre class="example">
+            Δ Γ ⊢ e1 : (some t.τ)
+            Δ, t type Γ, x : τ ⊢ e2 : τ2
+            Δ ⊢ τ2 type
+------------------------------------------------
+Δ Γ ⊢ (use e_1 as (t, x) in e_2) : τ_2
+</pre>
+<p>
+States if we have a existential package e<sub>1</sub> of type (some t.τ), then
+we can unpack e<sub>1</sub> into two new variables - a type variable t and an
+expression variable x. t is an abstract type, providing opaque
+reference to the type the impl redacted. x provides the implementation
+specified by (some t.τ).
+</p>
+</div>
+</div>
+<div id="outline-container-org76e7698" class="outline-2">
+<h2 id="org76e7698">A set/get existential package.</h2>
+<div class="outline-text-2" id="text-org76e7698">
+<p>
+We can consider a simple set/get interface. We set a nat to an
+internal vessel type. We get a nat from the internal vessel
+type.
+</p>
+
+<pre class="example">
+impl (some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)))
+with nat as
+((
+   \ x : nat -&gt; x, (*set*)
+   \ x : nat -&gt; x  (*get*)
+))
+</pre>
+<p>
+This package has type (some vessel. ((nat -&gt; vessel) * (t -&gt;
+vessel))), but we could have just as easily implemented it as
+</p>
+<pre class="example">
+impl (some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)))
+with (nat * nat) as
+((
+   \ x : nat -&gt; (x, 0),         (*set*)
+   \ x : (nat * nat)  -&gt; fst x  (*get*)
+))
+</pre>
+<p>
+It'd be pretty silly to store a single nat in a tuple of nats, of course.
+But this package also has type some vessel. ((nat -&gt; vessel) * (t -&gt; vessel)).
+</p>
+
+<p>
+Then we can use these impls as so
+</p>
+<pre class="example">
+let setget : some vessel. ((nat -&gt; vessel) * (t -&gt; vessel))
+    = ... (* either impl *) in
+use setget as (sg, t) in
+let set : (nat -&gt; t) = fst sg in
+let get : (t -&gt; nat) = snd sg in
+let s : t = set (2) in
+let g : nat = get s in
+g
+</pre>
+<p>
+which will evaluate to 2.
+</p>
+</div>
+</div>
 </div>
 </body>
 </html>

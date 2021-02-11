@@ -4,9 +4,8 @@
 #+OPTIONS: html-postamble:nil
 [[file:index.html][dfa.io]]
 
+* An aeropress coffee recipe.
 2021-02-11
-
-Nice aeropress coffee recipe.
 
 Can be done inverted or with the Fellow coffee aeropress extension. If
 using the extension, I prefer to put a paper filter in anyway, as
