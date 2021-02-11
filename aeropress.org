@@ -1,0 +1,24 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: html-postamble:nil
+[[file:index.html][dfa.io]]
+
+2021-02-11
+
+Nice aeropress coffee recipe.
+
+Can be done inverted or with the Fellow coffee aeropress extension. If
+using the extension, I prefer to put a paper filter in anyway, as
+otherwise some grounds seep through.
+
+1:15 ratio beans to water. Pour all the water in at once. Stir then
+steep for a minute and a half. Then plunge for a minute. I use a
+V60-appropriate grind setting.
+
+Gets a nice cup with thick mouthfeel.
+
+The long steep and the long plunge make for a cup in the middle of a
+french press and pour over. Get both immersion and percolation, with
+an extended percolation phase under a bit of pressure for that
+distinctive aeropress twist.

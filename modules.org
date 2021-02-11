@@ -112,6 +112,10 @@ which will evaluate to 2.
 
 * From existential packages to something ergonomic.
   
+From [[https://people.mpi-sws.org/~rossberg/f-ing/f-ing-jfp.pdf ][F-ing modules]], a structure is just a record of existential type ∃
+α.{l : τ}, where the type variables α represent the abstract types
+defined in the structure.
+
 ** Modules as structures and signatures
 Let's borrow syntax from section section 10.1.6 of Russo's [[https://www.microsoft.com/en-us/research/wp-content/uploads/1998/03/Types-for-Modules.pdf][Types for
 Modules]]. They implemented something very similar in Moscow ML (Before
@@ -386,7 +390,6 @@ So notably, datatypes sort-of a special case of modules. Why not unify the synta
   
 
 * A proposal
-
   
 ** One interface, one module.
 
@@ -471,26 +474,93 @@ let baz fooType = Bar(nat) as Foo
 let baz foo2Type = Bar(nat * nat) as Foo2
 #+END_EXAMPLE
 
-
 Nah yah gotta require the names.
+
 #+BEGIN_EXAMPLE
 interface Set:
     type set
     val space : set -> nat
     
-(* defines Bst as a value in this scope, like a function definition *)
-(* Here, the datatype set is visible outside Bst *)
 struct Bst:
     datatype set = Nil | Node (nat * set * set)
     fun space(s set) nat: z
 
-(* defines Rbt as a value in this scope, like a function definition *)
 struct Rbt:
     datatype set = Nil | Node (nat * bool * set * set)
     fun space(s set) nat: z
 
-(* The as syntax hides away the implementation type. The datatypes are not visible.
- * Kind of weird to have both a public and a private object in scope here, though? *)
 let set setType = Bst as Foo
 let set2 setType2 = Bar as Foo2
 #+END_EXAMPLE
+
+"struct Bst" defines Bst as a value in this scope, like a function
+definition. The datatype set is visible outside Bst.
+
+The "let set setType = Bst as Foo" syntax hides away the
+implementation type. The datatypes are not visible.  Kind of weird to
+have both a public and a private object in scope here, though?
+
+Weirdly, I think these are equivalent:
+
+#+BEGIN_EXAMPLE
+# Pack tuple with generated sig, then unpack as Nil, Cons, and List.
+data List:
+    Nil
+  | Cons nat * List
+    
+module List:
+    fun Nil() List:
+#+END_EXAMPLE
+
+"data Foo" elaborates to 
+
+Hm maybe we just have a struct type, we export the names defined in
+the struct type, and then later people can combine the struct with
+
+Named tuple type
+
+let tup = (foo: true, bar: false)
+let foo = tup.foo
+let tup2 = (true, false)
+let bar = tup2.0
+
+#+BEGIN_EXAMPLE
+let Tup = (foo: true, bar: false)
+struct Tup:
+    foo = true
+    bar = false
+#+END_EXAMPLE
+
+data Rbt:
+    Nil
+  | Node (val nat, color bool, left Rbt, right Rbt)
+  
+let rbt Rbt = Node((val: 0, color: true, left: Nil, right: Nil))
+
+case rbt of
+   Nil: true
+ | Node n: n.color
+
+#+BEGIN_EXAMPLE
+structure Foo:
+    name
+#+END_EXAMPLE
+
+** Some SML examples
+
+Basic:
+#+BEGIN_EXAMPLE
+signature ID = sig val id : int -> int end
+structure Id :> ID = struct fun id x = x end
+#+END_EXAMPLE
+
+Doesn't work without defining signature ID
+#+BEGIN_EXAMPLE
+structure Id :> ID = struct fun id x = x end
+#+END_EXAMPLE
+If don't have signature in structure definition, works ok.
+
+#+BEGIN_EXAMPLE
+structure Id = struct fun id x = x end
+#+END_EXAMPLE
+Can't have just a `struct ... end` or `sig ... end`.

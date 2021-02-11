@@ -17,5 +17,5 @@ dfa.io is on the world wide web.
 - [[file:aphoa.html][Aphoa]]
 - [[file:blogroll.html][Blogroll]]
 - [[file:writeroommode.html][Writeroom mode]]
--
-  [[file:modules.html][Modules]]
+- [[file:modules.html][Modules]]
+- [[file:aeropress.html][An aeropress recipe]]
