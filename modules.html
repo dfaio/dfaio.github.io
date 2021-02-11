@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-02-10 Wed 22:12 -->
+<!-- 2021-02-10 Wed 22:21 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -234,9 +234,9 @@ for the JavaScript code in this tag.
 <a href="index.html">dfa.io</a>
 </p>
 
-<div id="outline-container-orgb1871d7" class="outline-2">
-<h2 id="orgb1871d7">Ok let's figure out modularity together.</h2>
-<div class="outline-text-2" id="text-orgb1871d7">
+<div id="outline-container-org9bb2d4a" class="outline-2">
+<h2 id="org9bb2d4a">Ok let's figure out modularity together.</h2>
+<div class="outline-text-2" id="text-org9bb2d4a">
 <p>
 2021-02-06
 </p>
@@ -248,9 +248,9 @@ polymorphism.
 </div>
 </div>
 
-<div id="outline-container-orgdc6ffc2" class="outline-2">
-<h2 id="orgdc6ffc2">Existential types</h2>
-<div class="outline-text-2" id="text-orgdc6ffc2">
+<div id="outline-container-org01c445d" class="outline-2">
+<h2 id="org01c445d">Existential types</h2>
+<div class="outline-text-2" id="text-org01c445d">
 <p>
 Let's go rule by rule. Δ holds judgements of the form "this type is
 well-formed." Γ holds judgements of the form "expression e has type
@@ -329,9 +329,9 @@ specified by (some t.τ).
 </div>
 </div>
 
-<div id="outline-container-orgf4df482" class="outline-2">
-<h2 id="orgf4df482">A set/get existential package.</h2>
-<div class="outline-text-2" id="text-orgf4df482">
+<div id="outline-container-org4a202c3" class="outline-2">
+<h2 id="org4a202c3">A set/get existential package.</h2>
+<div class="outline-text-2" id="text-org4a202c3">
 <p>
 We can consider a simple set/get interface. We set a nat to an
 internal vessel type. We get a nat from the internal vessel
@@ -382,13 +382,13 @@ which will evaluate to 2.
 </div>
 </div>
 
-<div id="outline-container-orgcc10ed3" class="outline-2">
-<h2 id="orgcc10ed3">From existential packages to something ergonomic.</h2>
-<div class="outline-text-2" id="text-orgcc10ed3">
+<div id="outline-container-orgc11b0e2" class="outline-2">
+<h2 id="orgc11b0e2">From existential packages to something ergonomic.</h2>
+<div class="outline-text-2" id="text-orgc11b0e2">
 </div>
-<div id="outline-container-org8fdbb28" class="outline-3">
-<h3 id="org8fdbb28">Modules as structures and signatures</h3>
-<div class="outline-text-3" id="text-org8fdbb28">
+<div id="outline-container-orgcf61ed8" class="outline-3">
+<h3 id="orgcf61ed8">Modules as structures and signatures</h3>
+<div class="outline-text-3" id="text-orgcf61ed8">
 <p>
 Let's borrow syntax from section section 10.1.6 of Russo's <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1998/03/Types-for-Modules.pdf">Types for
 Modules</a>. They implemented something very similar in Moscow ML (Before
@@ -457,9 +457,9 @@ structure SafeNat:
 </pre>
 </div>
 
-<div id="outline-container-orgc24eb54" class="outline-4">
-<h4 id="orgc24eb54">A proposal</h4>
-<div class="outline-text-4" id="text-orgc24eb54">
+<div id="outline-container-org83f9d32" class="outline-4">
+<h4 id="org83f9d32">A proposal</h4>
+<div class="outline-text-4" id="text-org83f9d32">
 <p>
 Consider structure declarations as equivalent to datatype
 declarations, just as a way to declare additional members of the
@@ -489,9 +489,9 @@ Could start by not putting the names under the dot syntax, idk.
 </div>
 </div>
 
-<div id="outline-container-org0cd6b0e" class="outline-4">
-<h4 id="org0cd6b0e">Set get as structure and signature</h4>
-<div class="outline-text-4" id="text-org0cd6b0e">
+<div id="outline-container-org413de09" class="outline-4">
+<h4 id="org413de09">Set get as structure and signature</h4>
+<div class="outline-text-4" id="text-org413de09">
 <pre class="example">
 signature SETGET:
     type vessel
@@ -553,9 +553,9 @@ structures ascribe to the same interface.
 </div>
 </div>
 
-<div id="outline-container-org67d1a3c" class="outline-4">
-<h4 id="org67d1a3c">Set data structure as structure and signature</h4>
-<div class="outline-text-4" id="text-org67d1a3c">
+<div id="outline-container-orgc2e3897" class="outline-4">
+<h4 id="orgc2e3897">Set data structure as structure and signature</h4>
+<div class="outline-text-4" id="text-orgc2e3897">
 <p>
 This is a good example to consider, as each implementation will have
 it's own separate internal datatype, so we can consider the
@@ -627,9 +627,9 @@ another opaque type variable for that type.
 </div>
 </div>
 
-<div id="outline-container-org3d3dd63" class="outline-4">
-<h4 id="org3d3dd63">Outstanding questions</h4>
-<div class="outline-text-4" id="text-org3d3dd63">
+<div id="outline-container-org3f0b786" class="outline-4">
+<h4 id="org3f0b786">Outstanding questions</h4>
+<div class="outline-text-4" id="text-org3f0b786">
 <ul class="org-ul">
 <li>What is a structure without a signature? Just a named tuple?</li>
 <li>What is a signature without a structure? Just a type? If so, then</li>
@@ -656,9 +656,9 @@ type NatSig = some nat . (Z: nat * s: nat -&gt; nat)
 </div>
 </div>
 </div>
-<div id="outline-container-orgfda8cf5" class="outline-3">
-<h3 id="orgfda8cf5">Modules as generalized tuples</h3>
-<div class="outline-text-3" id="text-orgfda8cf5">
+<div id="outline-container-org268c7ab" class="outline-3">
+<h3 id="org268c7ab">Modules as generalized tuples</h3>
+<div class="outline-text-3" id="text-org268c7ab">
 <p>
 Modules are kind of like named tuples where some of the names refer to
 expressions and some of the names refer to types. A type name could be
@@ -680,9 +680,9 @@ are visible outside the named tuple.
 </div>
 </div>
 
-<div id="outline-container-org5a96160" class="outline-3">
-<h3 id="org5a96160">Modules as datatypes</h3>
-<div class="outline-text-3" id="text-org5a96160">
+<div id="outline-container-org88b4b12" class="outline-3">
+<h3 id="org88b4b12">Modules as datatypes</h3>
+<div class="outline-text-3" id="text-org88b4b12">
 <p>
 Algebraic datatypes in thon elaborate to existential packages. This
 approach is borrowed from section 3.4 of Harper and Stone's <a href="https://www.cs.cmu.edu/~rwh/papers/ttisml/ttisml.pdf">A type-theoretic
@@ -737,13 +737,13 @@ So notably, datatypes sort-of a special case of modules. Why not unify the synta
 
 
 
-<div id="outline-container-org0b8a93b" class="outline-2">
-<h2 id="org0b8a93b">A proposal</h2>
-<div class="outline-text-2" id="text-org0b8a93b">
+<div id="outline-container-org120974a" class="outline-2">
+<h2 id="org120974a">A proposal</h2>
+<div class="outline-text-2" id="text-org120974a">
 </div>
-<div id="outline-container-org1462796" class="outline-3">
-<h3 id="org1462796">One interface, one module.</h3>
-<div class="outline-text-3" id="text-org1462796">
+<div id="outline-container-org76124f7" class="outline-3">
+<h3 id="org76124f7">One interface, one module.</h3>
+<div class="outline-text-3" id="text-org76124f7">
 <pre class="example">
 interface Foo:
     ...
@@ -754,13 +754,13 @@ let baz Bar.t = ...
 </div>
 </div>
 
-<div id="outline-container-org21e84aa" class="outline-3">
-<h3 id="org21e84aa">Multiple interfaces, one module.</h3>
-<div class="outline-text-3" id="text-org21e84aa">
+<div id="outline-container-org0509fe8" class="outline-3">
+<h3 id="org0509fe8">Multiple interfaces, one module.</h3>
+<div class="outline-text-3" id="text-org0509fe8">
 </div>
-<div id="outline-container-org7ac68c7" class="outline-4">
-<h4 id="org7ac68c7">implements many</h4>
-<div class="outline-text-4" id="text-org7ac68c7">
+<div id="outline-container-orge992dc4" class="outline-4">
+<h4 id="orge992dc4">implements many</h4>
+<div class="outline-text-4" id="text-orge992dc4">
 <pre class="example">
 interface Foo:
     ...
@@ -805,9 +805,9 @@ let baz foo2Type = implement Foo2 with Bar(nat * nat)
 </div>
 </div>
 
-<div id="outline-container-org1eba853" class="outline-3">
-<h3 id="org1eba853">Though I think i'd rather also force the user to specify a name for the internal type.</h3>
-<div class="outline-text-3" id="text-org1eba853">
+<div id="outline-container-org75374e5" class="outline-3">
+<h3 id="org75374e5">Though I think i'd rather also force the user to specify a name for the internal type.</h3>
+<div class="outline-text-3" id="text-org75374e5">
 <p>
 Yep. So then no 
 </p>

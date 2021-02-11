@@ -23,10 +23,10 @@ corresponding sequence. In 𝔊, *u* is the parent of *v* iff *s(u)*'s
 length is one less than *s(v)*'s and *s(u)* is a prefix of
 *s(v)*.
 
-Any tree traversal produces a well order on the tree's vertices. BFS on
-the complete infinite binary tree is the shortlex ordering (sort first
-by length, then lexographically). In fact, on level *i*, the set of corresponding binary strings
-is the set of all *i*-bit natural
+Any tree traversal produces a well order on the tree's vertices. BFS
+on the complete infinite binary tree is the shortlex ordering (sort
+first by length, then lexographically). In fact, on level *i*, the set
+of corresponding binary strings is the set of all *i*-bit natural
 numbers, and the nodes are visited in increasing order.
 
 Further, any tree tree traversal has order type *ω*.
@@ -54,34 +54,21 @@ next children, and update the mapping.
 The fact that this visits every node in 𝔊 follows by induction.
 In math symbols, if S_i is the set of visited nodes at iteration i, then
 
-S_{i+1} = S\_i \\cup
-
-
-\\{s + 0 \\mid s \\in S\_i \\} \\\\ &\\cup \\{s\_1s\_2\\ldots
-(s\_n+1)\\mid s\_1s\_2\\ldots s\_n \\in S\_i \\} \\end{align\*}
-\$\$
+S_{i+1} = S_i ∪ {s + 0 | s in S_i} ∪ {s_1 s_2 ... s_{n+1} | s_1 s_2... s_n in S_i}
 
 (there are totally duplicates being added here, but that's the beauty of
 sets).
 
-Fix the nodes *u* = *s*~1~…*s*~*n* − 1~</span>
-and *v* = *s*~1~…*s*~*n* − 1~*s*~*n*~</span>.
-Define *t*(*x*)</span> to be the iteration at
-which *x*</span> is visited. Then <span
-class="math inline">*t*(*v*)=*t*(*u*)+*s*~*n*~ + 1</span>. This leads to
+Fix the nodes u = s~1~…*s*~*n* − 1~ and v = *s*~1~…*s*~*n* − 1~*s*~*n*~.
+Define t(x) to be the iteration at which x is visited. Then t(v)=t(u)+s~n~ + 1. This leads to
 this gorgeous fact:
 
-*s*~1~…*s*~*n*~</span> is visited at iteration
-\$\\sum\_{i=1}\^n (s\_i + 1) = n +
-\\sum\_{i=1}\^n s\_i\$</span>.
+*s*~1~…*s*~*n*~ is visited at iteration \$\\sum\_{i=1}\^n (s\_i + 1) = n + \\sum\_{i=1}\^n s\_i\$.
 
 This means that our tree traversal has a pretty interesting
-sub-relation: namely that *u* &lt; *v*</span>
-if *u*</span>'s length + <span
-class="math inline">*u*</span>'s digit sum is less than <span
-class="math inline">*v*</span>'s length + <span
-class="math inline">*v*</span>'s digit sum. Or, (if we one-index), just
-the digit sums.
+sub-relation: namely that *u*; *v* if *u*'s length + *u*'s digit
+sum is less than *v*'s length + *v*'s digit sum. Or, (if we
+one-index), just the digit sums.
 
 From here on out, we'll one-index for simplicity's sake. (That is,
 assume ℕ starts at 1).

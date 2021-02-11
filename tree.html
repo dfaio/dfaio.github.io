@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-02-10 Wed 22:12 -->
+<!-- 2021-02-10 Wed 22:21 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -255,9 +255,9 @@ for the JavaScript code in this tag.
 <p>
 <a href="index.html">dfa.io</a>
 </p>
-<div id="outline-container-org2e9299a" class="outline-2">
-<h2 id="org2e9299a">Traversing the Infinite Complete ω-nary Tree</h2>
-<div class="outline-text-2" id="text-org2e9299a">
+<div id="outline-container-orge0fb1ea" class="outline-2">
+<h2 id="orge0fb1ea">Traversing the Infinite Complete ω-nary Tree</h2>
+<div class="outline-text-2" id="text-orge0fb1ea">
 <p>
 2016-03-03
 </p>
@@ -285,10 +285,10 @@ length is one less than <b>s(v)</b>'s and <b>s(u)</b> is a prefix of
 </p>
 
 <p>
-Any tree traversal produces a well order on the tree's vertices. BFS on
-the complete infinite binary tree is the shortlex ordering (sort first
-by length, then lexographically). In fact, on level <b>i</b>, the set of corresponding binary strings
-is the set of all <b>i</b>-bit natural
+Any tree traversal produces a well order on the tree's vertices. BFS
+on the complete infinite binary tree is the shortlex ordering (sort
+first by length, then lexographically). In fact, on level <b>i</b>, the set
+of corresponding binary strings is the set of all <b>i</b>-bit natural
 numbers, and the nodes are visited in increasing order.
 </p>
 
@@ -326,14 +326,7 @@ In math symbols, if S<sub>i</sub> is the set of visited nodes at iteration i, th
 </p>
 
 <p>
-S<sub>i+1</sub> = S\<sub>i</sub> \&cup;
-</p>
-
-
-<p>
-\\{s + 0 \\mid s \&isin; S\<sub>i</sub> \\} \\\\ &amp;\&cup; \\{s\<sub>1s</sub>\<sub>2\\ldots</sub>
-(s\<sub>n</sub>+1)\\mid s\<sub>1s</sub>\<sub>2\\ldots</sub> s\<sub>n</sub> \&isin; S\<sub>i</sub> \\} \\end{align\*}
-\\(\\)
+S<sub>i+1</sub> = S<sub>i</sub> ∪ {s + 0 | s in S<sub>i</sub>} ∪ {s<sub>1</sub> s<sub>2</sub> &#x2026; s<sub>n+1</sub> | s<sub>1</sub> s<sub>2</sub>&#x2026; s<sub>n</sub> in S<sub>i</sub>}
 </p>
 
 <p>
@@ -342,28 +335,20 @@ sets).
 </p>
 
 <p>
-Fix the nodes *u* = *s*~1~…*s*~*n* − 1~&lt;/span&gt;
-and <b>v* = *s*~1~…*s*~*n* − 1~*s*~*n*~&lt;/span&gt;.
-Define *t*(*x</b>)&lt;/span&gt; to be the iteration at
-which <b>x*&lt;/span&gt; is visited. Then &lt;span
-class="math inline"&gt;*t*(*v</b>)=*t*(<b>u</b>)+*s*~*n*~ + 1&lt;/span&gt;. This leads to
+Fix the nodes u = s~1~…*s*~*n* − 1~ and v = *s*~1~…*s*~*n* − 1~*s*~*n*~.
+Define t(x) to be the iteration at which x is visited. Then t(v)=t(u)+s~n~ + 1. This leads to
 this gorgeous fact:
 </p>
 
 <p>
-*s*~1~…*s*~*n*~&lt;/span&gt; is visited at iteration
-\$\&sum;\<sub>i=1</sub>\<sup>n</sup> (s\<sub>i</sub> + 1) = n +
-\&sum;\<sub>i=1</sub>\<sup>n</sup> s\<sub>i</sub>\$&lt;/span&gt;.
+*s*~1~…*s*~*n*~ is visited at iteration \\(\\sum\_{i=1}\^n (s\_i + 1) = n + \\sum\_{i=1}\^n s\_i\\).
 </p>
 
 <p>
 This means that our tree traversal has a pretty interesting
-sub-relation: namely that *u* &amp;lt; *v*&lt;/span&gt;
-if *u*&lt;/span&gt;'s length + &lt;span
-class="math inline"&gt;*u*&lt;/span&gt;'s digit sum is less than &lt;span
-class="math inline"&gt;*v*&lt;/span&gt;'s length + &lt;span
-class="math inline"&gt;*v*&lt;/span&gt;'s digit sum. Or, (if we one-index), just
-the digit sums.
+sub-relation: namely that <b>u</b>; *v* if <b>u</b>'s length + <b>u</b>'s digit
+sum is less than <b>v</b>'s length + <b>v</b>'s digit sum. Or, (if we
+one-index), just the digit sums.
 </p>
 
 <p>
