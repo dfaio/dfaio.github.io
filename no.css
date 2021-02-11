@@ -1,3 +1,20 @@
+@media screen and (min-width: 1200px) {
+    #table-of-contents  {
+        font-size: 12pt;
+        bottom:0;
+        position:fixed;
+        overflow-x:hidden;
+        top: 5%;
+        left: 5%;
+        width: 20%;
+    }
+    body {
+        margin-left: 10%;
+        margin-right: 30%;
+        /* this way floating TOC wouldn't touch content */
+        width: 58%;
+    }
+}
 body {
     padding:0 .62em;
     font:1.2em/1.62 monospace;
