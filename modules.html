@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-02-06 Sat 16:18 -->
+<!-- 2021-02-10 Wed 22:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -234,9 +234,9 @@ for the JavaScript code in this tag.
 <a href="index.html">dfa.io</a>
 </p>
 
-<div id="outline-container-org34cf6dc" class="outline-2">
-<h2 id="org34cf6dc">Ok let's figure out modularity together.</h2>
-<div class="outline-text-2" id="text-org34cf6dc">
+<div id="outline-container-orgb1871d7" class="outline-2">
+<h2 id="orgb1871d7">Ok let's figure out modularity together.</h2>
+<div class="outline-text-2" id="text-orgb1871d7">
 <p>
 2021-02-06
 </p>
@@ -248,9 +248,9 @@ polymorphism.
 </div>
 </div>
 
-<div id="outline-container-org92c3caf" class="outline-2">
-<h2 id="org92c3caf">Existential types</h2>
-<div class="outline-text-2" id="text-org92c3caf">
+<div id="outline-container-orgdc6ffc2" class="outline-2">
+<h2 id="orgdc6ffc2">Existential types</h2>
+<div class="outline-text-2" id="text-orgdc6ffc2">
 <p>
 Let's go rule by rule. Δ holds judgements of the form "this type is
 well-formed." Γ holds judgements of the form "expression e has type
@@ -329,9 +329,9 @@ specified by (some t.τ).
 </div>
 </div>
 
-<div id="outline-container-org6d5c4e7" class="outline-2">
-<h2 id="org6d5c4e7">A set/get existential package.</h2>
-<div class="outline-text-2" id="text-org6d5c4e7">
+<div id="outline-container-orgf4df482" class="outline-2">
+<h2 id="orgf4df482">A set/get existential package.</h2>
+<div class="outline-text-2" id="text-orgf4df482">
 <p>
 We can consider a simple set/get interface. We set a nat to an
 internal vessel type. We get a nat from the internal vessel
@@ -382,13 +382,13 @@ which will evaluate to 2.
 </div>
 </div>
 
-<div id="outline-container-org10ed4be" class="outline-2">
-<h2 id="org10ed4be">From existential packages to something ergonomic.</h2>
-<div class="outline-text-2" id="text-org10ed4be">
+<div id="outline-container-orgcc10ed3" class="outline-2">
+<h2 id="orgcc10ed3">From existential packages to something ergonomic.</h2>
+<div class="outline-text-2" id="text-orgcc10ed3">
 </div>
-<div id="outline-container-org5f31695" class="outline-3">
-<h3 id="org5f31695">Modules as structures and signatures</h3>
-<div class="outline-text-3" id="text-org5f31695">
+<div id="outline-container-org8fdbb28" class="outline-3">
+<h3 id="org8fdbb28">Modules as structures and signatures</h3>
+<div class="outline-text-3" id="text-org8fdbb28">
 <p>
 Let's borrow syntax from section section 10.1.6 of Russo's <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1998/03/Types-for-Modules.pdf">Types for
 Modules</a>. They implemented something very similar in Moscow ML (Before
@@ -457,9 +457,9 @@ structure SafeNat:
 </pre>
 </div>
 
-<div id="outline-container-orga38dbfa" class="outline-4">
-<h4 id="orga38dbfa">A proposal</h4>
-<div class="outline-text-4" id="text-orga38dbfa">
+<div id="outline-container-orgc24eb54" class="outline-4">
+<h4 id="orgc24eb54">A proposal</h4>
+<div class="outline-text-4" id="text-orgc24eb54">
 <p>
 Consider structure declarations as equivalent to datatype
 declarations, just as a way to declare additional members of the
@@ -489,9 +489,9 @@ Could start by not putting the names under the dot syntax, idk.
 </div>
 </div>
 
-<div id="outline-container-orgc619c36" class="outline-4">
-<h4 id="orgc619c36">Set get as structure and signature</h4>
-<div class="outline-text-4" id="text-orgc619c36">
+<div id="outline-container-org0cd6b0e" class="outline-4">
+<h4 id="org0cd6b0e">Set get as structure and signature</h4>
+<div class="outline-text-4" id="text-org0cd6b0e">
 <pre class="example">
 signature SETGET:
     type vessel
@@ -553,9 +553,9 @@ structures ascribe to the same interface.
 </div>
 </div>
 
-<div id="outline-container-org6bb6143" class="outline-4">
-<h4 id="org6bb6143">Set data structure as structure and signature</h4>
-<div class="outline-text-4" id="text-org6bb6143">
+<div id="outline-container-org67d1a3c" class="outline-4">
+<h4 id="org67d1a3c">Set data structure as structure and signature</h4>
+<div class="outline-text-4" id="text-org67d1a3c">
 <p>
 This is a good example to consider, as each implementation will have
 it's own separate internal datatype, so we can consider the
@@ -575,11 +575,11 @@ signature Set:
     val insert : (nat * set) -&gt; set
     val delete : (nat * set) -&gt; set
     
-signature Bst as Set:
+structure Bst as Set:
     datatype set = Nil | Node (nat * set * set)
     ...
 
-signature Rbt as Set:
+structure Rbt as Set:
     datatype set = Nil | Node (nat * bool * set * set)
     ...
 </pre>
@@ -627,9 +627,9 @@ another opaque type variable for that type.
 </div>
 </div>
 
-<div id="outline-container-org6d35b1c" class="outline-4">
-<h4 id="org6d35b1c">Outstanding questions</h4>
-<div class="outline-text-4" id="text-org6d35b1c">
+<div id="outline-container-org3d3dd63" class="outline-4">
+<h4 id="org3d3dd63">Outstanding questions</h4>
+<div class="outline-text-4" id="text-org3d3dd63">
 <ul class="org-ul">
 <li>What is a structure without a signature? Just a named tuple?</li>
 <li>What is a signature without a structure? Just a type? If so, then</li>
@@ -656,9 +656,9 @@ type NatSig = some nat . (Z: nat * s: nat -&gt; nat)
 </div>
 </div>
 </div>
-<div id="outline-container-org8bed341" class="outline-3">
-<h3 id="org8bed341">Modules as generalized tuples</h3>
-<div class="outline-text-3" id="text-org8bed341">
+<div id="outline-container-orgfda8cf5" class="outline-3">
+<h3 id="orgfda8cf5">Modules as generalized tuples</h3>
+<div class="outline-text-3" id="text-orgfda8cf5">
 <p>
 Modules are kind of like named tuples where some of the names refer to
 expressions and some of the names refer to types. A type name could be
@@ -680,9 +680,9 @@ are visible outside the named tuple.
 </div>
 </div>
 
-<div id="outline-container-org8980eb3" class="outline-3">
-<h3 id="org8980eb3">Modules as datatypes</h3>
-<div class="outline-text-3" id="text-org8980eb3">
+<div id="outline-container-org5a96160" class="outline-3">
+<h3 id="org5a96160">Modules as datatypes</h3>
+<div class="outline-text-3" id="text-org5a96160">
 <p>
 Algebraic datatypes in thon elaborate to existential packages. This
 approach is borrowed from section 3.4 of Harper and Stone's <a href="https://www.cs.cmu.edu/~rwh/papers/ttisml/ttisml.pdf">A type-theoretic
@@ -731,6 +731,144 @@ implicitly called when case-ing on a datatype.
 <p>
 So notably, datatypes sort-of a special case of modules. Why not unify the syntax?
 </p>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org0b8a93b" class="outline-2">
+<h2 id="org0b8a93b">A proposal</h2>
+<div class="outline-text-2" id="text-org0b8a93b">
+</div>
+<div id="outline-container-org1462796" class="outline-3">
+<h3 id="org1462796">One interface, one module.</h3>
+<div class="outline-text-3" id="text-org1462796">
+<pre class="example">
+interface Foo:
+    ...
+module Bar implements Foo:
+    ...
+let baz Bar.t = ...
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org21e84aa" class="outline-3">
+<h3 id="org21e84aa">Multiple interfaces, one module.</h3>
+<div class="outline-text-3" id="text-org21e84aa">
+</div>
+<div id="outline-container-org7ac68c7" class="outline-4">
+<h4 id="org7ac68c7">implements many</h4>
+<div class="outline-text-4" id="text-org7ac68c7">
+<pre class="example">
+interface Foo:
+    ...
+interface Foo2:
+    ...
+module Bar implements Foo, Foo2:
+    ...
+let baz Bar.t = ...
+</pre>
+
+
+<pre class="example">
+interface Foo:
+    ...
+interface Foo2:
+    ...
+module Bar:
+    ...
+let baz fooType = ... Bar as Foo
+let baz foo2Type = ... Bar as Foo2
+</pre>
+<p>
+But still dont have a specified impl type
+</p>
+
+<pre class="example">
+interface Foo:
+    ...
+interface Foo2:
+    ...
+module Bar:
+    ...
+let baz fooType = Bar(nat) as Foo
+let baz foo2Type = Bar(nat * nat) as Foo2
+</pre>
+
+<p>
+let baz fooType = implement Foo with Bar(nat)
+let baz foo2Type = implement Foo2 with Bar(nat * nat)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1eba853" class="outline-3">
+<h3 id="org1eba853">Though I think i'd rather also force the user to specify a name for the internal type.</h3>
+<div class="outline-text-3" id="text-org1eba853">
+<p>
+Yep. So then no 
+</p>
+
+<pre class="example">
+interface Foo(t):
+    ...
+interface Foo2(t):
+    ...
+module Bar:
+    type t = ...
+    ...
+let baz fooType = Bar as Foo
+let baz foo2Type = Bar as Foo2
+</pre>
+
+<p>
+So then require name to be present.
+</p>
+
+<p>
+interface declaration defines a name for the interface and a name for the internal type associated with it.
+</p>
+
+
+<pre class="example">
+interface Foo:
+    ...
+interface Foo2:
+    ...
+struct Bar:
+    ...
+let baz fooType = Bar(nat) as Foo
+let baz foo2Type = Bar(nat * nat) as Foo2
+</pre>
+
+
+<p>
+Nah yah gotta require the names.
+</p>
+<pre class="example">
+interface Set:
+    type set
+    val space : set -&gt; nat
+    
+(* defines Bst as a value in this scope, like a function definition *)
+(* Here, the datatype set is visible outside Bst *)
+struct Bst:
+    datatype set = Nil | Node (nat * set * set)
+    fun space(s set) nat: z
+
+(* defines Rbt as a value in this scope, like a function definition *)
+struct Rbt:
+    datatype set = Nil | Node (nat * bool * set * set)
+    fun space(s set) nat: z
+
+(* The as syntax hides away the implementation type. The datatypes are not visible.
+ * Kind of weird to have both a public and a private object in scope here, though? *)
+let set setType = Bst as Foo
+let set2 setType2 = Bar as Foo2
+</pre>
 </div>
 </div>
 </div>

@@ -32,10 +32,8 @@ amazon page to get a sense for the problem. We want to arrange the
 keys so that all keys fit on the keyring and there's no "tangling" of
 keys in the middle.
 
-Call the length of the key holder $l$.
-
 Suppose I give you a bunch of keys to put on the key holder. Each key
-is very short - maybe $\frac{l}{3}$. So the length of the keys won't
+is very short - maybe l/3. So the length of the keys won't
 be an issue - it's mostly an issue of getting the heights to
 match. The keys are of varying heights.
 
@@ -44,8 +42,10 @@ end. Additionally, every key must be present (like, why would you even
 buy one of these things if you're still going to have keys jangling
 around)?
 
-So then, if the sum of the heights of the keys is $S$, each side of
-the key holder must have height $\frac{S}{2}$.
+Call the length of the key holder l.
+
+So then, if the sum of the heights of the keys is S, each side of
+the key holder must have height S/2.
 
 But this is just exactly PARTITION, which we know to be NP-complete.
 
