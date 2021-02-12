@@ -15,3 +15,4 @@ A plain text rss feed, of sorts. Haven't read a lot of the content in some of th
 - [[https://tilde.club/~droob/][droob]]
 - [[https://tilde.club/~jonbell/][jonbell]]
 - [[https://gwern.net][gwern]]
+- [[http://archive.casouri.cat][casouri.cat]]
