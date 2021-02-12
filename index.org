@@ -30,4 +30,5 @@ dfa.io is on the world wide web.
 - [[file:blogroll.html][Blogroll]]
 - [[file:rpg.html][A small tabletop rpg game system]].
 - [[file:aphoa.html][Aphoa]]
+- [[file:mwi.html][Mwi]]
 - [[file:writeroommode.html][Writeroom mode]]

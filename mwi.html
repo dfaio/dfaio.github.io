@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-02-12 Fri 01:51 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Evan Bergeron" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="no.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org79cfb28">Mwi is a small town.</a></li>
+<li><a href="#org36b79ac">Into the canyon</a></li>
+<li><a href="#org28b782f">Behind the door</a></li>
+<li><a href="#org4156237">Back to Mwi</a></li>
+<li><a href="#org2d7a721">The pumice plains</a></li>
+<li><a href="#org97f5312">Toadrind makes Maeha soup.</a></li>
+<li><a href="#orgf91fb6e">Scornsnag is laid to waste.</a></li>
+<li><a href="#org3ca329c">Robinya rides a sandsail.</a></li>
+<li><a href="#org656c09b">Crossing the river</a></li>
+<li><a href="#orgfa02cdb">Meeting Calian</a></li>
+<li><a href="#org2b3d674">Battle at the earthen home</a></li>
+<li><a href="#orgc035a78">Clayhorn bowls</a></li>
+<li><a href="#orga7f77fd">Silvana sees sideways mountains, fire and fruit.</a></li>
+</ul>
+</div>
+</div>
+<p>
+<a href="index.html">dfa.io</a>
+</p>
+
+<div id="outline-container-org79cfb28" class="outline-2">
+<h2 id="org79cfb28">Mwi is a small town.</h2>
+<div class="outline-text-2" id="text-org79cfb28">
+<p>
+No more than a dozen wood buildings centered around a single road in
+and out of town, running east-to-west. You notice a number sunbleached
+wagons stationed surrounding the building.
+</p>
+
+<p>
+Sheriff Horace Moorhead asks for the marked to travel to the
+canyons. He has a goatee. Word from the east has rumour of a red
+crystal that burns blue.
+</p>
+
+<p>
+The booms in the great canyons to the west have been bothering the
+townfolk as well.
+</p>
+
+<ul class="org-ul">
+<li>A butcher named Ori (raw meats hanging)</li>
+<li>A seamstress (has great deal of sturdy tan and brown fabric,
+including has some checked fabric, large checks perhaps the width of
+ones hand. Deep brown and deep navy.</li>
+<li>A bar named The Clayhorn Saloon. The bartender mentions the crystals
+allegedly bring eternal life. The bar has cactus liquor.</li>
+</ul>
+
+<p>
+First settled 15 years ago. Most came from the south, driven by poverty
+and a promise of a better life.
+</p>
+
+<p>
+Players stole a canteen from the saloon. Willow got checked bootie
+shorts. Silvana wraps checked scarf around her face. Smoked some
+mugwort with the bartender. Harassed by Twitch, the local
+drunk. Twitch called the party "Windburns". There was a child in the
+streets with a necklace of bones.
+</p>
+
+<p>
+The sheriff wants the crystal. Ashes followed Scrib. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org36b79ac" class="outline-2">
+<h2 id="org36b79ac">Into the canyon</h2>
+<div class="outline-text-2" id="text-org36b79ac">
+<p>
+Willow had a vision of a shatted tree. Two great booms from the
+canyon. Took steps down into the canyon. There's a river at the bottom
+of the canyon. Acidic smelly caves. A fight with a giant
+worm. Everyone ate the worm. Willow got a corset made from the worm
+teeth.
+</p>
+
+<p>
+Some sediment from the smelly cave. Bees
+in a giant ribcage, ashes got a bit of the honey. The crystalline
+door. Ashes puked, slightly stung by the bees, smoked mugwort to help
+</p>
+
+<p>
+They find a plant that gives them this dream:
+</p>
+
+<p>
+"Stare at the horizons. Opposite each other, they meet at a single
+point. Blue flame, a bent crystalline sphere. Spiders have many eyes."
+</p>
+
+<p>
+Then, a a 6-pointed web appears stretched over a circle. A 7th point
+is born. An 8th, then a 9th.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org28b782f" class="outline-2">
+<h2 id="org28b782f">Behind the door</h2>
+<div class="outline-text-2" id="text-org28b782f">
+<ul class="org-ul">
+<li>Yellow cavern</li>
+<li>Vats of red crystal and red crystal powder that burn with blue flame.</li>
+<li>White crystalline salt on the ceiling that burns with purple flame.</li>
+</ul>
+
+<p>
+Meet an undead monk who claims his people were run out. Giant undead
+worm appears. It's split into two animated portions. The monk says his
+people looked for eternal life via the crystals, but says the crystal
+bring only death and cold.
+</p>
+
+<p>
+Delshay arrives, a similarly marked traveler who arrives from
+Mwi. Folks takes some of the crystals. Willow takes the undead monk's
+weapon - a melee-range shotgun of sorts, that you load with the powder
+and set off.
+</p>
+
+<p>
+The door to the cave closed up after going back outside.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4156237" class="outline-2">
+<h2 id="org4156237">Back to Mwi</h2>
+<div class="outline-text-2" id="text-org4156237">
+<p>
+A merchant named Aapo is in town. He brings a captured slave to the
+south. The slave is wanted to the north. Aapo buys some crystal from
+the players for 12 gold in front of the sheriff. Players don't give
+anything to the sheriff. Ashes seems to convince Moorhead that they've
+achieved immortality from the crystals.
+</p>
+
+<p>
+Scrib is jailed (as we later find out, for sleeping with the wife of
+the sheriff of the town over).
+</p>
+
+<p>
+Meet Jacobi, a man living on the outskirts of Mwi. He sells golden
+shovels to "shovel yourself out of the shit." He trades some "honey of
+the night" for the red crystal that burns blue.
+</p>
+
+<p>
+Players bust Scrib out of jail, blowing up the jail cell in the process.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2d7a721" class="outline-2">
+<h2 id="org2d7a721">The pumice plains</h2>
+<div class="outline-text-2" id="text-org2d7a721">
+<p>
+A fight with a pumice golem that is drawn to fire. Health: 25,
+Intellect defense as level 2, Speed defense as level 3, Armor 4, giant
+hammer that deals 8 damage.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org97f5312" class="outline-2">
+<h2 id="org97f5312">Toadrind makes Maeha soup.</h2>
+<div class="outline-text-2" id="text-org97f5312">
+<p>
+Toadrind lives out between Mwi and Scornsnag. He hunts and eats
+Taceeenee - he has a spoon made of their horns, has a bow string made
+of the ankle sinew (tendons), fat from the tallow. He makes soap from
+the tallow and sells that. First have to make lye (which is done when
+an egg floats).
+</p>
+
+<p>
+He offers the players a deal to pay them for hunting Maeha and
+bringing back their bodies. The players turn down buying a body bag
+from him. The players eat a bit of the meat soup before realizing the
+Maeha have human-like faces.
+</p>
+
+<p>
+Ashes' finger is going numb. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf91fb6e" class="outline-2">
+<h2 id="orgf91fb6e">Scornsnag is laid to waste.</h2>
+<div class="outline-text-2" id="text-orgf91fb6e">
+<p>
+Some townspeople are nailed to wooden spikes in the ground by their
+necks. There is a church in the middle of town. The players wait
+outside the town overnight in watch, but nothing happens. When they
+enter the town the next day, they are set upon by carrion birds. They
+kill the carrion birds and bury the dead.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3ca329c" class="outline-2">
+<h2 id="org3ca329c">Robinya rides a sandsail.</h2>
+<div class="outline-text-2" id="text-org3ca329c">
+<p>
+She has red cactus flowers on top of her head. She has an eye patch
+over here right eye. Two axes with horn handles. She rides a sandsail,
+a giant one wheel vehicle made of wood with a tan sail and a side
+car. Four henchman ride with her.
+</p>
+
+<p>
+She works for Aapo and attempts to fight the players, though they
+handily defeat her. The players offer to trade crystals for the
+sandsail, but she refuses after some hesitation and rides off, saying
+"I can guaran-goddamn-tee this ain't the last you'll see of me!"
+</p>
+</div>
+</div>
+
+<div id="outline-container-org656c09b" class="outline-2">
+<h2 id="org656c09b">Crossing the river</h2>
+<div class="outline-text-2" id="text-org656c09b">
+<p>
+Water snakes bask on the algae-covered rocks. Will bite, poop, and
+release musk (smells like dead fish) if picked up. The smell
+lingers. The snakes are 2 to 4 feet long, brown, gray, reddish, or
+brownish-black.
+</p>
+
+<p>
+They have crossbands on the neck and dark blotches on the rest of the
+body. They have flattened head the same width as the neck, round
+pupils, and heat-sensing pits.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfa02cdb" class="outline-2">
+<h2 id="orgfa02cdb">Meeting Calian</h2>
+<div class="outline-text-2" id="text-orgfa02cdb">
+<p>
+A young Maeha man. Sharp nose, long braided hair. The front of his
+hair tied together in a sort-of horn almost. There's braids behinds
+both of his ears. The back of his neck has shorter, thicker hair.
+</p>
+
+<p>
+Has horns above and behind his ears, wears his braids tucked over his
+horns. Horns are short, fairly vertical, curve up and out. Simple
+wooden pipe. Septum piercing. Gathering blue flax. Light blue flower
+pedals. The seeds sooth the stomach. Makes strong rope.
+</p>
+
+<p>
+Ashes offers him meat, but he says he's vegan. Calian Leads the
+players to the edge of his people's village. Says the marks on the
+players faces remind him of a legend of his people. Says his mother
+will know more.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2b3d674" class="outline-2">
+<h2 id="org2b3d674">Battle at the earthen home</h2>
+<div class="outline-text-2" id="text-org2b3d674">
+<p>
+A great mosaic across one of the wall. The home is surrounded by a
+food forest. The players make a trap at the entrance of the door to
+trap the skeleton monk has he arrives.
+</p>
+
+<p>
+When he does, he calls to Ashes to join him, to "become the
+thirteenth."
+</p>
+
+<p>
+Willow convinces the skelly monk to enter the home, tricking him into
+falling into the hole laid with explosives. A swarms of bees rises
+from the smoke.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc035a78" class="outline-2">
+<h2 id="orgc035a78">Clayhorn bowls</h2>
+<div class="outline-text-2" id="text-orgc035a78">
+<p>
+Having proved their might to the Maeha chieftess, she now says says
+their people speak of a great ancient Maeha named Calian (the namesake
+of the Calian the players meet). Calian the Great also beared a mark
+on his face like the players'. He communed with his ancestors in a
+pilgrammage across the land. To set off on his journey, he drank of a
+stew to induce a vision.
+</p>
+
+<p>
+To commune with their ancestors, the players must craft a bowl made of
+clay from the body of a clayhorn.
+</p>
+
+<p>
+The players find and fight a clayhorn. Scrib is inside the clayhorn
+for most of the battle, somewhat helpless. They drag most of the body
+to the river and take back enough to make their bowls.
+</p>
+
+<p>
+Ashes makes a bowl that resembles a hand.
+</p>
+
+<p>
+The ritual commences.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga7f77fd" class="outline-2">
+<h2 id="orga7f77fd">Silvana sees sideways mountains, fire and fruit.</h2>
+<div class="outline-text-2" id="text-orga7f77fd">
+<p>
+Her vision begins as she wanders around as a child, gathering sticks
+to toss in the hot fire. She places the stick on the edge and singes
+her fingers.
+</p>
+
+<p>
+She wanders into the woods. Some time passes, and she lost amongst the
+trees in the starlight. Most of the birds are asleep. No one notices
+she's gone for some time.
+</p>
+
+<p>
+Dyani arrives, brings her back to the fire. They sit together staring
+at the fire and she loses herself in the fire.
+</p>
+
+<p>
+Suddenly, Silvana finds herself beneath a great tree.
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

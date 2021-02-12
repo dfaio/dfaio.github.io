@@ -13,3 +13,6 @@ emacsclient -e "(progn (find-file \"cookbook.org\") (org-html-export-to-html) (k
 emacsclient -e "(progn (find-file \"aphoa.org\") (org-html-export-to-html) (kill-buffer))"
 emacsclient -e "(progn (find-file \"writeroommode.org\") (org-html-export-to-html) (kill-buffer))"
 emacsclient -e "(progn (find-file \"modules.org\") (org-html-export-to-html) (kill-buffer))"
+emacsclient -e "(progn (find-file \"aeropress.org\") (org-html-export-to-html) (kill-buffer))"
+emacsclient -e "(progn (find-file \"exist.org\") (org-html-export-to-html) (kill-buffer))"
+emacsclient -e "(progn (find-file \"mwi.org\") (org-html-export-to-html) (kill-buffer))"
