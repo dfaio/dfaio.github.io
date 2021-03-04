@@ -1,0 +1,46 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+OPTIONS: num:nil
+#+OPTIONS: html-postamble:nil
+
+* The Mtho high plains
+
+|-------------------------------------------------------------------|
+| Wolf                                                              |
+| Snow leopard                                                      |
+| Yak                                                               |
+| Two fighting donkeys surrounded by mares, dust flying everywhere. |
+| Cranes                                                            |
+| Vultures                                                          |
+| Water buffalo                                                     |
+|-------------------------------------------------------------------|
+
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 8 Wool traders. They ride huge yaks and wear sheepskin, with the leather side out. Their arms are exposed. They throw stones at the yaks to drive and guide them. They are uninterested in the players.                                                                                                                                                                                                                                                                                            |
+| A group of monks in search of poplar trees to build a monastary.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| A small family living out in the wilderness. The woman, Dolma, laughes merrily. The man, Sonam, hunts for food, though it is illegal to do so. They serve rancid butter tea and eat nettle spinach. Milky cloudy barley alcohol from a wooden bottle. Sonam will sell meat at a low price if asked and asks players to not tell officials. If the players mention they are headed to the Zhaomund tree, Sonam will mention it is holy to the people of this land and many complete the pilgrimage. |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+|------------------------------------------------------------------|
+| Gartok outpost. 100s of tents, many yak many lightweight cotton. |
+|------------------------------------------------------------------|
+
+|-------------------------------|
+| Giant glaciers to the east    |
+| Wild onions grow on the hills |
+|-------------------------------|
+
+|-------------|
+| Place names |
+|-------------|
+| Tradun      |
+| Gyabnak     |
+| Salha       |
+|-------------|
+
+
+* Plot points to drop
+  
+The journey to the Zhaomund tree in hope of being reincarnated in a
+better way in a later life.
+
+The passing of the skellies (find some dead traders or something?).
