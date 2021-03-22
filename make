@@ -16,3 +16,4 @@ emacsclient -e "(progn (find-file \"modules.org\") (org-html-export-to-html) (ki
 emacsclient -e "(progn (find-file \"aeropress.org\") (org-html-export-to-html) (kill-buffer))"
 emacsclient -e "(progn (find-file \"exist.org\") (org-html-export-to-html) (kill-buffer))"
 emacsclient -e "(progn (find-file \"mwi.org\") (org-html-export-to-html) (kill-buffer))"
+emacsclient -e "(progn (find-file \"taldun.org\") (org-html-export-to-html) (kill-buffer))"
