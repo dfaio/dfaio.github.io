@@ -1,0 +1,38 @@
+@media screen and (min-width: 1200px) {
+    #table-of-contents  {
+        font-size: 12pt;
+        bottom:0;
+        position:fixed;
+        overflow-x:hidden;
+        top: 5%;
+        left: 5%;
+        width: 20%;
+    }
+    body {
+        margin-left: 10%;
+        margin-right: 30%;
+        /* this way floating TOC wouldn't touch content */
+        width: 58%;
+    }
+}
+body {
+    padding:0 .62em;
+    font:1.2em/1.62 sans-serif;
+    max-width:40em;
+    margin:1em auto;
+}
+h1 {
+  font-size: 34px;
+  letter-spacing: 0.25px;
+  line-height: 1.5;
+}
+h2 {
+  font-size: 24px;
+  line-height: 1.2;
+}
+h3 {
+  line-height: 1.2;
+}
+pre.example {
+  font: 18px/1.5 monospace;
+}

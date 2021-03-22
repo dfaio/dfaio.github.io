@@ -4,7 +4,7 @@
 #+OPTIONS: html-postamble:nil
 
 Taldun is a *swift* *Glaive* who *fushes flesh and steel*, or *rages*,
-or *wields two weapons at once*, or *works miracles*.
+or *wears a sheen of ice* or *wields two weapons at once*, or *works miracles*.
 
 Because he is a glaive, he starts with
 
@@ -74,6 +74,17 @@ If Taldun *wields two weapons at once*, he can bear two light weapons at
 once and make separate attack rolls for each of them as an
 action. With an effort of 1, Taldun can only apply effort to one of
 these attacks per turn.
+
+If Taldun *wears a sheen of ice*, he has begun to move ice with his
+mind. He can at will don *Ice Armor (1 intellect)* for ten minutes.s It
+grants +1 armor. Against cold damage, it grants an additional 1 armor
+for a total of +2. While active, Taldun feels no discomfort from
+cold. Perhaps another character has some odd quirk of the numenera
+that grants them the sheen of ice as well when you activate it within
+immediate range of them. Taldun bears a sword of stronglass that looks
+to be made of ice. (Sidenote, at higher tiers, this option grants
+abilities that use a lot of intellect so I’m not sure if this is a
+great choice for Taldun’s might-and-speed-heavy build).
 
 If Taldun *works miracles*, he has a *Healing Touch (1
 intellect)*. Make a difficulty 2 intellect task (success on 6 or
