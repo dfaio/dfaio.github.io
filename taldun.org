@@ -3,24 +3,25 @@
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
 
-Taldun is a *swift* *Glaive* who *fushes flesh and steel*, or *rages*,
-or *wears a sheen of ice* or *wields two weapons at once*, or *works miracles*.
+Taldun is a *swift* *glaive* who *fushes flesh and steel*, *rages*,
+or *wields two weapons at once* (three possible builds).
 
 Because he is a glaive, he starts with
 
-| Might 11    |
-| Speed 10    |
-| Intellect 7 |
+| Might 11    | Edge 1 |
+| Speed 10    | Edge 1 |
+| Intellect 7 | Edge 0 |
 
 He gets 6 additional points to add among these. He adds 3 to might and
-3 to speed.
+3 to speed, giving him
 
-His effort is 1 (can apply one level of effort). Because he is a
-Glaive, he has a might edge of 1, a speed edge of 1, and an intellect
-edge of 0.
+| Might 14    | Edge 1 |
+| Speed 13    | Edge 1 |
+| Intellect 7 | Edge 0 |
 
-His *combat prowess* ability gives him +1 to all damage dealt by melee
-attacks (could chose ranged instead).
+His *melee combat prowess* gives him +1 to all damage dealt by melee
+attacks. Melee attack rolls can be either might or speed rolls (player
+choice).
 
 He chooses the two fighting moves *Fleet of foot* and *Misdirect*.
 
@@ -40,7 +41,7 @@ and a *rejuventator*.
 *Density module*. A crystal growth attached to his sword. When
 activated, gives the sword +2 damage for 28 hours. One time use.
 
-*Rejuventator*. A pill that restores 3 speed points.
+*Rejuventator*. A pill that restores 3 speed points. One time use.
 
 Because he is *swift*, he has +4 to his speed pool, is trained (+3) in
 initiative actions and running. Hindered in balance actions.
@@ -55,10 +56,10 @@ If Taldun *fushes flesh and steel*, he has modified his flesh with old
 computer servos he has scavenged. Taldun perhaps worries that
 strangers (or other player characters) are out to scalp him for
 parts. Perhaps another player character knows a preprogrammed word
-that shuts Taldun down for 10 minutes. Taldun gets +1 armor, +3 might
-pool, +3 speed pool. Since his flesh is made partially of machine, he
-can only use recovery rolls to heal up to his max might pool
-minus 5. The last 5 points of might must be healed with repair tasks.
+that shuts Taldun down for 10 minutes. Taldun gets *+1 armor, +3 might
+pool, +3 speed pool*. Since his flesh is made partially of machine, he
+*cannot fully heal with recovery rolls*, healing the last 5 points of
+might must be performed with repair tasks.
 
 If Taldun *rages*, he gets *Frenzy (1 intellect)*. Whenever he wishes
 while in combat, Taldun enters a frenzied state where he cannot use
@@ -70,25 +71,7 @@ Taldun’s rage and can’t help but flee at the sight sometimes. Perhaps
 Taldun holds some dark secret that he covers with his rage. Perhaps he
 has witnessed some unspeakable horror.
 
-If Taldun *wields two weapons at once*, he can bear two light weapons at
-once and make separate attack rolls for each of them as an
+If Taldun *wields two weapons at once*, he can bear two *light
+weapons* at once and make separate attack rolls for each of them as an
 action. With an effort of 1, Taldun can only apply effort to one of
 these attacks per turn.
-
-If Taldun *wears a sheen of ice*, he has begun to move ice with his
-mind. He can at will don *Ice Armor (1 intellect)* for ten minutes.s It
-grants +1 armor. Against cold damage, it grants an additional 1 armor
-for a total of +2. While active, Taldun feels no discomfort from
-cold. Perhaps another character has some odd quirk of the numenera
-that grants them the sheen of ice as well when you activate it within
-immediate range of them. Taldun bears a sword of stronglass that looks
-to be made of ice. (Sidenote, at higher tiers, this option grants
-abilities that use a lot of intellect so I’m not sure if this is a
-great choice for Taldun’s might-and-speed-heavy build).
-
-If Taldun *works miracles*, he has a *Healing Touch (1
-intellect)*. Make a difficulty 2 intellect task (success on 6 or
-higher). On success, a target Taldun touches is healed for 1d6 pool
-points. Each time Taldun attempts to heal a creature, the difficulty
-for that creature increases by 1 (target number increases by 3). The
-difficulty returns to 2 after that creature rests for 10 hours.
