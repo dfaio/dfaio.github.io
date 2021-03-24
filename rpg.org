@@ -13,13 +13,14 @@ spells require spending intellect points. Many specialized physical
 attacks require spending might or speed.
 
 You can spend pool points to add any roll. At first level, you can
-spend up to 3 pool points for a single roll.
+spend up to 3 pool points to add 3 to a single roll. This called using
+*effort*.
 
-Each of your pools has an associated *edge*. Edge reduces how many
-pool points you need to spend. For instance, a might edge of 1 makes
-it free to spend one might pool point.
+Each of your pools has an associated *edge*. Edge reduces the cost of
+*effort*. An edge of 1 decreases the cost of *effort* by one, an edge
+of 2 decreases by 2, and so on.
 
-You are an adjective noun that verbs
+You are an adjective noun that verbs.
 
 * Choose a noun
 ** Fighter
