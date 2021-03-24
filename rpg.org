@@ -1,4 +1,4 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="sans.css" />
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
 
@@ -33,6 +33,9 @@ You are practiced in all weapons and can use them without penalty.
 
 *Choose* three special abilities:
 
+- *Come and get me*.  Spend 1 int. Roll to convince creature to
+  physically attack you next round. They snap out of it at the end of
+  their turn. Gets more difficult by one step each attempt.
 - *Quick on the draw*. You get +3 to your initiative rolls.
 - *Shove*. Spend 1 might to melee attack and move an opponent into a
   position you desire within immediate range. Deals 1 less damage than
@@ -71,6 +74,10 @@ weapon, increase the attack difficulty by 3.
   a short distance and take an action in the same round.
 - *Strive*. Spend 2 might points to reduce the difficulty of all non-attack might-based
   rolls by 3. Lasts 10 minutes.
+- *Special short*. Reduce damage by 1. Instead, hit in a precise spot
+  and e.g. shoot an object out of the creature's hand, unbuckle a bag,
+  shoot leg or limb to reduce speed to immediate distance for a few
+  days (or until receives medical care).
 - You have a Might Edge of 1 and a Speed Edge of 1.
 - You are trained in two skills you are not already trained in.
 - You can use heavy weapons.
@@ -130,6 +137,8 @@ weapon, increase the attack difficulty by three.
 - *Goad*. After you successfully attack a creature, the difficulty of
   all others speed defense against the creature's attacks decreased by
   three until the next round.
+- *Nightstrike*. When you attack in dim light or darkness, you get a
+  free level of effort on the attack.
 - *Sleight of hand*. 1 speed point. You can e.g. move a object from
   your hand to a desired spot (e.g. your pocket). You can make someone
   believe they have something in their possession that they do not
