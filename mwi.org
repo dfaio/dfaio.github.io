@@ -1,4 +1,4 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="no.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="sans.css" />
 #+OPTIONS: num:nil
 #+OPTIONS: html-postamble:nil
 [[file:index.html][dfa.io]]
@@ -227,3 +227,46 @@ Everyone got a tattoo'd pig foot, Silvana got a tattoo of an eye on
 her left hand.
 
 Silvana got stoned with Willow.
+* Salha and the Yak Traders
+  
+Travelled to Salha. It's a city surrounded by a moat and a
+wall. There's a hill in the center with a cave visible from outside
+the city. Entering Salha requires a permit, which the player did not
+have.
+
+At dusk, some traders exit the city on yaks. Willow and Delshay
+masquarade as authorities to check permits. Willow breaks out in a
+run. Arrows pursue. Silvana steps in, claiming to be the
+authorities. She ties Willow, Ashes, and Delshay's hands and insists
+to the traders that they all must enter the city to have the permits
+investigated and these criminals punished.
+
+The traders agree. Both yaks remain outside the city and two traders
+accompany the players. Calian and Scrib stay behind.
+* Shoon and the Burning
+  
+Silvana apologizes to the traders, saying that she's take the
+criminals into the city and that the traders are free to leave with
+their permits. The traders are grateful and leave. Silvana keeps the
+other tied up for a while for good measure (and out of spite).
+
+Willow smokes some truesight and sees in vision the cave of the city
+becoming kaleidoscopic then turning into flower petals. Next to the
+flowers hang shiny black berries.
+
+The players try to use the perserved, tattoo'd pig feet to divine a
+way into the city. The eye tattoos maintain eye contact with the
+players and in particular with Silvana's eye tattoo on her left hand.
+
+Giving up, the players make their way into the mountain pass. They are
+met by Shoon, a skelly monk wearing black robes. He says the path the
+players are taking leads to death and warns them to turn back.
+
+On seeing Silvana's eye tattoo'd on her hand, Shoon immediately
+attacks Silvana. While attacking, Shoon convinces Ashes to set himself
+on fire with fire powder using Honey of the Night. Ashes' left arm and
+part of his face and neck burn, leaving only bone.
+
+Bees escape from the honeycomb in Shoon's skull before Willow blows
+him to pieces.
+
