@@ -4,6 +4,16 @@
 #+OPTIONS: html-postamble:nil
 [[file:index.html][dfa.io]]
 * 2021
+  
+1. Parable of the Sower
+2. Darth Bane: Path of Destruction  
+3. The Poppy War
+4. The Dragon Republic
+5. The Burning God
+6. The Cleveland Heights LGBTQ Sci-Fi and Fantasy Role Playing Club
+7. The Fifth Season
+
+
 ** Jan 23 - Darth Bane trilogy first book
   
 This book has spoilers for the KOTOR game series, so if you haven't
